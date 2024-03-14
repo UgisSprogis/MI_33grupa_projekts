@@ -6,7 +6,7 @@ def speles_skaitli():
     skaitlu_saraksts = set()
     pieci_skaitli = set()
     #Izvēlas skaitļus no 10000 līdz 20000
-    #Ja skaitlis dalās ar 6, tad to pievieno sarakstam
+    #Ja skaitlis dalās ar 6 (dalās ar 2 un 3), tad to pievieno sarakstam
     for i in range(10000,20000):
         if i%6==0:
             skaitlu_saraksts.add(i)
