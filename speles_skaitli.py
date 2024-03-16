@@ -16,5 +16,3 @@ def speles_skaitli():
     pieci_skaitli = random.sample(sorted(skaitlu_saraksts), 5)
     return pieci_skaitli
 
-#Pārbaude
-print(speles_skaitli())

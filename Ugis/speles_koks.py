@@ -1,3 +1,5 @@
+import random
+from speles_skaitli import speles_skaitli
 #Virsotnes klase ar atribūtiem id, skaitlis, speletajs1 punkti, speletajs2 punkti, limenis
 class Virsotne:
     def __init__(self, id, skaitlis, speletajs1, speletajs2, limenis):
@@ -80,10 +82,18 @@ def gajiens(gajiena_tips,gen_virsotnes,pasreizeja_virsotne):
 sp=SpelesKoks()
 #Izveido sarakstu, kurā tiks glabātas virsotnes
 gen_virsotnes = []
+
+#Iegūst piecus nejaušus skaitļus no speles_skaitli.py
+pieci_skaitli = speles_skaitli()
+#Izvēlas nejaušu skaitli no pieci_skaitli saraksta
+skaitlis = random.sample(pieci_skaitli, 1)
+#Izvada izvēlēto skaitli
+print("Spēles skaitlis ir:", skaitlis[0])
+
 #Pievieno pirmo virsotni
-sp.pievienot_virsotni(Virsotne("A1", 11664, 0, 0, 1))
+sp.pievienot_virsotni(Virsotne("A1", skaitlis[0], 0, 0, 1))
 #Pievieno pirmo virsotni sarakstam
-gen_virsotnes.append(["A1", 11664, 0, 0, 1])
+gen_virsotnes.append(["A1", skaitlis[0], 0, 0, 1])
 #Šis mainīgais skaita virsotnes. Sākas ar 2 tāpēc, ka pirmā virsotne jau ir pievienota
 j=2
 #Kamēr virsotņu saraksts nav tukšs, tad tiek veikti gājieni
