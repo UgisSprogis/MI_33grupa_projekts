@@ -25,7 +25,7 @@ def gajiens(gajiena_tips,gen_virsotnes,pasreizeja_virsotne):
     else:
         dalitajs = 3
     #Ja skaitlis dalās ar dalītāju, tad turpmākais kods izveidos jaunu virsotni un atjaunos informāciju par virsotnes datiem
-    if pasreizeja_virsotne[1]%dalitajs==0:
+    if (pasreizeja_virsotne[1]%dalitajs==0) and (pasreizeja_virsotne[1]>10):
         global j
         id_new = 'A'+str(j)
         j+=1
@@ -81,9 +81,9 @@ sp=SpelesKoks()
 #Izveido sarakstu, kurā tiks glabātas virsotnes
 gen_virsotnes = []
 #Pievieno pirmo virsotni
-sp.pievienot_virsotni(Virsotne("A1", 15516, 0, 0, 1))
+sp.pievienot_virsotni(Virsotne("A1", 11664, 0, 0, 1))
 #Pievieno pirmo virsotni sarakstam
-gen_virsotnes.append(["A1", 15516, 0, 0, 1])
+gen_virsotnes.append(["A1", 11664, 0, 0, 1])
 #Šis mainīgais skaita virsotnes. Sākas ar 2 tāpēc, ka pirmā virsotne jau ir pievienota
 j=2
 #Kamēr virsotņu saraksts nav tukšs, tad tiek veikti gājieni
