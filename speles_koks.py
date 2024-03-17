@@ -126,4 +126,4 @@ def uzvaras_strupceli(sak_seciba):
             uzvaras_strupceli.append(x.id)
     return uzvaras_strupceli
 
-print("Uzvaras virsotnes spēletajam ", uzvaras_strupceli(1))
+print("Uzvaras virsotnes datoram - ", uzvaras_strupceli(1))
