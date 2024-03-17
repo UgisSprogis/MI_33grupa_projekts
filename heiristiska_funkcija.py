@@ -19,16 +19,6 @@ def heiristiska_funckija(sak_virsotne,beigu_virsotne,sak_seciba):
     print(celi)
     print(uzvarosais_cels)
     print(next_inline)
-    loop = True
-    while loop:
-        for x in next_inline:
-            for y in celi:
-                if y[1] == x:
-                    next_inline_temp.append(y[0])
-                if y[0] == sak_virsotne:
-                    loop = False
-                    next_inline = next_inline_temp
-    print("Next inline: " + str(next_inline))
     
     
 
