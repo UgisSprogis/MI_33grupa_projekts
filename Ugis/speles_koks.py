@@ -1,5 +1,5 @@
 import random
-from speles_skaitli import speles_skaitli
+from speles_skaitli import *
 #Virsotnes klase ar atribūtiem id, skaitlis, speletajs1 punkti, speletajs2 punkti, limenis
 class Virsotne:
     def __init__(self, id, skaitlis, speletajs1, speletajs2, limenis):
@@ -113,3 +113,15 @@ print("Loki:")
 #Tiek izvadīti visi loki
 for x, y in sp.loki.items():
     print(x, y)
+
+
+def uzvaras_strupceli(sak_seciba):
+    uzvaras_strupceli = []
+    for x in sp.virsotnes:
+        if ((x.skaitlis%3)!=0) and ((x.skaitlis%2)!=0) and (sak_seciba==1) and (x.speletajs1>x.speletajs2):
+            uzvaras_strupceli.append(x.id)
+        elif ((x.skaitlis%3)!=0) and ((x.skaitlis%2)!=0) and (sak_seciba==2) and (x.speletajs2>x.speletajs1):
+            uzvaras_strupceli.append(x.id)
+    return uzvaras_strupceli
+
+print("Uzvaras virsotnes spēletajam ", uzvaras_strupceli(1))
