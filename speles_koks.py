@@ -114,9 +114,11 @@ print("Loki:")
 for x, y in sp.loki.items():
     print(x, y)
 
-
+#Funkcija, kas atgriež uzvaras strupceļus izvēlētajai secībai, kā arguments tiek padots , kurš pēc kārtas sāk dators
 def uzvaras_strupceli(sak_seciba):
+    #Izveido sarakstu, kurā tiks glabāti uzvaras strupceļi
     uzvaras_strupceli = []
+    #Pārbauda, vai virsotne ir uzvaras strupceļa virsotne atkarībā no noteiktās spēles secības
     for x in sp.virsotnes:
         if ((x.skaitlis%3)!=0) and ((x.skaitlis%2)!=0) and (sak_seciba==1) and (x.speletajs1>x.speletajs2):
             uzvaras_strupceli.append(x.id)
@@ -124,4 +126,4 @@ def uzvaras_strupceli(sak_seciba):
             uzvaras_strupceli.append(x.id)
     return uzvaras_strupceli
 
-print("Uzvaras virsotnes spēletajam ", uzvaras_strupceli(1))
+print("Uzvaras virsotnes datoram - ", uzvaras_strupceli(1))
