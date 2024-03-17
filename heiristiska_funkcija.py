@@ -15,6 +15,7 @@ def heiristiska_funckija(sak_virsotne,beigu_virsotne,sak_seciba):
         if x[1] == beigu_virsotne[0]:
             uzvarosais_cels.append(x)
             next_inline.append(x[0])
+    #lol
     print(celi)
     print(uzvarosais_cels)
     print(next_inline)
