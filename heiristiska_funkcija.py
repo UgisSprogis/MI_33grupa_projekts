@@ -16,7 +16,6 @@ def svara_pieskirsana(sak_seciba):
 print("Virsotņu svari:")
 print(svara_pieskirsana(sak_dators))
 
-
 def index_uz_masivu():
     visi_loki = []
     for x in sp.virsotnes:
