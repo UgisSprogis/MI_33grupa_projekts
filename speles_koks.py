@@ -91,9 +91,9 @@ skaitlis = random.sample(pieci_skaitli, 1)
 print("Spēles skaitlis ir:", 10164)
 
 #Pievieno pirmo virsotni
-sp.pievienot_virsotni(Virsotne("A1", 10164, 0, 0, 1))
+sp.pievienot_virsotni(Virsotne("A1", skaitlis[0], 0, 0, 1))
 #Pievieno pirmo virsotni sarakstam
-gen_virsotnes.append(["A1", 10164, 0, 0, 1])
+gen_virsotnes.append(["A1", skaitlis[0], 0, 0, 1])
 #Šis mainīgais skaita virsotnes. Sākas ar 2 tāpēc, ka pirmā virsotne jau ir pievienota
 j=2
 #Kamēr virsotņu saraksts nav tukšs, tad tiek veikti gājieni
