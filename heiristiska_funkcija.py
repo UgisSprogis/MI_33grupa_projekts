@@ -19,7 +19,7 @@ def svara_pieskirsana(sak_dators):
 print("Virsotņu svari uz kurām var iet dators:")
 print(svara_pieskirsana(sak_dators))
 
-#Funkcija, kas atrod visus iespējamos lokus
+#Funkcija, kas atrod visus iespējamos lokus.
 def atrast_lokus():
     visi_loki = []
     #Iziet cauri visām virsotnēm un pārbauda, vai ir loki
