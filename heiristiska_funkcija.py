@@ -7,28 +7,29 @@ def svara_pieskirsana():
         virsotnes_svars = x.limenis + x.speletajs1 - x.speletajs2
         virsotnu_svari.append([x.id, virsotnes_svars])
     return virsotnu_svari
-
 print(svara_pieskirsana())
 
 
-# def heiristiska_funckija(sak_virsotne,beigu_virsotne,sak_seciba):
-#     celi = []
-#     uzvarosais_cels = []
-#     next_inline = []
-#     next_inline_temp = []
-#     print("heiristiska_funckija")
-#     for x in sp.loki:
-#         for y in sp.loki[x]:
-#             celi.append([x,y])
-#     for x in celi:
-#         if x[1] == beigu_virsotne[0]:
-#             uzvarosais_cels.append(x)
-#             next_inline.append(x[0])
-#     #lol
-#     print(celi)
-#     print(uzvarosais_cels)
-#     print(next_inline)
-    
+def index_uz_masivu():
+    visi_loki = []
+    for x in sp.virsotnes:
+        try: 
+            for y in sp.loki[x.id]:
+                visi_loki.append([x.id, y])
+        except KeyError:
+            break
+    return visi_loki
+
+def masivs_ar_svaru(masivs, svars):
+    masivs_ar_svaru = []
+    for x in svars:
+        for y in masivs:
+            if x[1] == y[0]:
+                masivs_ar_svaru.append([x[0],x[1],y[1]])
+    return masivs_ar_svaru
+        
     
 
-# heiristiska_funckija('A1', uzvaras_strupceli(sakums), sakums)
+print(index_uz_masivu())
+print("Pavisam done")
+print(masivs_ar_svaru(svara_pieskirsana(),index_uz_masivu()))

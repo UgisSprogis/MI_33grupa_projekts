@@ -113,7 +113,7 @@ print("Loki:")
 #Tiek izvadīti visi loki
 for x, y in sp.loki.items():
     print(x, y)
-
+        
 sakums = 1
 #Funkcija, kas atgriež uzvaras strupceļus izvēlētajai secībai, kā arguments tiek padots , kurš pēc kārtas sāk dators
 def uzvaras_strupceli(sak_seciba):
