@@ -91,9 +91,9 @@ skaitlis = random.sample(pieci_skaitli, 1)
 print("Spēles skaitlis ir:", 10164)
 
 #Pievieno pirmo virsotni
-sp.pievienot_virsotni(Virsotne("A1", skaitlis[0], 0, 0, 1))
+sp.pievienot_virsotni(Virsotne("A1", 10164, 0, 0, 1))
 #Pievieno pirmo virsotni sarakstam
-gen_virsotnes.append(["A1", skaitlis[0], 0, 0, 1])
+gen_virsotnes.append(["A1", 10164, 0, 0, 1])
 #Šis mainīgais skaita virsotnes. Sākas ar 2 tāpēc, ka pirmā virsotne jau ir pievienota
 j=2
 #Kamēr virsotņu saraksts nav tukšs, tad tiek veikti gājieni
@@ -115,9 +115,14 @@ print("Loki:")
 visi_loki = []
 for x, y in sp.loki.items():
     print(x, y)
+
+
 for x in sp.virsotnes:
-    for y in sp.loki[x.id]:
-        visi_loki.append([x.id, sp.loki[x.id]])
+    try: 
+        for y in sp.loki[x.id]:
+            visi_loki.append([x.id, y])
+    except KeyError:
+        break
         
 print("Virsotnes: " + str(sp.virsotnes[0].id))
 print("Loki: " + str(sp.loki["A1"]))
