@@ -36,7 +36,7 @@ def minimax(current_number, is_computer_turn):
         return min_score, None
 
 
-# Funkcija, kas ļauj datoram izvēlēties dalītāju, izmantojot minimax algoritmu.
+# Funkcija, kas ļauj datoram izvēlēties dalītāju, izmantojot minimax algoritmu. 
 def computer_choose_number(current_number):
     next_move = None
     if current_number % 2 == 0:
