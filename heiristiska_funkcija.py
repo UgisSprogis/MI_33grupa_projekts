@@ -19,6 +19,38 @@ def svara_pieskirsana(sak_dators):
 print("Virsotņu svari uz kurām var iet dators:")
 print(svara_pieskirsana(sak_dators))
 
+# Tiek piešķirti svari pēc heiristiskas funkcijas min-max un alfa-beta algoritma
+def svara_pieskirsana_beigam(vai_izsaukts):
+    virsotnu_svari = []
+    max_limenis = sp.virsotnes[len(sp.virsotnes)-1].limenis
+    puslimenis = int(max_limenis/2+1)
+    #Piešķir pirmajai koka pusei svaru
+    if not vai_izsaukts and max_limenis > 3:
+        vai_izsaukts = True
+        print("Pirmā daļa koka svariem:")
+        for x in (sp.virsotnes):
+            if x.limenis > puslimenis:
+                break
+            if x.limenis == puslimenis:
+                virsotnes_svars = x.limenis + x.speletajs1 - x.speletajs2
+                #Pievieno virsotni un tās svaru sarakstam
+                virsotnu_svari.append([x.id, virsotnes_svars])
+    #Piešķir otrai koka pusei svaru
+    elif vai_izsaukts or max_limenis < 3:
+        if max_limenis < 7:
+            print("Līmenis pārāk mazs, lai koku dalītu")
+        print("Otrā daļa koka svariem:")
+        for x in (sp.virsotnes):
+            if x.limenis == max_limenis:
+                virsotnes_svars = x.limenis + x.speletajs1 - x.speletajs2
+                #Pievieno virsotni un tās svaru sarakstam
+                virsotnu_svari.append([x.id, virsotnes_svars])
+    return virsotnu_svari
+print("Virsotņu svari uz kurām var iet dators:")
+print(svara_pieskirsana(sak_dators))
+
+
+
 #Funkcija, kas atrod visus iespējamos lokus.
 def atrast_lokus():
     visi_loki = []
@@ -44,5 +76,10 @@ def masivs_ar_svaru(masivs_ar_svaru, loki):
                 masivs_ar_svaru.append([x[0],x[1],y[1]])
     return masivs_ar_svaru
 #Izvada virsotnes ar to lokiem datora gājienos un mērķa svaru
-print("Virsotnes loki ar svaru datora gājienos:")
-print(masivs_ar_svaru(svara_pieskirsana(sak_dators),atrast_lokus()))
+# print("Virsotnes loki ar svaru datora gājienos:")
+# print(masivs_ar_svaru(svara_pieskirsana(sak_dators),atrast_lokus()))
+print("Svara pieskirsana beigam")
+
+vai_izsaukts = False # Mainīgais priekš tā, lai svars spētu orientēties kurai daļai grafa piešķirt svaru
+print(svara_pieskirsana_beigam(False))
+print(svara_pieskirsana_beigam(True))
