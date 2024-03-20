@@ -23,7 +23,10 @@ print(svara_pieskirsana(sak_dators))
 def svara_pieskirsana_beigam(vai_izsaukts):
     virsotnu_svari = []
     max_limenis = sp.virsotnes[len(sp.virsotnes)-1].limenis
-    puslimenis = int(max_limenis/2+1)
+    if max_limenis%2 == 0:
+        puslimenis = int(max_limenis/2)
+    else:
+        int(max_limenis/2+1)
     #Piešķir pirmajai koka pusei svaru
     if not vai_izsaukts and max_limenis > 3:
         vai_izsaukts = True
