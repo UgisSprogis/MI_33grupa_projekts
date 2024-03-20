@@ -16,8 +16,6 @@ def svara_pieskirsana(sak_dators):
             #Pievieno virsotni un tās svaru sarakstam
             virsotnu_svari.append([x.id, virsotnes_svars])
     return virsotnu_svari
-print("Virsotņu svari uz kurām var iet dators:")
-print(svara_pieskirsana(sak_dators))
 
 #Tiek piešķirti svari pēc heiristiskas funkcijas min-max un alfa-beta algoritma
 def svara_pieskirsana_beigam(vai_izsaukts):
@@ -27,7 +25,7 @@ def svara_pieskirsana_beigam(vai_izsaukts):
     if max_limenis%2 == 0:
         puslimenis = int(max_limenis/2)
     else:
-        int(max_limenis/2+1)
+        puslimenis = int(max_limenis/2+1)
     #Piešķir pirmajai koka pusei svaru
     if not vai_izsaukts and max_limenis > 3:
         vai_izsaukts = True
@@ -42,7 +40,7 @@ def svara_pieskirsana_beigam(vai_izsaukts):
                 virsotnu_svari.append([x.id, virsotnes_svars])
     #Piešķir otrai koka pusei svaru, kad tas tiek izsaukts otru reizi
     elif vai_izsaukts or max_limenis < 3:
-        if max_limenis < 7:
+        if max_limenis < 35:
             print("Līmenis pārāk mazs, lai koku dalītu")
         print("Otrā daļa koka svariem:")
         for x in (sp.virsotnes):
@@ -51,8 +49,6 @@ def svara_pieskirsana_beigam(vai_izsaukts):
                 #Pievieno virsotni un tās svaru sarakstam
                 virsotnu_svari.append([x.id, virsotnes_svars])
     return virsotnu_svari
-print("Virsotņu svari uz kurām var iet dators:")
-print(svara_pieskirsana(sak_dators))
 
 
 
