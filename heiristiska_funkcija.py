@@ -23,6 +23,7 @@ print(svara_pieskirsana(sak_dators))
 def svara_pieskirsana_beigam(vai_izsaukts):
     virsotnu_svari = []
     max_limenis = sp.virsotnes[len(sp.virsotnes)-1].limenis
+    print()
     puslimenis = int(max_limenis/2+1)
     #Piešķir pirmajai koka pusei svaru
     if not vai_izsaukts and max_limenis > 3:
@@ -45,7 +46,7 @@ def svara_pieskirsana_beigam(vai_izsaukts):
                 virsotnes_svars = x.limenis + x.speletajs1 - x.speletajs2
                 #Pievieno virsotni un tās svaru sarakstam
                 virsotnu_svari.append([x.id, virsotnes_svars])
-    return virsotnu_svari
+    return virsotnu_svari, max_limenis
 print("Virsotņu svari uz kurām var iet dators:")
 print(svara_pieskirsana(sak_dators))
 
@@ -80,6 +81,32 @@ def masivs_ar_svaru(masivs_ar_svaru, loki):
 # print(masivs_ar_svaru(svara_pieskirsana(sak_dators),atrast_lokus()))
 print("Svara pieskirsana beigam")
 
-vai_izsaukts = False # Mainīgais priekš tā, lai svars spētu orientēties kurai daļai grafa piešķirt svaru
+vai_izsaukts = True # Mainīgais priekš tā, lai svars spētu orientēties kurai daļai grafa piešķirt svaru
 print(svara_pieskirsana_beigam(False))
 print(svara_pieskirsana_beigam(True))
+
+print(sp.virsotnes)
+def minimax():
+    next_limenis = []
+    berni = []
+    max_limenis = sp.virsotnes[len(sp.virsotnes)-1].limenis
+    labakie_celi = []
+    for x in sp.virsotnes:
+        if x.limenis == max_limenis-1:
+            next_limenis.append(x.id)
+    for x in sp.loki:
+        for y in next_limenis:
+            if y == x:
+                # virsotnes_svars = x.limenis + x.speletajs1 - x.speletajs2
+                berni.append([y,sp.loki[x]])
+    print("Berni")
+    
+    return berni
+        # try: 
+        #     #Ja ir loki, tad tos pievieno sarakstam
+        #     for y in sp.loki[x.id]:
+        #         next_limenis.append([x.id, y[0]])
+        # except KeyError:
+        #     break
+            
+print(minimax())
