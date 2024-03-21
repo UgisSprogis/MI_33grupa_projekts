@@ -16,19 +16,21 @@ def svara_pieskirsana(sak_dators):
             #Pievieno virsotni un tās svaru sarakstam
             virsotnu_svari.append([x.id, virsotnes_svars])
     return virsotnu_svari
-print("Virsotņu svari uz kurām var iet dators:")
-print(svara_pieskirsana(sak_dators))
 
-# Tiek piešķirti svari pēc heiristiskas funkcijas min-max un alfa-beta algoritma
+#Tiek piešķirti svari pēc heiristiskas funkcijas min-max un alfa-beta algoritma
 def svara_pieskirsana_beigam(vai_izsaukts):
     virsotnu_svari = []
     max_limenis = sp.virsotnes[len(sp.virsotnes)-1].limenis
-    print()
-    puslimenis = int(max_limenis/2+1)
+    #Nosacījumi gan dalāmam, gan nedalāmam skaitlim, kad to dala uz pusi
+    if max_limenis%2 == 0:
+        puslimenis = int(max_limenis/2)
+    else:
+        puslimenis = int(max_limenis/2+1)
     #Piešķir pirmajai koka pusei svaru
     if not vai_izsaukts and max_limenis > 3:
         vai_izsaukts = True
         print("Pirmā daļa koka svariem:")
+        #Cikls, kas piešķir pirmajai koka daļas beigām heiristisko vērtību (Pirmajā reizē)
         for x in (sp.virsotnes):
             if x.limenis > puslimenis:
                 break
@@ -36,9 +38,9 @@ def svara_pieskirsana_beigam(vai_izsaukts):
                 virsotnes_svars = x.limenis + x.speletajs1 - x.speletajs2
                 #Pievieno virsotni un tās svaru sarakstam
                 virsotnu_svari.append([x.id, virsotnes_svars])
-    #Piešķir otrai koka pusei svaru
+    #Piešķir otrai koka pusei svaru, kad tas tiek izsaukts otru reizi
     elif vai_izsaukts or max_limenis < 3:
-        if max_limenis < 7:
+        if max_limenis < 35:
             print("Līmenis pārāk mazs, lai koku dalītu")
         print("Otrā daļa koka svariem:")
         for x in (sp.virsotnes):
@@ -46,9 +48,7 @@ def svara_pieskirsana_beigam(vai_izsaukts):
                 virsotnes_svars = x.limenis + x.speletajs1 - x.speletajs2
                 #Pievieno virsotni un tās svaru sarakstam
                 virsotnu_svari.append([x.id, virsotnes_svars])
-    return virsotnu_svari, max_limenis
-print("Virsotņu svari uz kurām var iet dators:")
-print(svara_pieskirsana(sak_dators))
+    return virsotnu_svari
 
 
 
