@@ -1,4 +1,4 @@
-from heiristiska_funkcija import *
+from speles_koks import *
 
 #Tiek noteikts maksimālais līmenis
 max_limenis = sp.virsotnes[len(sp.virsotnes)-1].limenis
@@ -41,4 +41,5 @@ def minimax(virs):
         return max(minimax(stavoklis) for stavoklis in nakosais_stavoklis)
 
 #Tiek izprintēta minimax funkcijas atgrieztā vērtība
+print("Jādodas uz virsotni, kuras novērtējums pēc minimax funkcijas ir:")
 print(minimax(atk_virsotnes[0]))
