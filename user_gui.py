@@ -149,8 +149,10 @@ class Izvelne(tk.Frame):
         def turpinat():
             if not self.algoritms_status:
                 messagebox.showerror('Spēles kļūda', 'Izvēlieties spēles algoritmu.')
+                reset()
             elif not self.speletajs_status:
                 messagebox.showerror('Spēles kļūda', 'Izvēlieties, kurš uzsāks spēli.')
+                reset()
             else:
                 controller.show_frame(Sakumlapa)
                 reset()
