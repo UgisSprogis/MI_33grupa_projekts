@@ -184,5 +184,5 @@ class Izvelne(tk.Frame):
 # Palaišanas kods
 
 
-app = Programma()
+app = tkinterApp()
 app.mainloop()
