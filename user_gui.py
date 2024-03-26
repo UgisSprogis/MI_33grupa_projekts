@@ -1,5 +1,6 @@
 from heiristiska_funkcija import *
 from tkinter import *
+import customtkinter
 import tkinter.font as font
 import tkinter as tk
 from tkinter import ttk
@@ -8,6 +9,18 @@ from tkinter import messagebox
 # Pamācība un koda struktūra ņemta no https://www.geeksforgeeks.org/python-gui-tkinter/
 # https://www.geeksforgeeks.org/tkinter-application-to-switch-between-different-page-frames/
 
+customtkinter.set_appearance_mode("dark")
+customtkinter.set_default_color_theme("blue")
+
+
+class Programma(customtkinter.CTk):
+    def __init__(self):
+        super().__init__()
+        self.geometry("640x480")
+        self.title("MI 33 praktiskais darbs")
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1)
+        
 
 class tkinterApp(tk.Tk):
     # tkinterApp klases inicializēšana
@@ -167,7 +180,9 @@ class Izvelne(tk.Frame):
             poga_speletajs.configure(background='white')
 
     
-  
+
 # Palaišanas kods
-app = tkinterApp()
+
+
+app = Programma()
 app.mainloop()

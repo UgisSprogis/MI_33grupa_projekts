@@ -1,4 +1,4 @@
-from heiristiska_funkcija import *
+from speles_koks import *
 
 
 max_limenis = sp.virsotnes[len(sp.virsotnes)-1].limenis
