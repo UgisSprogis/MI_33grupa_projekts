@@ -88,13 +88,13 @@ pieci_skaitli = speles_skaitli()
 #Izvēlas nejaušu skaitli no pieci_skaitli saraksta
 skaitlis = random.sample(pieci_skaitli, 1)
 #Izvada izvēlēto skaitli
-print("Spēles skaitlis ir:", 21636)
+print("Spēles skaitlis ir:", skaitlis[0])
 
 #Pievieno pirmo virsotni
-sp.pievienot_virsotni(Virsotne("A1", 21636, 0, 0, 1))
+sp.pievienot_virsotni(Virsotne("A1", skaitlis[0], 0, 0, 1))
 #Pievieno pirmo virsotni sarakstam
-gen_virsotnes.append(["A1", 21636, 0, 0, 1])
-#Šis mainīgais skaita virsotnes. Sākas ar 2 tāpēc, ka pirmā virsotne jau ir pievienota
+gen_virsotnes.append(["A1", skaitlis[0], 0, 0, 1])
+#Šis mainīgais skaita virsotnes. Sākas ar 2, tāpēc ka pirmā virsotne jau ir pievienota
 j=2
 #Kamēr virsotņu saraksts nav tukšs, tad tiek veikti gājieni
 while len(gen_virsotnes)>0:
@@ -113,7 +113,7 @@ print("Loki:")
 #Tiek izvadīti visi loki
 for x, y in sp.loki.items():
     print(x, y)
-        
+
 sak_dators = True
 #Funkcija, kas atgriež uzvaras strupceļus izvēlētajai secībai, kā arguments tiek padots , kurš pēc kārtas sāk dators
 def uzvaras_strupceli(sak_dators):
