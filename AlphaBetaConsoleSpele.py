@@ -18,7 +18,7 @@ def berni(pasreizeja_virsotne):
     return berni
 
 def alphabeta(virs, alpha, beta):
-
+    print("alphabeta izsauca")
     #Ja virsotne ir gala līmenī, tad tiek atgriezta novērtējuma vērtība
     if virs[4] == max_limenis:
         return virs[4] + virs[2] - virs[3]
@@ -66,28 +66,27 @@ print(berni(atk_virsotnes[0]))
 
 def rezultati(virsotne):
     if virsotne[2] == virsotne[3]:
-        if virsotne[2] == virsotne[3]:
-            return print("rezultāts ir neizšķirts")
+        print("rezultāts ir neizšķirts")
+        print("pirma speletaja punkti:", virsotne[2],"\notra speletaja punkti:", virsotne[3])
             
-        elif virsotne[2] > virsotne[3]:
-            print("uzvar pirmais speletajs")
-            return print("pirma speletaja punkti:", virsotne[2],"\notra speletaja punkti:", virsotne[3])
+    elif virsotne[2] > virsotne[3]:
+        print("uzvar pirmais speletajs")
+        print("pirma speletaja punkti:", virsotne[2],"\notra speletaja punkti:", virsotne[3])
                 
 
-        elif virsotne[2] < virsotne[3]:
-            print("uzvar otrais speletajs")
-            return print("pirma speletaja punkti:", virsotne[2],"\notra speletaja punkti:", virsotne[3])
+    elif virsotne[2] < virsotne[3]:
+        print("uzvar otrais speletajs")
+        print("pirma speletaja punkti:", virsotne[2],"\notra speletaja punkti:", virsotne[3])
                 
 
-def spele(kurs_sak, virsotne):
-    cond = True
-    while cond:
+def spele(kurs_sak, virsotne, cond=True):
+    if cond == True:
         print("Pašreizejais skaitlis:",virsotne[1])
         if virsotne[1] %2 != 0 and virsotne[1] %3 !=0:
             rezultati(virsotne)
             cond = False
+            return
         else:
-
             if kurs_sak == "pc":
                 print(virsotne)
                 print("Datora gajiens:")
@@ -120,8 +119,6 @@ def spele(kurs_sak, virsotne):
                         datora_dalitajs = virsotne[1]/datora_izvele[1]
                         print("Dators izvēlējās sadalit ar:", datora_dalitajs)
                         spele("human", nakosais_gajiens[1])
-                
-
                 elif len(nakosais_gajiens) == 1:
                         datora_izvele = nakosais_gajiens
                         print(datora_izvele)
@@ -143,28 +140,25 @@ def spele(kurs_sak, virsotne):
                     spele("pc", nakama_virsotne)
                 else:
                     print("Ar jusu skaitli:", cilveka_gajiens, "nevar iegut veselo rezulatatu")
+                    rezultati(virsotne)
 
 
 
 
 
 def pirmais_gajiens():
-    while True:
-        speles_sakums = input("izvēlieties, kurš sāks pirmais. Ievadiet pc, lai dators būtu pirmais vai human, lai jūs\n")
-        if speles_sakums == "pc":
-            spele("pc", atk_virsotnes[0])
-        elif speles_sakums == "human":
-            spele("human", atk_virsotnes[0])
+    speles_sakums = input("izvēlieties, kurš sāks pirmais. Ievadiet pc, lai dators būtu pirmais vai human, lai jūs\n1. dators\n2. human\n")
+    if speles_sakums == "1":
+        spele("pc", atk_virsotnes[0])
+    elif speles_sakums == "2":
+        spele("human", atk_virsotnes[0])
 
     
 
 def sak_spele():
-    while True:
-        speles_sakums = input("Ievadiet start, lai sāktu spēli, vai exit, lai izietu\n")
-        if speles_sakums == "start":
-            pirmais_gajiens()
-        elif speles_sakums == "exit":
-            break
+    speles_sakums = input("Ievadiet start, lai sāktu spēli, vai exit, lai izietu\n1. Start\n2. Exit\n")
+    if speles_sakums == "1":
+        pirmais_gajiens()
 
 
 sak_spele()
