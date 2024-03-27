@@ -134,7 +134,7 @@ class Izvelne(tk.Frame):
         poga_turpinat.grid( row=4, padx=25, column=0, columnspan=5, sticky='s')
 
         poga_papildus = Button(self, text = "PAPILDUS", bd=0, borderwidth=0, width=10, background='white', command = 
-                lambda: controller.show_frame(Sakumlapa), font=font.Font(family='Arial', size=18, weight="bold"))
+                lambda: controller.show_frame(Intervals), font=font.Font(family='Arial', size=18, weight="bold"))
         poga_papildus.grid( row=5, padx=25, column=0, columnspan=5, sticky='se')
         
         # Funkcija maina krāsu izvēlētā spēlētāja pogai uz zaļu
@@ -197,7 +197,7 @@ class Skaitli(tk.Frame):
         Frame.rowconfigure(self, 4, weight=1)
       
         Frame.configure(self, bg='gray')
-        Label(self, text = 'IZVELIES SKAITLI', 
+        Label(self, text = 'IZVĒLIES SKAITLI', 
                     font=font.Font(family='Arial', size=26, weight="bold"), background='white').grid(row=0, columnspan=5)
         skaitlis1 = Button(self, text = pieci_skaitli[0], bd=0, borderwidth=0, width=10, background='white', command = 
                 lambda:mainit_krasu_skaitlis("skaitlis1"), font=font.Font(family='Arial', size=18, weight="bold"))
@@ -287,7 +287,7 @@ class Intervals(tk.Frame):
         poga_turpinat.grid( row=4, padx=25, column=0, columnspan=5, sticky='n')
 
         poga_turpinat = Button(self, text = '<<<<<<<', bd=0, borderwidth=0, width=10, background='white', command = 
-                lambda: controller.show_frame(Skaitli), font=font.Font(family='Arial', size=18, weight="bold"))
+                lambda: controller.show_frame(Izvelne), font=font.Font(family='Arial', size=18, weight="bold"))
         poga_turpinat.grid( row=5, column=0, padx=5, pady=5, sticky='sw')
 
 
