@@ -3,14 +3,11 @@ from tkinter import *
 import customtkinter
 import tkinter.font as font
 import tkinter as tk
-from tkinter import ttk
 from tkinter import messagebox
 
 # Pamācība un koda struktūra ņemta no https://www.geeksforgeeks.org/python-gui-tkinter/
 # https://www.geeksforgeeks.org/tkinter-application-to-switch-between-different-page-frames/
 
-customtkinter.set_appearance_mode("dark")
-customtkinter.set_default_color_theme("blue")
 
 
 class Programma(customtkinter.CTk):
@@ -134,7 +131,7 @@ class Izvelne(tk.Frame):
         poga_turpinat.grid( row=4, padx=25, column=0, columnspan=5, sticky='s')
 
         poga_papildus = Button(self, text = "PAPILDUS", bd=0, borderwidth=0, width=10, background='white', command = 
-                lambda: controller.show_frame(Sakumlapa), font=font.Font(family='Arial', size=18, weight="bold"))
+                lambda: turpinat(), font=font.Font(family='Arial', size=18, weight="bold"))
         poga_papildus.grid( row=5, padx=25, column=0, columnspan=5, sticky='se')
         
         # Funkcija maina krāsu izvēlētā spēlētāja pogai uz zaļu
