@@ -1,4 +1,3 @@
-import random
 from speles_skaitli import *
 #Virsotnes klase ar atribūtiem id, skaitlis, speletajs1 punkti, speletajs2 punkti, limenis
 class Virsotne:
@@ -83,17 +82,14 @@ sp=SpelesKoks()
 #Izveido sarakstu, kurā tiks glabātas virsotnes
 gen_virsotnes = []
 
-#Iegūst piecus nejaušus skaitļus no speles_skaitli.py
-pieci_skaitli = speles_skaitli()
-#Izvēlas nejaušu skaitli no pieci_skaitli saraksta
-skaitlis = random.sample(pieci_skaitli, 1)
+speles_skaitlis = skaitla_izvele()
 #Izvada izvēlēto skaitli
-print("Spēles skaitlis ir:", 2519424)
+print("Spēles skaitlis ir:", speles_skaitlis)
 
 #Pievieno pirmo virsotni
-sp.pievienot_virsotni(Virsotne("A1", 2519424, 0, 0, 1))
+sp.pievienot_virsotni(Virsotne("A1", speles_skaitlis, 0, 0, 1))
 #Pievieno pirmo virsotni sarakstam
-gen_virsotnes.append(["A1", 2519424, 0, 0, 1])
+gen_virsotnes.append(["A1", speles_skaitlis, 0, 0, 1])
 #Šis mainīgais skaita virsotnes. Sākas ar 2, tāpēc ka pirmā virsotne jau ir pievienota
 j=2
 #Kamēr virsotņu saraksts nav tukšs, tad tiek veikti gājieni
@@ -113,19 +109,3 @@ print("Loki:")
 #Tiek izvadīti visi loki
 for x, y in sp.loki.items():
     print(x, y)
-
-sak_dators = True
-#Funkcija, kas atgriež uzvaras strupceļus izvēlētajai secībai, kā arguments tiek padots , kurš pēc kārtas sāk dators
-def uzvaras_strupceli(sak_dators):
-    #Izveido sarakstu, kurā tiks glabāti uzvaras strupceļi
-    uzvaras_strupceli = []
-    #Pārbauda, vai virsotne ir uzvaras strupceļa virsotne atkarībā no noteiktās spēles secības
-    for x in sp.virsotnes:
-        #Ja skaitlis dalās ar 3 un 2, tad tā nav uzvaras strupceļa virsotne
-        if ((x.skaitlis%3)!=0) and ((x.skaitlis%2)!=0) and (sak_dators==True) and (x.speletajs1>x.speletajs2):
-            uzvaras_strupceli.append(x.id)
-        elif ((x.skaitlis%3)!=0) and ((x.skaitlis%2)!=0) and (sak_dators==False) and (x.speletajs2>x.speletajs1):
-            uzvaras_strupceli.append(x.id)
-    return uzvaras_strupceli
-
-print("Uzvaras virsotnes datoram - ", uzvaras_strupceli(sak_dators))

@@ -110,3 +110,21 @@ def minimax():
         #     break
             
 print(minimax())
+
+
+
+sak_dators = True
+#Funkcija, kas atgriež uzvaras strupceļus izvēlētajai secībai, kā arguments tiek padots , kurš pēc kārtas sāk dators
+def uzvaras_strupceli(sak_dators):
+    #Izveido sarakstu, kurā tiks glabāti uzvaras strupceļi
+    uzvaras_strupceli = []
+    #Pārbauda, vai virsotne ir uzvaras strupceļa virsotne atkarībā no noteiktās spēles secības
+    for x in sp.virsotnes:
+        #Ja skaitlis dalās ar 3 un 2, tad tā nav uzvaras strupceļa virsotne
+        if ((x.skaitlis%3)!=0) and ((x.skaitlis%2)!=0) and (sak_dators==True) and (x.speletajs1>x.speletajs2):
+            uzvaras_strupceli.append(x.id)
+        elif ((x.skaitlis%3)!=0) and ((x.skaitlis%2)!=0) and (sak_dators==False) and (x.speletajs2>x.speletajs1):
+            uzvaras_strupceli.append(x.id)
+    return uzvaras_strupceli
+
+print("Uzvaras virsotnes datoram - ", uzvaras_strupceli(sak_dators))
