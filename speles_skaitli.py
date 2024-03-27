@@ -16,3 +16,13 @@ def speles_skaitli():
     pieci_skaitli = random.sample(sorted(skaitlu_saraksts), 5)
     return pieci_skaitli
 
+def skaitla_izvele():
+    pieci_skaitli = speles_skaitli()
+    print("Spēles skaitļi ir:")
+    l = 1
+    for x in pieci_skaitli:
+        print(f"{pieci_skaitli.index(x)+1}. ", x)
+    izveletais_skaitlis = int(input("Izvēlieties skaitli no spēles skaitļiem: "))-1
+    sk = pieci_skaitli[izveletais_skaitlis]
+    print(f"Jūsu izvēlētais skaitlis ir: {sk}")
+    return sk

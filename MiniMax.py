@@ -2,6 +2,10 @@ from speles_koks import *
 
 #Tiek noteikts maksimālais līmenis
 max_limenis = sp.virsotnes[len(sp.virsotnes)-1].limenis
+if max_limenis % 2 == 0:
+    puslimenis = max_limenis / 2
+else:
+    puslimenis = (max_limenis + 1) / 2
 #Tiek izveidots saraksts ar visām virsotnēm
 atk_virsotnes=[]
 for x in sp.virsotnes:
@@ -23,9 +27,11 @@ def berni(pasreizeja_virsotne):
 # 150lpp.
 def minimax(virs):
     #Ja virsotne ir gala līmenī, tad tiek atgriezta novērtējuma vērtība
-    if virs[4] == max_limenis:
+    if virs[4] == max_limenis or (virs[1] <= 10) or (virs[1] %2 != 0 and virs[1] %3 != 0):
         return virs[4] + virs[2] - virs[3]
     #Ja virsotne nav gala līmenī, tad tiek izveidots saraksts ar visiem bērniem
+    # if (virs[4]) == dzilums:
+    #     return virs[4] + virs[2] - virs[3]
     nakosais_stavoklis = berni(virs)
     #if not isinstance(nakosais_stavoklis, list): pārbauda vai ir saraksts
     #Ja nav saraksts, tad tiek izveidots saraksts
@@ -43,3 +49,4 @@ def minimax(virs):
 #Tiek izprintēta minimax funkcijas atgrieztā vērtība
 print("Jādodas uz virsotni, kuras novērtējums pēc minimax funkcijas ir:")
 print(minimax(atk_virsotnes[0]))
+
