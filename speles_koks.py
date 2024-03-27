@@ -88,12 +88,12 @@ pieci_skaitli = speles_skaitli()
 #Izvēlas nejaušu skaitli no pieci_skaitli saraksta
 skaitlis = random.sample(pieci_skaitli, 1)
 #Izvada izvēlēto skaitli
-print("Spēles skaitlis ir:", skaitlis[0])
+print("Spēles skaitlis ir:", 2519424)
 
 #Pievieno pirmo virsotni
-sp.pievienot_virsotni(Virsotne("A1", skaitlis[0], 0, 0, 1))
+sp.pievienot_virsotni(Virsotne("A1", 2519424, 0, 0, 1))
 #Pievieno pirmo virsotni sarakstam
-gen_virsotnes.append(["A1", skaitlis[0], 0, 0, 1])
+gen_virsotnes.append(["A1", 2519424, 0, 0, 1])
 #Šis mainīgais skaita virsotnes. Sākas ar 2, tāpēc ka pirmā virsotne jau ir pievienota
 j=2
 #Kamēr virsotņu saraksts nav tukšs, tad tiek veikti gājieni

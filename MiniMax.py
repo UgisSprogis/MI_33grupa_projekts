@@ -2,6 +2,10 @@ from speles_koks import *
 
 #Tiek noteikts maksimālais līmenis
 max_limenis = sp.virsotnes[len(sp.virsotnes)-1].limenis
+if max_limenis % 2 == 0:
+    puslimenis = max_limenis / 2
+else:
+    puslimenis = (max_limenis + 1) / 2
 #Tiek izveidots saraksts ar visām virsotnēm
 atk_virsotnes=[]
 for x in sp.virsotnes:
@@ -21,11 +25,13 @@ def berni(pasreizeja_virsotne):
 # Funkcijas paraugs ir ņemts pēc grāmatas piemēra
 #Coppin B. (2004). Artificial Intelligence Illuminated. Jones and Bartlett Publishers.
 # 150lpp.
-def minimax(virs):
+def minimax(virs,dzilums):
     #Ja virsotne ir gala līmenī, tad tiek atgriezta novērtējuma vērtība
     if virs[4] == max_limenis:
         return virs[4] + virs[2] - virs[3]
     #Ja virsotne nav gala līmenī, tad tiek izveidots saraksts ar visiem bērniem
+    if (virs[4]) == dzilums:
+        return virs[4] + virs[2] - virs[3]
     nakosais_stavoklis = berni(virs)
     #if not isinstance(nakosais_stavoklis, list): pārbauda vai ir saraksts
     #Ja nav saraksts, tad tiek izveidots saraksts
@@ -34,12 +40,12 @@ def minimax(virs):
     #Ja virsotnes līnenis ir pāra skaitlis, tad tiek izvēlēts minimizēšanas algoritms no minimax funkcijas
     if (virs[4] % 2) == 0:
         #Tiek rekursīvi atgriezta minimālā vērtība no visiem bērniem
-        return min(minimax(stavoklis) for stavoklis in nakosais_stavoklis)
+        return min(minimax(stavoklis,dzilums) for stavoklis in nakosais_stavoklis)
     #Ja virsotnes līnenis ir nepāra skaitlis, tad tiek izvēlēts maksimizēšanas algoritms no minimax funkcijas
     elif (virs[4] % 2) == 1:
         #Tiek rekursīvi atgriezta maksimālā vērtība no visiem bērniem
-        return max(minimax(stavoklis) for stavoklis in nakosais_stavoklis)
+        return max(minimax(stavoklis,dzilums) for stavoklis in nakosais_stavoklis)
 
 #Tiek izprintēta minimax funkcijas atgrieztā vērtība
 print("Jādodas uz virsotni, kuras novērtējums pēc minimax funkcijas ir:")
-print(minimax(atk_virsotnes[0]))
+print(minimax(atk_virsotnes[0],puslimenis))
