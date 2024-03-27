@@ -257,8 +257,8 @@ class Intervals(tk.Frame):
     def __init__(self, parent, controller): 
         tk.Frame.__init__(self, parent)
         self.skailtlis_status = False
-        Frame.columnconfigure(self, 0, weight=3)
-        Frame.columnconfigure(self, 1, weight=2)
+        Frame.columnconfigure(self, 0, weight=1)
+        Frame.columnconfigure(self, 1, weight=5)
         Frame.columnconfigure(self, 2, weight=2)
         
         Frame.rowconfigure(self, 0, weight=1)
@@ -282,8 +282,18 @@ class Intervals(tk.Frame):
         self.to_entry.grid(row=2, column=1, sticky='w')
 
 
-        poga_turpinat = Button(self, text = 'mainīt', bd=0, borderwidth=0, width=10, background='white', font=font.Font(family='Arial', size=18, weight="bold"))
+        poga_turpinat = Button(self, text = 'mainīt', bd=0, borderwidth=0, width=10, background='white', command = 
+                lambda: mainit(), font=font.Font(family='Arial', size=18, weight="bold"))
         poga_turpinat.grid( row=4, padx=25, column=0, columnspan=5, sticky='n')
+
+        poga_turpinat = Button(self, text = '<<<<<<<', bd=0, borderwidth=0, width=10, background='white', command = 
+                lambda: controller.show_frame(Skaitli), font=font.Font(family='Arial', size=18, weight="bold"))
+        poga_turpinat.grid( row=5, column=0, padx=5, pady=5, sticky='sw')
+
+
+        def mainit():
+            self.from_entry.delete(0, 'end')
+            self.to_entry.delete(0, 'end')
 
 
 
