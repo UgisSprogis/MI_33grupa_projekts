@@ -231,7 +231,8 @@ class Skaitli(tk.Frame):
         def mainit_krasu_skaitlis(skaitlis):
             self.skailtlis_status = True
             skaitlis_buttons = [skaitlis1, skaitlis2, skaitlis3, skaitlis4, skaitlis5]
-    
+
+            #cikls ģenerēts ar chat GPT
             for index, button in enumerate(skaitlis_buttons):
                 button.configure(background='green' if index + 1 == int(skaitlis[-1]) else 'white')
         
