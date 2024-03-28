@@ -28,12 +28,12 @@ def pirmais_gajiens():
     global sacejs
     sacejs = input("izvēlieties, kurš sāks pirmais. Ievadiet 1, lai spēli sāktu dators vai 2, lai spēli sāktu cilvēks\n1. dators\n2. cilvēks\n")
     if sacejs == "1":
-        spele("dators", atk_virsotnes[0],False)
+        spele_minimax("dators", atk_virsotnes[0],False)
     elif sacejs == "2":
-        spele("cilvēks", atk_virsotnes[0],False)
+        spele_minimax("cilvēks", atk_virsotnes[0],False)
     
 
-def spele(kurs_sak, virsotne,gen):
+def spele_minimax(kurs_sak, virsotne,gen):
     print(f"{kurs_sak} iet un spēles skaitlis ir {str(virsotne[1])}")
     if (virsotne[1] %2 != 0 and virsotne[1] %3 !=0) or virsotne[1] <= 10:
         rezultats(virsotne)
@@ -67,27 +67,27 @@ def spele(kurs_sak, virsotne,gen):
                         datora_izvele = nakosais_gajiens[1]
                         datora_dalitajs = virsotne[1]/datora_izvele[1]
                         print("Dators izvēlējās dalīt ar: ", datora_dalitajs)
-                        spele("cilvēks", nakosais_gajiens[0],gen)
+                        spele_minimax("cilvēks", nakosais_gajiens[0],gen)
                     else:
                         datora_izvele = nakosais_gajiens[0]
                         datora_dalitajs = virsotne[1]/datora_izvele[1]
                         print("Dators izvēlējās dalīt ar: ", datora_dalitajs)
-                        spele("cilvēks", nakosais_gajiens[0],gen)
+                        spele_minimax("cilvēks", nakosais_gajiens[0],gen)
                 elif (pirmais == result) and (otrais != result):
                     datora_izvele = nakosais_gajiens[0]
                     datora_dalitajs = virsotne[1]/datora_izvele[1]
                     print("Dators izvēlējās dalīt ar: ", datora_dalitajs)
-                    spele("cilvēks", nakosais_gajiens[0],gen)
+                    spele_minimax("cilvēks", nakosais_gajiens[0],gen)
                 elif (otrais == result) and (pirmais != result):
                     datora_izvele = nakosais_gajiens[1]
                     datora_dalitajs = virsotne[1]/datora_izvele[1]
                     print("Dators izvēlējās dalīt ar: ", datora_dalitajs)
-                    spele("cilvēks", nakosais_gajiens[1],gen)
+                    spele_minimax("cilvēks", nakosais_gajiens[1],gen)
             elif len(nakosais_gajiens) == 1:
                 datora_izvele = nakosais_gajiens
                 datora_dalitajs = virsotne[1]/datora_izvele[0][1]
                 print("Dators izvēlējās dalīt ar: ", datora_dalitajs)
-                spele("cilvēks", nakosais_gajiens[0],gen)
+                spele_minimax("cilvēks", nakosais_gajiens[0],gen)
 
         if kurs_sak == "cilvēks":
             print("Jūsu gājiens")
@@ -147,10 +147,10 @@ def spele(kurs_sak, virsotne,gen):
                                 if (y[1] == result) and ((virsotne[2]+3)==y[2]) and ((virsotne[3])==y[3]):
                                     nakama_virsotne = y
                                     break
-                spele("dators", nakama_virsotne,gen)
+                spele_minimax("dators", nakama_virsotne,gen)
             else:
                 print("Nepareiza gājiena izvēle")
-                spele("cilvēks", virsotne,gen)
+                spele_minimax("cilvēks", virsotne,gen)
 
 
 def sak_spele():

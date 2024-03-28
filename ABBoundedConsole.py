@@ -87,7 +87,7 @@ def rezultati(virsotne):
         print("pirma speletaja punkti:", virsotne[2],"\notra speletaja punkti:", virsotne[3])
                 
 
-def spele(kurs_sak, virsotne, generets):
+def spele_alphabeta(kurs_sak, virsotne, generets):
     print("Pašreizejais skaitlis:",virsotne[1])
     if virsotne[1] %2 != 0 and virsotne[1] %3 or virsotne[1] <= 10:
         rezultati(virsotne)
@@ -118,30 +118,30 @@ def spele(kurs_sak, virsotne, generets):
                         datora_izvele = nakosais_gajiens[0]
                         datora_dalitajs = virsotne[1]/datora_izvele[1]
                         print("Dators izvēlējās sadalit ar:", datora_dalitajs)
-                        spele("human", nakosais_gajiens[0], generets)
+                        spele_alphabeta("human", nakosais_gajiens[0], generets)
                     else:
                         datora_izvele = nakosais_gajiens[1]
                         datora_dalitajs = virsotne[1]/datora_izvele[1]
                         print("Dators izvēlējās sadalit ar:", datora_dalitajs)
-                        spele("human", nakosais_gajiens[1], generets)
+                        spele_alphabeta("human", nakosais_gajiens[1], generets)
                     
                 elif nakosais_gajiens[0][5] == result and nakosais_gajiens[1][5] != result:
                     datora_izvele = nakosais_gajiens[0]
                     datora_dalitajs = virsotne[1]/datora_izvele[1]
                     print("Dators izvēlējās sadalit ar:", datora_dalitajs)
-                    spele("human", nakosais_gajiens[0], generets)
+                    spele_alphabeta("human", nakosais_gajiens[0], generets)
 
                 elif nakosais_gajiens[1][5] == result and nakosais_gajiens[0][5] != result:
                     datora_izvele = nakosais_gajiens[1]
                     datora_dalitajs = virsotne[1]/datora_izvele[1]
                     print("Dators izvēlējās sadalit ar:", datora_dalitajs)
-                    spele("human", nakosais_gajiens[1], generets)
+                    spele_alphabeta("human", nakosais_gajiens[1], generets)
             elif len(nakosais_gajiens) == 1:
                     datora_izvele = nakosais_gajiens
                     print(datora_izvele)
                     datora_dalitajs = virsotne[1]/datora_izvele[0][1]
                     print("Dators izvēlējās sadalit ar:", datora_dalitajs)
-                    spele("human", nakosais_gajiens[0], generets)
+                    spele_alphabeta("human", nakosais_gajiens[0], generets)
 
     
 
@@ -183,7 +183,7 @@ def spele(kurs_sak, virsotne, generets):
                                 if y[1] == result:
                                     nakama_virsotne = y
                                     break
-                spele("pc", nakama_virsotne, generets)
+                spele_alphabeta("pc", nakama_virsotne, generets)
             else:
                 print("Ar jusu skaitli:", cilveka_gajiens, "nevar iegut veselo rezulatatu")
                 rezultati(virsotne)
@@ -196,9 +196,9 @@ def pirmais_gajiens():
     global speles_sakums
     speles_sakums = input("izvēlieties, kurš sāks pirmais. Ievadiet pc, lai dators būtu pirmais vai human, lai jūs\n1. dators\n2. human\n")
     if speles_sakums == "1":
-        spele("pc", atk_virsotnes[0], False)
+        spele_alphabeta("pc", atk_virsotnes[0], False)
     elif speles_sakums == "2":
-        spele("human", atk_virsotnes[0], False)
+        spele_alphabeta("human", atk_virsotnes[0], False)
 
     
 
