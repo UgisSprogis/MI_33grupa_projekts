@@ -5,7 +5,7 @@ max_limenis = sp.virsotnes[len(sp.virsotnes)-1].limenis
 if max_limenis % 2 == 0:
     dzilums = max_limenis / 2
 else:
-    dzilums = (max_limenis + 1) / 2
+    dzilums = (max_limenis / 2 ) + 1
 #Tiek izveidots saraksts ar visām virsotnēm
 atk_virsotnes=[]
 for x in sp.virsotnes:

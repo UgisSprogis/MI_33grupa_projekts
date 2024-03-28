@@ -3,15 +3,18 @@ from speles_koks import *
 from MiniMax import minimax, berni
 from HNF import hnf
 
-atk_virsotnes=[]
-for x in sp.virsotnes:
-    atk_virsotnes.append([x.id,x.skaitlis,x.speletajs1,x.speletajs2,x.limenis])
 
 max_limenis = sp.virsotnes[len(sp.virsotnes)-1].limenis
 if max_limenis % 2 == 0:
     dzilums = max_limenis / 2
 else:
-    dzilums = (max_limenis + 1) / 2
+    dzilums = (max_limenis / 2) + 1
+
+atk_virsotnes=[]
+for x in sp.virsotnes:
+    if x.limenis <= dzilums:
+        atk_virsotnes.append([x.id,x.skaitlis,x.speletajs1,x.speletajs2,x.limenis])
+
 
 def rezultats(virsotne):
     if virsotne[2] == virsotne[3]:
@@ -29,7 +32,6 @@ def pirmais_gajiens():
     elif sacejs == "2":
         spele("cilvēks", atk_virsotnes[0],False)
     
-
 
 def spele(kurs_sak, virsotne,gen):
     print(f"{kurs_sak} iet un spēles skaitlis ir {str(virsotne[1])}")
