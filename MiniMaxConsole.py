@@ -20,13 +20,13 @@ def rezultats(virsotne):
     if virsotne[2] == virsotne[3]:
         print(f"Rezultāts ir neizšķirts {virsotne[2]}:{virsotne[3]}")
     elif virsotne[2] > virsotne[3]:
-        print(f"Uzvar pirmais speletajs {virsotne[2]}:{virsotne[3]}")
+        print(f"Uzvar pirmais spēlētājs {virsotne[2]}:{virsotne[3]}")
     elif virsotne[2] < virsotne[3]:
-        print(f"Uzvar otrais speletajs {virsotne[2]}:{virsotne[3]}")
+        print(f"Uzvar otrais spēlētājs {virsotne[2]}:{virsotne[3]}")
 
 def pirmais_gajiens():
     global sacejs
-    sacejs = input("izvēlieties, kurš sāks pirmais. Ievadiet pc, lai dators būtu pirmais vai human, lai jūs\n1. dators\n2. human\n")
+    sacejs = input("izvēlieties, kurš sāks pirmais. Ievadiet 1, lai spēli sāktu dators vai 2, lai spēli sāktu cilvēks\n1. dators\n2. cilvēks\n")
     if sacejs == "1":
         spele("dators", atk_virsotnes[0],False)
     elif sacejs == "2":
@@ -41,8 +41,13 @@ def spele(kurs_sak, virsotne,gen):
     else:
         if kurs_sak == "dators":
             print("Dators domā...")
-            result = minimax(virsotne,gen)
             nakosais_gajiens = berni(virsotne)
+            if virsotne[4] == dzilums:
+                gen = True
+                result = minimax(virsotne,gen)
+            else:
+                gen = False
+                result = minimax(virsotne,gen)
             if nakosais_gajiens == virsotne:
                 for x in sp.virsotnes:
                     if x.limenis > dzilums:
@@ -146,12 +151,12 @@ def spele(kurs_sak, virsotne,gen):
                                     break
                 spele("dators", nakama_virsotne,gen)
             else:
-                print("Nepareizs gajiens")
+                print("Nepareiza gājiena izvēle")
                 spele("cilvēks", virsotne,gen)
 
 
 def sak_spele():
-    speles_sakums = input("Ievadiet start, lai sāktu spēli, vai exit, lai izietu\n1. Start\n2. Exit\n")
+    speles_sakums = input("Ievadiet 1, lai sāktu spēli un 2 lai beigtu spēli\n1. Sākt\n2. Beigt\n")
     if speles_sakums == "1":
         pirmais_gajiens()
 
