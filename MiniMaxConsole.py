@@ -22,11 +22,13 @@ def rezultats(virsotne):
         print(f"Uzvar otrais speletajs {virsotne[2]}:{virsotne[3]}")
 
 def pirmais_gajiens():
-    speles_sakums = input("izvēlieties, kurš sāks pirmais. Ievadiet pc, lai dators būtu pirmais vai human, lai jūs\n1. dators\n2. human\n")
-    if speles_sakums == "1":
+    global sacejs
+    sacejs = input("izvēlieties, kurš sāks pirmais. Ievadiet pc, lai dators būtu pirmais vai human, lai jūs\n1. dators\n2. human\n")
+    if sacejs == "1":
         spele("dators", atk_virsotnes[0],False)
-    elif speles_sakums == "2":
+    elif sacejs == "2":
         spele("cilvēks", atk_virsotnes[0],False)
+    
 
 
 def spele(kurs_sak, virsotne,gen):
@@ -88,31 +90,58 @@ def spele(kurs_sak, virsotne,gen):
                 result = virsotne[1] / int(cilveka_gajiens)
                 a = 2
                 b = 3
-                if cilveka_gajiens == "2":
-                    for x in atk_virsotnes:
-                        if (x[1] == result) and ((virsotne[2])==x[2]) and ((virsotne[3]+a)==x[3]):
-                            nakama_virsotne = x
-                            break
-                else:
-                    for x in atk_virsotnes:
-                        if (x[1] == result) and ((virsotne[2]+b)==x[2]) and ((virsotne[3])==x[3]):
-                            nakama_virsotne = x
-                            break
-                if nakama_virsotne == 0:
-                    for x in sp.virsotnes:
-                        if x.limenis > dzilums:
-                            gen = True
-                            atk_virsotnes.append([x.id,x.skaitlis,x.speletajs1,x.speletajs2,x.limenis])
+                if sacejs == "1":
                     if cilveka_gajiens == "2":
-                        for y in atk_virsotnes:
-                            if (y[1] == result) and ((virsotne[2])==y[2]) and ((virsotne[3]+a)==y[3]):
-                                nakama_virsotne = y
+                        for x in atk_virsotnes:
+                            if (x[1] == result) and ((virsotne[2]+a)==x[2]) and ((virsotne[3])==x[3]):
+                                nakama_virsotne = x
                                 break
                     else:
-                        for y in atk_virsotnes:
-                            if (y[1] == result) and ((virsotne[2]+b)==y[2]) and ((virsotne[3])==y[3]):
-                                nakama_virsotne = y
+                        for x in atk_virsotnes:
+                            if (x[1] == result) and ((virsotne[2])==x[2]) and ((virsotne[3]+b)==x[3]):
+                                nakama_virsotne = x
                                 break
+                    if nakama_virsotne == 0:
+                        for x in sp.virsotnes:
+                            if x.limenis > dzilums:
+                                gen = True
+                                atk_virsotnes.append([x.id,x.skaitlis,x.speletajs1,x.speletajs2,x.limenis])
+                        if cilveka_gajiens == "2":
+                            for y in atk_virsotnes:
+                                if (y[1] == result) and ((virsotne[2]+a)==y[2]) and ((virsotne[3])==y[3]):
+                                    nakama_virsotne = y
+                                    break
+                        else:
+                            for y in atk_virsotnes:
+                                if (y[1] == result) and ((virsotne[2])==y[2]) and ((virsotne[3]+b)==y[3]):
+                                    nakama_virsotne = y
+                                    break
+                else:
+                    if cilveka_gajiens == "2":
+                        for x in atk_virsotnes:
+                            if (x[1] == result) and ((virsotne[2])==x[2]) and ((virsotne[3]+a)==x[3]):
+                                nakama_virsotne = x
+                                break
+                    else:
+                        for x in atk_virsotnes:
+                            if (x[1] == result) and ((virsotne[2]+b)==x[2]) and ((virsotne[3])==x[3]):
+                                nakama_virsotne = x
+                                break
+                    if nakama_virsotne == 0:
+                        for x in sp.virsotnes:
+                            if x.limenis > dzilums:
+                                gen = True
+                                atk_virsotnes.append([x.id,x.skaitlis,x.speletajs1,x.speletajs2,x.limenis])
+                        if cilveka_gajiens == "2":
+                            for y in atk_virsotnes:
+                                if (y[1] == result) and ((virsotne[2])==y[2]) and ((virsotne[3]+a)==y[3]):
+                                    nakama_virsotne = y
+                                    break
+                        else:
+                            for y in atk_virsotnes:
+                                if (y[1] == result) and ((virsotne[2]+b)==y[2]) and ((virsotne[3])==y[3]):
+                                    nakama_virsotne = y
+                                    break
                 spele("dators", nakama_virsotne,gen)
             else:
                 print("Nepareizs gajiens")
