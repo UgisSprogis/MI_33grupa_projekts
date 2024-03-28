@@ -5,12 +5,12 @@ max_limenis = sp.virsotnes[len(sp.virsotnes)-1].limenis
 if max_limenis % 2 == 0:
     dzilums = max_limenis / 2
 else:
-    dzilums = (max_limenis / 2 ) + 1
+    dzilums = int(max_limenis / 2 ) + 1
 #Tiek izveidots saraksts ar visām virsotnēm
 atk_virsotnes=[]
+
 for x in sp.virsotnes:
-    if x.limenis <= dzilums:
-        atk_virsotnes.append([x.id,x.skaitlis,x.speletajs1,x.speletajs2,x.limenis])
+    atk_virsotnes.append([x.id,x.skaitlis,x.speletajs1,x.speletajs2,x.limenis])
 #Tiek izveidota funkcija, kas atgriež visus bērnus no konkrētas virsotnes
 def berni(pasreizeja_virsotne):
     berni = []
@@ -30,6 +30,8 @@ def berni(pasreizeja_virsotne):
 # 150lpp.
 def minimax(virs,gen):
     #Ja virsotne ir gala līmenī, tad tiek atgriezta novērtējuma vērtība
+    if virs[4] > dzilums:
+        gen = True
     if gen:
         if virs[4] == max_limenis or (virs[1] <= 10) or (virs[1] %2 != 0 and virs[1] %3 != 0):
             return virs[4] + virs[2] - virs[3]

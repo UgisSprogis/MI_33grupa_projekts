@@ -8,7 +8,7 @@ max_limenis = sp.virsotnes[len(sp.virsotnes)-1].limenis
 if max_limenis % 2 == 0:
     dzilums = max_limenis / 2
 else:
-    dzilums = (max_limenis / 2) + 1
+    dzilums = int(max_limenis / 2) + 1
 
 atk_virsotnes=[]
 for x in sp.virsotnes:
