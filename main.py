@@ -387,3 +387,5 @@ def sak_spele():
     speles_sakums = input("Ievadiet 1, lai sāktu spēli un 2 lai beigtu spēli\n1. Sākt\n2. Beigt\n")
     if speles_sakums == "1":
         izvelies_algoritmu()
+
+sak_spele()
