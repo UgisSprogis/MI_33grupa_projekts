@@ -186,7 +186,8 @@ def spele_alphabeta(kurs_sak, virsotne, generets):
                 spele_alphabeta("pc", nakama_virsotne, generets)
             else:
                 print("Ar jusu skaitli:", cilveka_gajiens, "nevar iegut veselo rezulatatu")
-                rezultati(virsotne)
+                spele("human", virsotne, generets)
+
 
 
 
