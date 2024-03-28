@@ -98,17 +98,18 @@ def spele(kurs_sak, virsotne, generets):
             print("Datora gajiens:")
             result = alphabeta(virsotne,float('-inf'), float('inf'), generets)
             nakosais_gajiens = berni(virsotne)
-            if nakosais_gajiens == virsotne:
+            if nakosais_gajiens[0] == virsotne:
                 for x in sp.virsotnes:
                         if x.limenis > half_limenis:
                             print("Tika uzģenerēta otrā daļa virsotnēm")
                             generets = True
                             atk_virsotnes.append([x.id,x.skaitlis,x.speletajs1,x.speletajs2,x.limenis])
                 for y in atk_virsotnes:
-                    if y[4] > half_limenis:
+                    if y[4] >= half_limenis:
                         alphabeta(y,float('-inf'), float('inf'), generets)
                 nakosais_gajiens = berni(virsotne)
-            print(nakosais_gajiens)
+                result = alphabeta(virsotne,float('-inf'), float('inf'), generets)
+            print("Nākošais gājiens: " + str(nakosais_gajiens))
             if len(nakosais_gajiens) == 2:
                 if nakosais_gajiens[0][5] == nakosais_gajiens[1][5] == result:
                     pirma_virsotne = nakosais_gajiens[0][4] + nakosais_gajiens[0][2] - nakosais_gajiens[0][3]
@@ -186,6 +187,5 @@ def sak_spele():
     speles_sakums = input("Ievadiet start, lai sāktu spēli, vai exit, lai izietu\n1. Start\n2. Exit\n")
     if speles_sakums == "1":
         pirmais_gajiens()
-
 
 sak_spele()
