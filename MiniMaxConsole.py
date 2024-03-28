@@ -95,17 +95,15 @@ def spele(kurs_sak, virsotne,gen):
             cilveka_gajiens = input("Ievadiet skaitli, ar kuru vēlaties dalīt pašreizējo skaitli: 2 vai 3\n")
             if ((virsotne[1] % int(cilveka_gajiens)) == 0) and ((cilveka_gajiens == "2") or (cilveka_gajiens == "3")):
                 result = virsotne[1] / int(cilveka_gajiens)
-                a = 2
-                b = 3
                 if sacejs == "1":
                     if cilveka_gajiens == "2":
                         for x in atk_virsotnes:
-                            if (x[1] == result) and ((virsotne[2]+a)==x[2]) and ((virsotne[3])==x[3]):
+                            if (x[1] == result) and ((virsotne[2]+2)==x[2]) and ((virsotne[3])==x[3]):
                                 nakama_virsotne = x
                                 break
                     else:
                         for x in atk_virsotnes:
-                            if (x[1] == result) and ((virsotne[2])==x[2]) and ((virsotne[3]+b)==x[3]):
+                            if (x[1] == result) and ((virsotne[2])==x[2]) and ((virsotne[3]+3)==x[3]):
                                 nakama_virsotne = x
                                 break
                     if nakama_virsotne == 0:
@@ -115,23 +113,23 @@ def spele(kurs_sak, virsotne,gen):
                                 atk_virsotnes.append([x.id,x.skaitlis,x.speletajs1,x.speletajs2,x.limenis])
                         if cilveka_gajiens == "2":
                             for y in atk_virsotnes:
-                                if (y[1] == result) and ((virsotne[2]+a)==y[2]) and ((virsotne[3])==y[3]):
+                                if (y[1] == result) and ((virsotne[2]+2)==y[2]) and ((virsotne[3])==y[3]):
                                     nakama_virsotne = y
                                     break
                         else:
                             for y in atk_virsotnes:
-                                if (y[1] == result) and ((virsotne[2])==y[2]) and ((virsotne[3]+b)==y[3]):
+                                if (y[1] == result) and ((virsotne[2])==y[2]) and ((virsotne[3]+3)==y[3]):
                                     nakama_virsotne = y
                                     break
                 else:
                     if cilveka_gajiens == "2":
                         for x in atk_virsotnes:
-                            if (x[1] == result) and ((virsotne[2])==x[2]) and ((virsotne[3]+a)==x[3]):
+                            if (x[1] == result) and ((virsotne[2])==x[2]) and ((virsotne[3]+2)==x[3]):
                                 nakama_virsotne = x
                                 break
                     else:
                         for x in atk_virsotnes:
-                            if (x[1] == result) and ((virsotne[2]+b)==x[2]) and ((virsotne[3])==x[3]):
+                            if (x[1] == result) and ((virsotne[2]+3)==x[2]) and ((virsotne[3])==x[3]):
                                 nakama_virsotne = x
                                 break
                     if nakama_virsotne == 0:
@@ -141,12 +139,12 @@ def spele(kurs_sak, virsotne,gen):
                                 atk_virsotnes.append([x.id,x.skaitlis,x.speletajs1,x.speletajs2,x.limenis])
                         if cilveka_gajiens == "2":
                             for y in atk_virsotnes:
-                                if (y[1] == result) and ((virsotne[2])==y[2]) and ((virsotne[3]+a)==y[3]):
+                                if (y[1] == result) and ((virsotne[2])==y[2]) and ((virsotne[3]+2)==y[3]):
                                     nakama_virsotne = y
                                     break
                         else:
                             for y in atk_virsotnes:
-                                if (y[1] == result) and ((virsotne[2]+b)==y[2]) and ((virsotne[3])==y[3]):
+                                if (y[1] == result) and ((virsotne[2]+3)==y[2]) and ((virsotne[3])==y[3]):
                                     nakama_virsotne = y
                                     break
                 spele("dators", nakama_virsotne,gen)

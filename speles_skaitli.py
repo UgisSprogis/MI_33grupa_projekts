@@ -19,7 +19,6 @@ def speles_skaitli():
 def skaitla_izvele():
     pieci_skaitli = speles_skaitli()
     print("Spēles skaitļi ir:")
-    l = 1
     for x in pieci_skaitli:
         print(f"{pieci_skaitli.index(x)+1}. ", x)
     izveletais_skaitlis = int(input("Izvēlieties skaitli no spēles skaitļiem: "))-1
