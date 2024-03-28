@@ -8,7 +8,6 @@ else:
     dzilums = int(max_limenis / 2 ) + 1
 #Tiek izveidots saraksts ar visām virsotnēm
 atk_virsotnes=[]
-
 for x in sp.virsotnes:
     atk_virsotnes.append([x.id,x.skaitlis,x.speletajs1,x.speletajs2,x.limenis])
 #Tiek izveidota funkcija, kas atgriež visus bērnus no konkrētas virsotnes
@@ -52,4 +51,3 @@ def minimax(virs,gen):
     elif (virs[4] % 2) == 1:
         #Tiek rekursīvi atgriezta maksimālā vērtība no visiem bērniem
         return max(minimax(stavoklis,gen) for stavoklis in nakosais_stavoklis)
-
