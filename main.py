@@ -391,7 +391,6 @@ def spele_alphabeta(kurs_sak, virsotne, generets):
         return
     else:
         if kurs_sak == "dators":
-            print(virsotne)
             print("Datora gajiens:")
             result = alphabeta(virsotne,float('-inf'), float('inf'), generets)
             nakosais_gajiens = berni(virsotne)
@@ -443,7 +442,6 @@ def spele_alphabeta(kurs_sak, virsotne, generets):
                     spele_alphabeta("cilvēks", nakosais_gajiens[1], generets)
             elif len(nakosais_gajiens) == 1:
                     datora_izvele = nakosais_gajiens
-                    print(datora_izvele)
                     datora_dalitajs = virsotne[1]/datora_izvele[0][1]
                     print("Dators izvēlējās sadalit ar:", datora_dalitajs)
                     spele_alphabeta("cilvēks", nakosais_gajiens[0], generets)
