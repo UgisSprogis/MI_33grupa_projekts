@@ -7,7 +7,6 @@ print("Half limenis ir: " + str(half_limenis))
 #Tiek izveidots saraksts ar visām virsotnēm
 atk_virsotnes=[]
 for x in sp.virsotnes:
-    if x.limenis <= half_limenis:
         atk_virsotnes.append([x.id,x.skaitlis,x.speletajs1,x.speletajs2,x.limenis])
 #Tiek izveidota funkcija, kas atgriež visus bērnus no konkrētas virsotnes
 def berni(pasreizeja_virsotne):
@@ -24,6 +23,8 @@ def berni(pasreizeja_virsotne):
 
 def alphabeta(virs, alpha, beta, generets):
     #Ja virsotne ir gala līmenī, tad tiek atgriezta novērtējuma vērtība
+    if virs[4] > half_limenis:
+        generets = True
     if not generets:
         if virs[4] == half_limenis or (virs[1] <= 10) or (virs[1] %2 != 0 and virs[1] %3 != 0):
             return virs[4] + virs[2] - virs[3]
@@ -98,6 +99,18 @@ def spele_alphabeta(kurs_sak, virsotne, generets):
             print("Datora gajiens:")
             result = alphabeta(virsotne,float('-inf'), float('inf'), generets)
             nakosais_gajiens = berni(virsotne)
+            if virsotne[4] == half_limenis:
+                generets = True
+                result = alphabeta(virsotne,float('-inf'), float('inf'), generets)
+            else:
+                generets = False
+                result = alphabeta(virsotne,float('-inf'), float('inf'), generets)
+            if virsotne[4] == half_limenis:
+                generets = True
+                result = alphabeta(virsotne,float('-inf'), float('inf'), generets)
+            else:
+                generets = False
+                result = alphabeta(virsotne,float('-inf'), float('inf'), generets)
             if nakosais_gajiens[0] == virsotne:
                 for x in sp.virsotnes:
                         if x.limenis > half_limenis:
@@ -162,6 +175,21 @@ def spele_alphabeta(kurs_sak, virsotne, generets):
                             if (x[1] == result) and ((virsotne[2]+3)==x[2]) and ((virsotne[3])==x[3]):
                                 nakama_virsotne = x
                                 break
+                    if nakama_virsotne == 0:
+                        for x in sp.virsotnes:
+                            if x.limenis > half_limenis:
+                                generets = True
+                                atk_virsotnes.append([x.id,x.skaitlis,x.speletajs1,x.speletajs2,x.limenis])
+                        if cilveka_gajiens == "2":
+                            for y in atk_virsotnes:
+                                if (y[1] == result) and ((virsotne[2]+2)==y[2]) and ((virsotne[3])==y[3]):
+                                    nakama_virsotne = y
+                                    break
+                        else:
+                            for y in atk_virsotnes:
+                                if (y[1] == result) and ((virsotne[2])==y[2]) and ((virsotne[3]+3)==y[3]):
+                                    nakama_virsotne = y
+                                    break
                 else:
                     if cilveka_gajiens == "2":
                         for x in atk_virsotnes:
@@ -174,19 +202,24 @@ def spele_alphabeta(kurs_sak, virsotne, generets):
                                 nakama_virsotne = x
                                 break
                 if nakama_virsotne == 0:
-                    for x in sp.virsotnes:
-                        if x.limenis > half_limenis:
-                            print("Tika uzģenerēta otrā daļa virsotnēm")
-                            generets = True
-                            atk_virsotnes.append([x.id,x.skaitlis,x.speletajs1,x.speletajs2,x.limenis])
+                        for x in sp.virsotnes:
+                            if x.limenis > half_limenis:
+                                generets = True
+                                atk_virsotnes.append([x.id,x.skaitlis,x.speletajs1,x.speletajs2,x.limenis])
+                        if cilveka_gajiens == "2":
                             for y in atk_virsotnes:
-                                if y[1] == result:
+                                if (y[1] == result) and ((virsotne[2])==y[2]) and ((virsotne[3]+2)==y[3]):
+                                    nakama_virsotne = y
+                                    break
+                        else:
+                            for y in atk_virsotnes:
+                                if (y[1] == result) and ((virsotne[2]+3)==y[2]) and ((virsotne[3])==y[3]):
                                     nakama_virsotne = y
                                     break
                 spele_alphabeta("pc", nakama_virsotne, generets)
             else:
                 print("Ar jusu skaitli:", cilveka_gajiens, "nevar iegut veselo rezulatatu")
-                spele("human", virsotne, generets)
+                spele_alphabeta("human", virsotne, generets)
 
 
 
