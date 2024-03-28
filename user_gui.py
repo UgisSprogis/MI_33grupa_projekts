@@ -9,7 +9,6 @@ from tkinter import messagebox
 # https://www.geeksforgeeks.org/tkinter-application-to-switch-between-different-page-frames/
 
 
-
 class Programma(customtkinter.CTk):
     def __init__(self):
         super().__init__()
@@ -33,7 +32,7 @@ class tkinterApp(tk.Tk):
         self.title("MI 33 praktiskais darbs")
         self.frames = {}
         # Katras lapas rāmja piešķiršana
-        for F in (Sakumlapa, Izvelne):
+        for F in (Sakumlapa, Izvelne, Skaitli, Intervals):
             frame = F(container, self)
             self.frames[F] = frame 
             frame.grid(row = 0, column = 0, sticky ="nsew")
@@ -127,11 +126,11 @@ class Izvelne(tk.Frame):
         poga_alfabeta.grid( row=3, padx=25, column=0, columnspan=2, sticky='ne')
 
         poga_turpinat = Button(self, text = '>>>>>>>', bd=0, borderwidth=0, width=10, background='white', command = 
-                lambda: turpinat(), font=font.Font(family='Arial', size=18, weight="bold"))
+                lambda: turpinat("Skaitli"), font=font.Font(family='Arial', size=18, weight="bold"))
         poga_turpinat.grid( row=4, padx=25, column=0, columnspan=5, sticky='s')
 
         poga_papildus = Button(self, text = "PAPILDUS", bd=0, borderwidth=0, width=10, background='white', command = 
-                lambda: turpinat(), font=font.Font(family='Arial', size=18, weight="bold"))
+                lambda: turpinat("Papildus"), font=font.Font(family='Arial', size=18, weight="bold"))
         poga_papildus.grid( row=5, padx=25, column=0, columnspan=5, sticky='se')
         
         # Funkcija maina krāsu izvēlētā spēlētāja pogai uz zaļu
@@ -156,15 +155,17 @@ class Izvelne(tk.Frame):
         
         # Funkcija, kas pārbauda, vai viens no katra dotā parametra ir izvēlēts un ved uz nākošo lapu
         # Gadījumā, ja nav izvēlēts kāds no nepieciešamajiem parametriem, tiek izvadīta kļūda
-        def turpinat():
-            if not self.algoritms_status:
-                messagebox.showerror('Spēles kļūda', 'Izvēlieties spēles algoritmu.')
+        def turpinat(parametrs):
+            if parametrs == "Skaitli":
+                if not self.algoritms_status:
+                    messagebox.showerror('Spēles kļūda', 'Izvēlieties spēles algoritmu.')
+                elif not self.speletajs_status:
+                    messagebox.showerror('Spēles kļūda', 'Izvēlieties, kurš uzsāks spēli.')
+                else:
+                    controller.show_frame(Skaitli)
                 reset()
-            elif not self.speletajs_status:
-                messagebox.showerror('Spēles kļūda', 'Izvēlieties, kurš uzsāks spēli.')
-                reset()
-            else:
-                controller.show_frame(Sakumlapa)
+            elif parametrs == "Papildus":
+                controller.show_frame(Intervals)
                 reset()
         
         # Funkcija, kas atjauno noklusējuma parametrus, kad logs tiek pamests
@@ -176,7 +177,129 @@ class Izvelne(tk.Frame):
             poga_dators.configure(background='white')
             poga_speletajs.configure(background='white')
 
+
+
+
+class Skaitli(tk.Frame):   
+    def __init__(self, parent, controller): 
+        tk.Frame.__init__(self, parent)
+        self.skailtlis_status = False
+        pieci_skaitli = speles_skaitli()
+        Frame.columnconfigure(self, 0, weight=0)
+        Frame.columnconfigure(self, 1, weight=2)
+        Frame.columnconfigure(self, 2, weight=0)
+        
+        Frame.rowconfigure(self, 0, weight=1)
+        Frame.rowconfigure(self, 1, weight=1)
+        Frame.rowconfigure(self, 2, weight=1)
+        Frame.rowconfigure(self, 3, weight=1)
+        Frame.rowconfigure(self, 4, weight=1)
+      
+        Frame.configure(self, bg='gray')
+        Label(self, text = 'IZVĒLIES SKAITLI', 
+                    font=font.Font(family='Arial', size=26, weight="bold"), background='white').grid(row=0, columnspan=5)
+        skaitlis1 = Button(self, text = pieci_skaitli[0], bd=0, borderwidth=0, width=10, background='white', command = 
+                lambda:mainit_krasu_skaitlis("skaitlis1"), font=font.Font(family='Arial', size=18, weight="bold"))
+        skaitlis1.grid( row=1, column=1, padx=5, pady=5, sticky='n')
+
+        skaitlis2 = Button(self, text = pieci_skaitli[1], bd=0, borderwidth=0, width=10, background='white', command = 
+                lambda:mainit_krasu_skaitlis("skaitlis2"), font=font.Font(family='Arial', size=18, weight="bold"))
+        skaitlis2.grid(row=2, column=1, padx=5, pady=5, sticky='n')
+
+        skaitlis3 = Button(self, text = pieci_skaitli[2], bd=0, borderwidth=0, width=10, background='white', command = 
+                lambda:mainit_krasu_skaitlis("skaitlis3"), font=font.Font(family='Arial', size=18, weight="bold"))
+        skaitlis3.grid( row=3, column=1, padx=5, pady=5, sticky='n')
+
+        skaitlis4 = Button(self, text = pieci_skaitli[3], bd=0, borderwidth=0, width=10, background='white', command = 
+                lambda:mainit_krasu_skaitlis("skaitlis4"), font=font.Font(family='Arial', size=18, weight="bold"))
+        skaitlis4.grid( row=4, column=1, padx=5, pady=5, sticky='n')
+
+        skaitlis5 = Button(self, text = pieci_skaitli[4], bd=0, borderwidth=0, width=10, background='white', command = 
+                lambda:mainit_krasu_skaitlis("skaitlis5"), font=font.Font(family='Arial', size=18, weight="bold"))
+        skaitlis5.grid( row=5, column=1, padx=5, pady=5, sticky='n')
+
+        poga_turpinat = Button(self, text = '>>>>>>>', bd=0, borderwidth=0, width=10, background='white', command = 
+                lambda: turpinat(), font=font.Font(family='Arial', size=18, weight="bold"))
+        poga_turpinat.grid( row=5, column=2, padx=5, pady=5, sticky='se')
+
+        poga_turpinat = Button(self, text = '<<<<<<<', bd=0, borderwidth=0, width=10, background='white', command = 
+                lambda: atpakal(), font=font.Font(family='Arial', size=18, weight="bold"))
+        poga_turpinat.grid( row=5, column=0, padx=5, pady=5, sticky='sw')
+
+
+        
+        def mainit_krasu_skaitlis(skaitlis):
+            self.skailtlis_status = True
+            skaitlis_buttons = [skaitlis1, skaitlis2, skaitlis3, skaitlis4, skaitlis5]
     
+            for index, button in enumerate(skaitlis_buttons):
+                button.configure(background='green' if index + 1 == int(skaitlis[-1]) else 'white')
+        
+        def turpinat():
+            if not self.skailtlis_status:
+                messagebox.showerror('Spēles kļūda', 'Izvēlieties spēles skaitli.')
+                reset()
+            else:
+                controller.show_frame(Intervals)
+                reset()
+        def atpakal():
+            controller.show_frame(Izvelne)
+            reset()
+
+        def reset():
+            self.skailtlis_status = False
+            skaitlis_buttons = [skaitlis1, skaitlis2, skaitlis3, skaitlis4, skaitlis5]
+
+            for index, button in enumerate(skaitlis_buttons):
+                button.configure(background='white')
+
+
+
+class Intervals(tk.Frame):   
+    def __init__(self, parent, controller): 
+        tk.Frame.__init__(self, parent)
+        self.skailtlis_status = False
+        Frame.columnconfigure(self, 0, weight=1)
+        Frame.columnconfigure(self, 1, weight=5)
+        Frame.columnconfigure(self, 2, weight=2)
+        
+        Frame.rowconfigure(self, 0, weight=1)
+        Frame.rowconfigure(self, 1, weight=1)
+        Frame.rowconfigure(self, 2, weight=1)
+        Frame.rowconfigure(self, 3, weight=1)
+        Frame.rowconfigure(self, 4, weight=1)
+      
+        Frame.configure(self, bg='gray')
+
+        Label(self, text = 'MAINĪT SKAITĻU INTERVALU', 
+                    font=font.Font(family='Arial', size=26, weight="bold"), background='white').grid(row=0, columnspan=5)
+        
+
+        tk.Label(self, text='No:', font=font.Font(family='Arial', size=18), background='gray').grid(row=1, column=0, sticky='e')
+        self.from_entry = tk.Entry(self, font=font.Font(family='Arial', size=18))
+        self.from_entry.grid(row=1, column=1, sticky='w')
+
+        tk.Label(self, text='Līdz:', font=font.Font(family='Arial', size=18), background='gray').grid(row=2, column=0, sticky='e')
+        self.to_entry = tk.Entry(self, font=font.Font(family='Arial', size=18))
+        self.to_entry.grid(row=2, column=1, sticky='w')
+
+
+        poga_turpinat = Button(self, text = 'mainīt', bd=0, borderwidth=0, width=10, background='white', command = 
+                lambda: mainit(), font=font.Font(family='Arial', size=18, weight="bold"))
+        poga_turpinat.grid( row=4, padx=25, column=0, columnspan=5, sticky='n')
+
+        poga_turpinat = Button(self, text = '<<<<<<<', bd=0, borderwidth=0, width=10, background='white', command = 
+                lambda: controller.show_frame(Izvelne), font=font.Font(family='Arial', size=18, weight="bold"))
+        poga_turpinat.grid( row=5, column=0, padx=5, pady=5, sticky='sw')
+
+
+        def mainit():
+            self.from_entry.delete(0, 'end')
+            self.to_entry.delete(0, 'end')
+
+
+
+
 
 # Palaišanas kods
 
