@@ -1,6 +1,5 @@
-from heiristiska_funkcija import *
+from main import *
 from tkinter import *
-import customtkinter
 import tkinter.font as font
 import tkinter as tk
 from tkinter import messagebox
@@ -8,15 +7,6 @@ from tkinter import messagebox
 # Pamācība un koda struktūra ņemta no https://www.geeksforgeeks.org/python-gui-tkinter/
 # https://www.geeksforgeeks.org/tkinter-application-to-switch-between-different-page-frames/
 
-
-class Programma(customtkinter.CTk):
-    def __init__(self):
-        super().__init__()
-        self.geometry("640x480")
-        self.title("MI 33 praktiskais darbs")
-        self.grid_rowconfigure(0, weight=1)
-        self.grid_columnconfigure(0, weight=1)
-        
 
 class tkinterApp(tk.Tk):
     # tkinterApp klases inicializēšana
@@ -28,15 +18,24 @@ class tkinterApp(tk.Tk):
         container.pack(side = "top", fill = "both", expand = True)
         container.grid_rowconfigure(0, weight = 1)
         container.grid_columnconfigure(0, weight = 1)
-        self.geometry("640x480")
         self.title("MI 33 praktiskais darbs")
+
+        # Loga pozicionēšanas kods ekrāna centrā, kods ņemts no
+        # https://coderslegacy.com/tkinter-center-window-on-screen/
+        screen_width = self.winfo_screenwidth()
+        screen_height = self.winfo_screenheight()
+        x = (screen_width/2) - (640/2)
+        y = (screen_height/2) - (480/2)
+        self.geometry('%dx%d+%d+%d' % (640, 480, x, y))
+
         self.frames = {}
         # Katras lapas rāmja piešķiršana
-        for F in (Sakumlapa, Izvelne, Skaitli, Intervals):
+        for F in (Sakumlapa, Izvelne, Skaitli, Intervals, Beigas):
             frame = F(container, self)
             self.frames[F] = frame 
             frame.grid(row = 0, column = 0, sticky ="nsew")
         self.show_frame(Sakumlapa)
+        self.mainloop()
 
     # Funkcija, kas grafiski izvala lapu
     def show_frame(self, cont):
@@ -157,7 +156,9 @@ class Izvelne(tk.Frame):
         # Gadījumā, ja nav izvēlēts kāds no nepieciešamajiem parametriem, tiek izvadīta kļūda
         def turpinat(parametrs):
             if parametrs == "Skaitli":
-                if not self.algoritms_status:
+                if not self.algoritms_status and not self.speletajs_status:
+                    messagebox.showerror('Spēles kļūda', 'Izvēlieties spēles algoritmu un kurš uzsāks spēli.')
+                elif not self.algoritms_status:
                     messagebox.showerror('Spēles kļūda', 'Izvēlieties spēles algoritmu.')
                 elif not self.speletajs_status:
                     messagebox.showerror('Spēles kļūda', 'Izvēlieties, kurš uzsāks spēli.')
@@ -180,7 +181,7 @@ class Izvelne(tk.Frame):
 
 
 
-class Skaitli(tk.Frame):   
+class Skaitli(tk.Frame):
     def __init__(self, parent, controller): 
         tk.Frame.__init__(self, parent)
         self.skailtlis_status = False
@@ -251,7 +252,7 @@ class Skaitli(tk.Frame):
             self.skailtlis_status = False
             skaitlis_buttons = [skaitlis1, skaitlis2, skaitlis3, skaitlis4, skaitlis5]
 
-            for index, button in enumerate(skaitlis_buttons):
+            for button in enumerate(skaitlis_buttons):
                 button.configure(background='white')
 
 
@@ -285,25 +286,55 @@ class Intervals(tk.Frame):
         self.to_entry.grid(row=2, column=1, sticky='w')
 
 
-        poga_turpinat = Button(self, text = 'mainīt', bd=0, borderwidth=0, width=10, background='white', command = 
+        poga_manit = Button(self, text = 'mainīt', bd=0, borderwidth=0, width=10, background='white', command = 
                 lambda: mainit(), font=font.Font(family='Arial', size=18, weight="bold"))
-        poga_turpinat.grid( row=4, padx=25, column=0, columnspan=5, sticky='n')
+        poga_manit.grid( row=4, padx=25, column=0, columnspan=5, sticky='n')
 
-        poga_turpinat = Button(self, text = '<<<<<<<', bd=0, borderwidth=0, width=10, background='white', command = 
+        poga_manit = Button(self, text = '<<<<<<<', bd=0, borderwidth=0, width=10, background='white', command = 
                 lambda: controller.show_frame(Izvelne), font=font.Font(family='Arial', size=18, weight="bold"))
-        poga_turpinat.grid( row=5, column=0, padx=5, pady=5, sticky='sw')
+        poga_manit.grid( row=5, column=0, padx=5, pady=5, sticky='sw')
 
 
         def mainit():
             self.from_entry.delete(0, 'end')
             self.to_entry.delete(0, 'end')
 
+class Beigas(tk.Frame):
+    # Beigas, kur tiek atspoguļota uzvara vai zaude
+    # Satur pogu "Iziet" un "Jauna spēle"
+    def __init__(self, parent, controller):
+        # Rāmja inicializācija un loga sadalījums režģos
+        tk.Frame.__init__(self, parent)
+        Sakumlapa.configure(self, bg='gray')
 
+        ############################
+        teksts_small = "APSVEICAM!"# Šo parametrus ir jāiegūst no main.py atkarībā
+        teksts_big = "TU UZVARĒJI!"# vai spēlētājs pēc spēles ir zaudējis, vai uzvarējis
+        ############################
+
+        Frame.columnconfigure(self, 0, weight=1)
+        Frame.columnconfigure(self, 1, weight=1)
+        Frame.columnconfigure(self, 2, weight=1)
+        Frame.columnconfigure(self, 3, weight=1)
+        Frame.columnconfigure(self, 4, weight=1)
+        Frame.rowconfigure(self, 0, weight=3)
+        Frame.rowconfigure(self, 1, weight=3)
+        Frame.rowconfigure(self, 2, weight=1)
+        Frame.rowconfigure(self, 3, weight=1)
+        Label(self, text = teksts_small, 
+                        font=font.Font(family='Arial', size=18), background='white', width=26).grid( row=0, columnspan=5, sticky='s', )
+        Label(self, text = teksts_big, 
+                        font=font.Font(family='Arial', size=36), background='white', width=13).grid( row=1, columnspan=5, sticky='n')
+        poga_iziet = Button(self, text = "IZIET", bd=0, borderwidth=0, width=10, background='white', command = 
+                lambda:app.destroy(), font=font.Font(family='Arial', size=18, weight="bold"))
+        poga_iziet.grid( row=3, column=1, padx=5, pady=5, sticky='n')
+
+        poga_jaunaspele = Button(self, text = "JAUNA SPĒLE", bd=0, borderwidth=0, width=13, background='white', command = 
+                lambda:controller.show_frame(Izvelne), font=font.Font(family='Arial', size=18, weight="bold"))
+        poga_jaunaspele.grid(row=3, column=3, padx=5, pady=5, sticky='n')
 
 
 
 # Palaišanas kods
-
-
 app = tkinterApp()
 app.mainloop()
