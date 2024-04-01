@@ -22,4 +22,4 @@ Spēles sākumā ir dots cilvēka-spēlētāja izvēlētais skaitlis. Abiem spē
 1. Tiek ģenerēti 5 skaitļi, kas dalās ar 36, nevis gan ar 2, gan 3. Noteikumi mainīti, lai spēle būtu garāka un skaitļi varētu dalīties vairāk kā 2-3 reizes.
 2. Tiek pielietota Bounded-MiniMax un Bounded-AlphaBeta funkcija, tā, lai var izmantot HNF. (Coppin B. (2004). Artificial Intelligence Illuminated. Jones and Bartlett Publishers. 151.lpp)
 3. Spēle turpinās līdz ir izspēlēts ar visiem 5 skaitļiem, vai arī uzvar tas, kurš pirmais iegūst 3 uzvaras no 5 spēlēm. Neizšķirta gadījumā, abi saņem punktu.
-4. 4. Labākais heiristiskās funkcijas vērtējums ir lielākais.
+4. Labākais heiristiskās funkcijas vērtējums ir lielākais.
