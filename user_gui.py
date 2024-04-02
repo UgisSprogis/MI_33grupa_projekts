@@ -242,7 +242,7 @@ class Skaitli(tk.Frame):
                 messagebox.showerror('Spēles kļūda', 'Izvēlieties spēles skaitli.')
                 reset()
             else:
-                controller.show_frame(Intervals)
+                controller.show_frame()
                 reset()
         def atpakal():
             controller.show_frame(Izvelne)
