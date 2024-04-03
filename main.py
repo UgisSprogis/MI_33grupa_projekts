@@ -1,19 +1,21 @@
 #Tiek importēts random, lai varētu izvēlēties nejaušus skaitļus
 import random
 #Spēles skaitļu ģenerators
-def speles_skaitli():
+#pēc nosacījuma vērtibas no 20000 līdz 50000, bet tos var arī mainīt
+def speles_skaitli(from_value = 20000,to_value= 50000):
     #Izveido sarakstus skaitlu_saraksts un pieci_skaitli
     skaitlu_saraksts = set()
     pieci_skaitli = set()
     #Izvēlas skaitļus no 20000 līdz 50000
     #Ja skaitlis dalās ar 6 (dalās ar 2 un 3), tad to pievieno sarakstam
-    for i in range(20000,50000):
+    for i in range(from_value,to_value):
         if i%36==0:
             skaitlu_saraksts.add(i)
             #Izvēlas 5 nejaušus skaitļus no saraksta
             #Izvēlētos skaitļus pievieno pieci_skaitli
             #Tiek izmantots sorted, lai nebūtu konflikti ar random.sample
     pieci_skaitli = random.sample(sorted(skaitlu_saraksts), 5)
+    print(pieci_skaitli)
     return pieci_skaitli
 
 #Šī funkcija ļauj izvēlēties skaitli no pieci_skaitli saraksta
@@ -512,4 +514,3 @@ def sak_spele():
     if speles_sakums == "1":
         izvelies_algoritmu()
 
-sak_spele()

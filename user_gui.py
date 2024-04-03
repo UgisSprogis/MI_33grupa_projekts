@@ -228,11 +228,10 @@ class Skaitli(tk.Frame):
         poga_turpinat.grid( row=5, column=0, padx=5, pady=5, sticky='sw')
 
 
-        
+        skaitlis_buttons = [skaitlis1, skaitlis2, skaitlis3, skaitlis4, skaitlis5]
         def mainit_krasu_skaitlis(skaitlis):
             self.skailtlis_status = True
-            skaitlis_buttons = [skaitlis1, skaitlis2, skaitlis3, skaitlis4, skaitlis5]
-
+            
             #cikls ģenerēts ar chat GPT
             for index, button in enumerate(skaitlis_buttons):
                 button.configure(background='green' if index + 1 == int(skaitlis[-1]) else 'white')
@@ -244,14 +243,28 @@ class Skaitli(tk.Frame):
             else:
                 controller.show_frame()
                 reset()
+
+        # pieliku klāt selected_value. Tas ir usera izvelētais skaitlis kuru pēc tam dala
+        def turpinat():
+            if not self.skailtlis_status:
+                messagebox.showerror('Spēles kļūda', 'Izvēlieties spēles skaitli.')
+                reset()
+            else:
+                for index, button in enumerate(skaitlis_buttons):
+                    # https://stackoverflow.com/questions/63871376/tkinter-widget-cgetvariable
+                    if button.cget('background') == 'green':
+                        selected_value = button.cget('text')
+                        print(selected_value)
+                        break
+                
+                reset()
+
         def atpakal():
             controller.show_frame(Izvelne)
             reset()
 
         def reset():
             self.skailtlis_status = False
-            skaitlis_buttons = [skaitlis1, skaitlis2, skaitlis3, skaitlis4, skaitlis5]
-
             for button in enumerate(skaitlis_buttons):
                 button.configure(background='white')
 
@@ -294,8 +307,11 @@ class Intervals(tk.Frame):
                 lambda: controller.show_frame(Izvelne), font=font.Font(family='Arial', size=18, weight="bold"))
         poga_manit.grid( row=5, column=0, padx=5, pady=5, sticky='sw')
 
-
+        # pieliku klāt "from" un "to" vērtības, ko var iestatīt user
         def mainit():
+            from_value = int(self.from_entry.get())
+            to_value = int(self.to_entry.get())
+            speles_skaitli(from_value, to_value)
             self.from_entry.delete(0, 'end')
             self.to_entry.delete(0, 'end')
 
