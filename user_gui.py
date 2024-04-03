@@ -1,6 +1,5 @@
-from heiristiska_funkcija import *
+from main import *
 from tkinter import *
-import customtkinter
 import tkinter.font as font
 import tkinter as tk
 from tkinter import messagebox
@@ -8,15 +7,9 @@ from tkinter import messagebox
 # Pamācība un koda struktūra ņemta no https://www.geeksforgeeks.org/python-gui-tkinter/
 # https://www.geeksforgeeks.org/tkinter-application-to-switch-between-different-page-frames/
 
+izveletais_algoritms = None
+izveletais_sacejs = None
 
-class Programma(customtkinter.CTk):
-    def __init__(self):
-        super().__init__()
-        self.geometry("640x480")
-        self.title("MI 33 praktiskais darbs")
-        self.grid_rowconfigure(0, weight=1)
-        self.grid_columnconfigure(0, weight=1)
-        
 
 class tkinterApp(tk.Tk):
     # tkinterApp klases inicializēšana
@@ -28,15 +21,24 @@ class tkinterApp(tk.Tk):
         container.pack(side = "top", fill = "both", expand = True)
         container.grid_rowconfigure(0, weight = 1)
         container.grid_columnconfigure(0, weight = 1)
-        self.geometry("640x480")
         self.title("MI 33 praktiskais darbs")
+
+        # Loga pozicionēšanas kods ekrāna centrā, kods ņemts no
+        # https://coderslegacy.com/tkinter-center-window-on-screen/
+        screen_width = self.winfo_screenwidth()
+        screen_height = self.winfo_screenheight()
+        x = (screen_width/2) - (640/2)
+        y = (screen_height/2) - (480/2)
+        self.geometry('%dx%d+%d+%d' % (640, 480, x, y))
+
         self.frames = {}
         # Katras lapas rāmja piešķiršana
-        for F in (Sakumlapa, Izvelne, Skaitli, Intervals):
+        for F in (Sakumlapa, Izvelne, Skaitli, Intervals, Beigas, Spele):
             frame = F(container, self)
             self.frames[F] = frame 
             frame.grid(row = 0, column = 0, sticky ="nsew")
         self.show_frame(Sakumlapa)
+        self.mainloop()
 
     # Funkcija, kas grafiski izvala lapu
     def show_frame(self, cont):
@@ -86,6 +88,8 @@ class Sakumlapa(tk.Frame):
                         font=font.Font(family='Arial', size=18), background='white').grid(column=4, row=3, sticky='ne', padx=7)
 
 class Izvelne(tk.Frame):
+    speletajs = ""
+    algoritms = ""
     # Klases inicializēšana
     def __init__(self, parent, controller):
         # Rāmja inicializācija un loga sadalījums režģos
@@ -135,29 +139,45 @@ class Izvelne(tk.Frame):
         
         # Funkcija maina krāsu izvēlētā spēlētāja pogai uz zaļu
         def mainit_krasu_speletajs(speletajs):
+            global izveletais_sacejs
             self.speletajs_status = True
             if speletajs == "Speletajs":
+                self.speletajs = "speletajs"
                 poga_speletajs.configure(background='green')
                 poga_dators.configure(background='white')
+                izveletais_sacejs = "2"
+                print(izveletais_sacejs)
             elif speletajs == "Dators":
+                self.speletajs = "dators"
                 poga_speletajs.configure(background='white')
                 poga_dators.configure(background='green')
+                izveletais_sacejs = "1"
+                print(izveletais_sacejs)
         
         # Funkcija maina krāsu izvēlētā algoritma pogai uz zaļu
         def mainit_krasu_algoritms(algoritms):
+            global izveletais_algoritms
             self.algoritms_status = True
             if algoritms == "Minimax":
+                self.algoritms = "minimax"
                 poga_minimax.configure(background='green')
                 poga_alfabeta.configure(background='white')
+                izveletais_algoritms = "minimax"
+                print(izveletais_algoritms)
             elif algoritms == "Alfabeta":
+                self.algoritms = "alfabeta"
                 poga_alfabeta.configure(background='green')
                 poga_minimax.configure(background='white')
+                izveletais_algoritms = "alfabeta"
+                print(izveletais_algoritms)
         
         # Funkcija, kas pārbauda, vai viens no katra dotā parametra ir izvēlēts un ved uz nākošo lapu
         # Gadījumā, ja nav izvēlēts kāds no nepieciešamajiem parametriem, tiek izvadīta kļūda
         def turpinat(parametrs):
             if parametrs == "Skaitli":
-                if not self.algoritms_status:
+                if not self.algoritms_status and not self.speletajs_status:
+                    messagebox.showerror('Spēles kļūda', 'Izvēlieties spēles algoritmu un kurš uzsāks spēli.')
+                elif not self.algoritms_status:
                     messagebox.showerror('Spēles kļūda', 'Izvēlieties spēles algoritmu.')
                 elif not self.speletajs_status:
                     messagebox.showerror('Spēles kļūda', 'Izvēlieties, kurš uzsāks spēli.')
@@ -178,44 +198,41 @@ class Izvelne(tk.Frame):
             poga_speletajs.configure(background='white')
 
 
-
-
-class Skaitli(tk.Frame):   
+class Skaitli(tk.Frame):
     def __init__(self, parent, controller): 
         tk.Frame.__init__(self, parent)
         self.skailtlis_status = False
+        self.izveletais_skaitlis = 0
         pieci_skaitli = speles_skaitli()
         Frame.columnconfigure(self, 0, weight=0)
         Frame.columnconfigure(self, 1, weight=2)
         Frame.columnconfigure(self, 2, weight=0)
-        
         Frame.rowconfigure(self, 0, weight=1)
         Frame.rowconfigure(self, 1, weight=1)
         Frame.rowconfigure(self, 2, weight=1)
         Frame.rowconfigure(self, 3, weight=1)
         Frame.rowconfigure(self, 4, weight=1)
-      
         Frame.configure(self, bg='gray')
         Label(self, text = 'IZVĒLIES SKAITLI', 
                     font=font.Font(family='Arial', size=26, weight="bold"), background='white').grid(row=0, columnspan=5)
         skaitlis1 = Button(self, text = pieci_skaitli[0], bd=0, borderwidth=0, width=10, background='white', command = 
-                lambda:mainit_krasu_skaitlis("skaitlis1"), font=font.Font(family='Arial', size=18, weight="bold"))
+                lambda:[mainit_krasu_skaitlis("skaitlis1"),set_skaitlis(pieci_skaitli[0])], font=font.Font(family='Arial', size=18, weight="bold"))
         skaitlis1.grid( row=1, column=1, padx=5, pady=5, sticky='n')
 
         skaitlis2 = Button(self, text = pieci_skaitli[1], bd=0, borderwidth=0, width=10, background='white', command = 
-                lambda:mainit_krasu_skaitlis("skaitlis2"), font=font.Font(family='Arial', size=18, weight="bold"))
+                lambda:[mainit_krasu_skaitlis("skaitlis2"),set_skaitlis(pieci_skaitli[1])], font=font.Font(family='Arial', size=18, weight="bold"))
         skaitlis2.grid(row=2, column=1, padx=5, pady=5, sticky='n')
 
         skaitlis3 = Button(self, text = pieci_skaitli[2], bd=0, borderwidth=0, width=10, background='white', command = 
-                lambda:mainit_krasu_skaitlis("skaitlis3"), font=font.Font(family='Arial', size=18, weight="bold"))
+                lambda:[mainit_krasu_skaitlis("skaitlis3"),set_skaitlis(pieci_skaitli[2])], font=font.Font(family='Arial', size=18, weight="bold"))
         skaitlis3.grid( row=3, column=1, padx=5, pady=5, sticky='n')
 
         skaitlis4 = Button(self, text = pieci_skaitli[3], bd=0, borderwidth=0, width=10, background='white', command = 
-                lambda:mainit_krasu_skaitlis("skaitlis4"), font=font.Font(family='Arial', size=18, weight="bold"))
+                lambda:[mainit_krasu_skaitlis("skaitlis4"),set_skaitlis(pieci_skaitli[3])], font=font.Font(family='Arial', size=18, weight="bold"))
         skaitlis4.grid( row=4, column=1, padx=5, pady=5, sticky='n')
 
         skaitlis5 = Button(self, text = pieci_skaitli[4], bd=0, borderwidth=0, width=10, background='white', command = 
-                lambda:mainit_krasu_skaitlis("skaitlis5"), font=font.Font(family='Arial', size=18, weight="bold"))
+                lambda:[mainit_krasu_skaitlis("skaitlis5"),set_skaitlis(pieci_skaitli[4])], font=font.Font(family='Arial', size=18, weight="bold"))
         skaitlis5.grid( row=5, column=1, padx=5, pady=5, sticky='n')
 
         poga_turpinat = Button(self, text = '>>>>>>>', bd=0, borderwidth=0, width=10, background='white', command = 
@@ -227,7 +244,9 @@ class Skaitli(tk.Frame):
         poga_turpinat.grid( row=5, column=0, padx=5, pady=5, sticky='sw')
 
 
-        
+        def set_skaitlis(skaitlis):
+            self.izveletais_skaitlis = skaitlis
+
         def mainit_krasu_skaitlis(skaitlis):
             self.skailtlis_status = True
             skaitlis_buttons = [skaitlis1, skaitlis2, skaitlis3, skaitlis4, skaitlis5]
@@ -241,7 +260,8 @@ class Skaitli(tk.Frame):
                 messagebox.showerror('Spēles kļūda', 'Izvēlieties spēles skaitli.')
                 reset()
             else:
-                controller.show_frame(Intervals)
+                controller.show_frame(Spele)
+                taisi_koku(self.izveletais_skaitlis, Izvelne.speletajs, Izvelne.algoritms)
                 reset()
         def atpakal():
             controller.show_frame(Izvelne)
@@ -251,6 +271,7 @@ class Skaitli(tk.Frame):
             self.skailtlis_status = False
             skaitlis_buttons = [skaitlis1, skaitlis2, skaitlis3, skaitlis4, skaitlis5]
 
+            # ChatGPT
             for index, button in enumerate(skaitlis_buttons):
                 button.configure(background='white')
 
@@ -285,25 +306,138 @@ class Intervals(tk.Frame):
         self.to_entry.grid(row=2, column=1, sticky='w')
 
 
-        poga_turpinat = Button(self, text = 'mainīt', bd=0, borderwidth=0, width=10, background='white', command = 
+        poga_manit = Button(self, text = 'mainīt', bd=0, borderwidth=0, width=10, background='white', command = 
                 lambda: mainit(), font=font.Font(family='Arial', size=18, weight="bold"))
-        poga_turpinat.grid( row=4, padx=25, column=0, columnspan=5, sticky='n')
+        poga_manit.grid( row=4, padx=25, column=0, columnspan=5, sticky='n')
 
-        poga_turpinat = Button(self, text = '<<<<<<<', bd=0, borderwidth=0, width=10, background='white', command = 
+        poga_manit = Button(self, text = '<<<<<<<', bd=0, borderwidth=0, width=10, background='white', command = 
                 lambda: controller.show_frame(Izvelne), font=font.Font(family='Arial', size=18, weight="bold"))
-        poga_turpinat.grid( row=5, column=0, padx=5, pady=5, sticky='sw')
+        poga_manit.grid( row=5, column=0, padx=5, pady=5, sticky='sw')
 
 
         def mainit():
             self.from_entry.delete(0, 'end')
             self.to_entry.delete(0, 'end')
 
+class Spele(tk.Frame):
+    # Klases inicializēšana
+    def __init__(self, parent, controller):
+        # Rāmja inicializācija un loga sadalījums režģos
+        tk.Frame.__init__(self, parent)
+        Frame.columnconfigure(self, 0, weight=2)
+        Frame.columnconfigure(self, 1, weight=2)
+        Frame.columnconfigure(self, 2, weight=1)
+        Frame.columnconfigure(self, 3, weight=2)
+        Frame.columnconfigure(self, 4, weight=2)
+        Frame.rowconfigure(self, 0, weight=1)
+        Frame.rowconfigure(self, 1, weight=1)
+        Frame.rowconfigure(self, 2, weight=1)
+        Frame.rowconfigure(self, 3, weight=1)
+        Frame.rowconfigure(self, 4, weight=1)
+        Frame.rowconfigure(self, 5, weight=1)
+        Frame.rowconfigure(self, 6, weight=1)
+        Frame.rowconfigure(self, 7, weight=1)
+        Frame.rowconfigure(self, 8, weight=1)
+        Frame.rowconfigure(self, 9, weight=1)
+        Frame.configure(self, bg='gray')
 
+        # punkti = Label(self, text = '0:0', 
+        #             font=font.Font(family='Arial', size=15), background='white')
+        # punkti.grid_remove()
+
+        # pasreizejais_speles_skaitlis = Label(self, text = 'Spele', 
+        #             font=font.Font(family='Arial', size=26, weight="bold"), background='white')
+        # pasreizejais_speles_skaitlis.grid(row=1, columnspan=5)
+
+        # gajiena_status = Label(self, text = 'Šobrīd gājienu veic:', 
+        #             font=font.Font(family='Arial', size=15), background='white')
+        # gajiena_status.grid_remove()
+
+        # def next_move(gajiens,virsotne,generets):
+        #     global next_virsotne, jauns_gajiens, punktu_skaits
+        #     if izveletais_sacejs == "1":
+        #         punktu_skaits = str(virsotne[2]) + ":" + str(virsotne[3])
+        #     elif izveletais_sacejs == "2":
+        #          punktu_skaits = str(virsotne[3]) + ":" + str(virsotne[2])
+        #     punkti.config(text = punktu_skaits)
+        #     next_virsotne = virsotne[1]
+        #     pasreizejais_speles_skaitlis.config(text = next_virsotne)
+        #     jauns_gajiens = "Šobrīd gājienu veic:" + gajiens
+        #     gajiena_status.config(text = jauns_gajiens)
+            
+        #     if izveletais_algoritms == "minimax":
+        #         if gajiens == "dators":
+        #             print
+
+        #         elif gajiens == "cilvēks":
+        #             print
+            
+        #     elif izveletais_algoritms == "alfabeta":
+        #         if gajiens == "dators":
+        #             nakamais_gajiens = spele_alphabeta(gajiens,virsotne,generets)
+        #             next_move(nakamais_gajiens[0], nakamais_gajiens[1], nakamais_gajiens[2])
+
+
+        #         elif gajiens == "cilvēks":
+        #             print
+
+
+        def pirmais_gajiens():
+            global my_text
+            my_text = izveletais_algoritms
+            pasreizejais_speles_skaitlis.config(text = my_text)
+            nakamais_gajiens = speles_pirmais_gajiens(izveletais_algoritms, izveletais_sacejs)
+            next_move(nakamais_gajiens[0], nakamais_gajiens[1], nakamais_gajiens[2])
+                    
+        def start():
+            gajiena_status.grid(row=2, columnspan=5)
+            punkti.grid(row=0, columnspan=5)
+            poga_start.destroy()
+            self.after(2000, lambda: pirmais_gajiens())
+        
+        poga_start = Button(self, text = "START", bd=0, borderwidth=0, width=10, background='white', command = start, 
+               font=font.Font(family='Arial', size=18, weight="bold"))
+        poga_start.grid(row=5, columnspan=5)
+
+
+        
+
+class Beigas(tk.Frame):
+    # Beigas, kur tiek atspoguļota uzvara vai zaude
+    # Satur pogu "Iziet" un "Jauna spēle"
+    def __init__(self, parent, controller):
+        # Rāmja inicializācija un loga sadalījums režģos
+        tk.Frame.__init__(self, parent)
+        Sakumlapa.configure(self, bg='gray')
+
+        ############################
+        teksts_small = "APSVEICAM!"# Šo parametrus ir jāiegūst no main.py atkarībā
+        teksts_big = "TU UZVARĒJI!"# vai spēlētājs pēc spēles ir zaudējis, vai uzvarējis
+        ############################
+
+        Frame.columnconfigure(self, 0, weight=1)
+        Frame.columnconfigure(self, 1, weight=1)
+        Frame.columnconfigure(self, 2, weight=1)
+        Frame.columnconfigure(self, 3, weight=1)
+        Frame.columnconfigure(self, 4, weight=1)
+        Frame.rowconfigure(self, 0, weight=3)
+        Frame.rowconfigure(self, 1, weight=3)
+        Frame.rowconfigure(self, 2, weight=1)
+        Frame.rowconfigure(self, 3, weight=1)
+        Label(self, text = teksts_small, 
+                        font=font.Font(family='Arial', size=18), background='white', width=26).grid( row=0, columnspan=5, sticky='s', )
+        Label(self, text = teksts_big, 
+                        font=font.Font(family='Arial', size=36), background='white', width=13).grid( row=1, columnspan=5, sticky='n')
+        poga_iziet = Button(self, text = "IZIET", bd=0, borderwidth=0, width=10, background='white', command = 
+                lambda:app.destroy(), font=font.Font(family='Arial', size=18, weight="bold"))
+        poga_iziet.grid( row=3, column=1, padx=5, pady=5, sticky='n')
+
+        poga_jaunaspele = Button(self, text = "JAUNA SPĒLE", bd=0, borderwidth=0, width=13, background='white', command = 
+                lambda:controller.show_frame(Izvelne), font=font.Font(family='Arial', size=18, weight="bold"))
+        poga_jaunaspele.grid(row=3, column=3, padx=5, pady=5, sticky='n')
 
 
 
 # Palaišanas kods
-
-
 app = tkinterApp()
 app.mainloop()

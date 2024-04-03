@@ -51,6 +51,7 @@ class SpelesKoks:
     def pievienot_loku(self, sak_virsotne_id, beig_virsotne_id):
         self.loki[sak_virsotne_id] = self.loki.get(sak_virsotne_id, []) + [beig_virsotne_id]
 #funkcija, kas parbauda gājienu, kā parametrus saņem gājiena tipu, visu virsotņu sarakstu un pašreizējo virsotni
+
 def gajiens(gajiena_tips,gen_virsotnes,pasreizeja_virsotne):
     #Ja gājiens ir 2, tad dalītājs ir 2, ja 3, tad dalītājs ir 3
     if gajiena_tips=='2':
@@ -108,41 +109,58 @@ def gajiens(gajiena_tips,gen_virsotnes,pasreizeja_virsotne):
             sp.pievienot_loku(pasreizeja_virsotne[0],sp.virsotnes[i].id)
 
 #Izveido spēles koka objektu
-sp=SpelesKoks()
-#Izveido sarakstu, kurā tiks glabātas virsotnes
-gen_virsotnes = []
-#Izvēlas skaitli no saraksta
-speles_skaitlis = skaitla_izvele()
-#Izvada izvēlēto skaitli
-print("Spēles skaitlis ir:", speles_skaitlis)
-#Pievieno pirmo virsotni
-sp.pievienot_virsotni(Virsotne("A1", speles_skaitlis, 0, 0, 1))
-#Pievieno pirmo virsotni sarakstam
-gen_virsotnes.append(["A1", speles_skaitlis, 0, 0, 1])
-#Šis mainīgais skaita virsotnes. Sākas ar 2, tāpēc ka pirmā virsotne jau ir pievienota
-j=2
-#Kamēr virsotņu saraksts nav tukšs, tad tiek veikti gājieni
-while len(gen_virsotnes)>0:
-    pasreizeja_virsotne=gen_virsotnes[0]
-    #Tiek veikti gājieni, pēc kārtas 2 un 3, ja tie ir iespējami
-    gajiens('2',gen_virsotnes,pasreizeja_virsotne)
-    gajiens('3',gen_virsotnes,pasreizeja_virsotne)
-    #Pēc gājiena tiek izdzēsta virsotne no saraksta
-    gen_virsotnes.pop(0)
+def taisi_koku(speles_skaitlis, in_sacejs, algoritms):
+    print("Printeju: " + str(speles_skaitlis) + " " +  str(in_sacejs) + "" + str(algoritms))
+    global sp, dzilums, atk_virsotnes, max_limenis, j, sacejs
+    sp=SpelesKoks()
+    #Izveido sarakstu, kurā tiks glabātas virsotnes
+    gen_virsotnes = []
+    #Izvada izvēlēto skaitli
+    print("Spēles skaitlis ir:", speles_skaitlis)
+    #Pievieno pirmo virsotni
+    sp.pievienot_virsotni(Virsotne("A1", speles_skaitlis, 0, 0, 1))
+    #Pievieno pirmo virsotni sarakstam
+    gen_virsotnes.append(["A1", speles_skaitlis, 0, 0, 1])
+    #Šis mainīgais skaita virsotnes. Sākas ar 2, tāpēc ka pirmā virsotne jau ir pievienota
+    j=2
+    #Kamēr virsotņu saraksts nav tukšs, tad tiek veikti gājieni
+    while len(gen_virsotnes)>0:
+        pasreizeja_virsotne=gen_virsotnes[0]
+        #Tiek veikti gājieni, pēc kārtas 2 un 3, ja tie ir iespējami
+        gajiens('2',gen_virsotnes,pasreizeja_virsotne)
+        gajiens('3',gen_virsotnes,pasreizeja_virsotne)
+        #Pēc gājiena tiek izdzēsta virsotne no saraksta
+        gen_virsotnes.pop(0)
+    print("Koks tika uzgenerets")
 
-#########################################################################
+    #Tiek noteikts maksimālais līmenis
+    max_limenis = sp.virsotnes[len(sp.virsotnes)-1].limenis
+    if max_limenis % 2 == 0:
+        dzilums = max_limenis / 2
+    else:
+        dzilums = int(max_limenis / 2 ) + 1
 
-#Tiek noteikts maksimālais līmenis
-max_limenis = sp.virsotnes[len(sp.virsotnes)-1].limenis
-if max_limenis % 2 == 0:
-    dzilums = max_limenis / 2
-else:
-    dzilums = int(max_limenis / 2 ) + 1
+    #Tiek izveidots saraksts ar visām virsotnēm
+    atk_virsotnes=[]
+    for x in sp.virsotnes:
+        atk_virsotnes.append([x.id,x.skaitlis,x.speletajs1,x.speletajs2,x.limenis])
 
-#Tiek izveidots saraksts ar visām virsotnēm
-atk_virsotnes=[]
-for x in sp.virsotnes:
-    atk_virsotnes.append([x.id,x.skaitlis,x.speletajs1,x.speletajs2,x.limenis])
+    #Tiek izsaukta attiecīgā spēle ar iedotajiem spēlētāja un algoritma parametriem
+    sacejs = in_sacejs
+    if algoritms == "minimax":
+        sacejs = input("izvēlieties, kurš sāks pirmais. Ievadiet 1, lai spēli sāktu dators vai 2, lai spēli sāktu cilvēks\n1. dators\n2. cilvēks\n")
+        if sacejs == "dators":
+            spele_minimax(sacejs, atk_virsotnes[0],False)
+        elif sacejs == "cilvēks":
+            spele_minimax(sacejs, atk_virsotnes[0],False)
+    elif algoritms == "alfabeta":
+        if sacejs == "dators":
+            spele_alphabeta(sacejs, atk_virsotnes[0],False)
+        elif sacejs == "cilvēks":
+            spele_alphabeta(sacejs, atk_virsotnes[0],False)
+
+
+
 #Tiek izveidota funkcija, kas atgriež visus bērnus no konkrētas virsotnes
 def berni(pasreizeja_virsotne):
     berni = []
@@ -193,8 +211,10 @@ def minimax(virs,gen):
 
 def alphabeta(virs, alpha, beta, generets):
     #Ja virsotne ir gala līmenī, tad tiek atgriezta novērtējuma vērtība
+    if virs[4] > dzilums:
+        generets = True
     if not generets:
-        if virs[4] == half_limenis or (virs[1] <= 10) or (virs[1] %2 != 0 and virs[1] %3 != 0):
+        if virs[4] == dzilums or (virs[1] <= 10) or (virs[1] %2 != 0 and virs[1] %3 != 0):
             return virs[4] + virs[2] - virs[3]
     if generets:
         if virs[4] == max_limenis or (virs[1] <= 10) or (virs[1] %2 != 0 and virs[1] %3 != 0):
@@ -241,27 +261,24 @@ def rezultats(virsotne):
     elif virsotne[2] < virsotne[3]:
         print(f"Uzvar otrais spēlētājs {virsotne[2]}:{virsotne[3]}")
 
-def pirmais_gajiens_minimax():
+def speles_pirmais_gajiens(algoritms,kurs_sak):
     global sacejs
-    sacejs = input("izvēlieties, kurš sāks pirmais. Ievadiet 1, lai spēli sāktu dators vai 2, lai spēli sāktu cilvēks\n1. dators\n2. cilvēks\n")
-    if sacejs == "1":
-        spele_minimax("dators", atk_virsotnes[0],False)
-    elif sacejs == "2":
-        spele_minimax("cilvēks", atk_virsotnes[0],False)
-
-def pirmais_gajiens_alphabeta():
-    sacejs = input("izvēlieties, kurš sāks pirmais. Ievadiet 1, lai spēli sāktu dators vai 2, lai spēli sāktu cilvēks\n1. dators\n2. cilvēks\n")
-    if sacejs == "1":
-        spele("dators", atk_virsotnes[0],False)
-    elif sacejs == "2":
-        spele("cilvēks", atk_virsotnes[0],False)
-
-def izvelies_algoritmu():
-    algoritms = input("Izvēlies algoritmu, ar kuru vēlies spēlēt: 1 - MiniMax, 2 - AlphaBeta\n")
-    if algoritms == "1":
-        pirmais_gajiens_minimax()
-    elif algoritms == "2":
-        pirmais_gajiens_alphabeta()
+    sacejs = kurs_sak
+    if algoritms == "minimax":
+        if sacejs == "1":
+            nakamais_gajiens = spele_minimax("dators", atk_virsotnes[0],False)
+            return nakamais_gajiens
+        elif sacejs == "2":
+            nakamais_gajiens = spele_minimax("cilvēks", atk_virsotnes[0],False)
+            return nakamais_gajiens
+    elif algoritms == "alfabeta":
+        if sacejs == "1":
+            nakamais_gajiens = spele_alphabeta("dators", atk_virsotnes[0],False)
+            return nakamais_gajiens
+        elif sacejs == "2":
+            nakamais_gajiens = spele_alphabeta("cilvēks", atk_virsotnes[0],False)
+            return nakamais_gajiens
+        
 
 def spele_minimax(kurs_sak, virsotne,gen):
     print(f"{kurs_sak} iet un spēles skaitlis ir {str(virsotne[1])}")
@@ -381,9 +398,125 @@ def spele_minimax(kurs_sak, virsotne,gen):
                 print("Nepareiza gājiena izvēle")
                 spele_minimax("cilvēks", virsotne,gen)
 
-
-
-def sak_spele():
-    speles_sakums = input("Ievadiet 1, lai sāktu spēli un 2 lai beigtu spēli\n1. Sākt\n2. Beigt\n")
-    if speles_sakums == "1":
-        izvelies_algoritmu()
+def spele_alphabeta(kurs_sak, virsotne, generets):
+    print("Pašreizejais skaitlis:",virsotne[1])
+    if virsotne[1] %2 != 0 and virsotne[1] %3 or virsotne[1] <= 10:
+        rezultats(virsotne)
+        return
+    else:
+        if kurs_sak == "dators":
+            print("Datora gajiens:")
+            result = alphabeta(virsotne,float('-inf'), float('inf'), generets)
+            nakosais_gajiens = berni(virsotne)
+            if virsotne[4] == dzilums:
+                generets = True
+                result = alphabeta(virsotne,float('-inf'), float('inf'), generets)
+            else:
+                generets = False
+                result = alphabeta(virsotne,float('-inf'), float('inf'), generets)
+            if virsotne[4] == dzilums:
+                generets = True
+                result = alphabeta(virsotne,float('-inf'), float('inf'), generets)
+            else:
+                generets = False
+                result = alphabeta(virsotne,float('-inf'), float('inf'), generets)
+            if nakosais_gajiens[0] == virsotne:
+                for x in sp.virsotnes:
+                        if x.limenis > dzilums:
+                            generets = True
+                            atk_virsotnes.append([x.id,x.skaitlis,x.speletajs1,x.speletajs2,x.limenis])
+                for y in atk_virsotnes:
+                    if y[4] >= dzilums:
+                        alphabeta(y,float('-inf'), float('inf'), generets)
+                nakosais_gajiens = berni(virsotne)
+                result = alphabeta(virsotne,float('-inf'), float('inf'), generets)
+            if len(nakosais_gajiens) == 2:
+                if nakosais_gajiens[0][5] == nakosais_gajiens[1][5] == result:
+                    pirma_virsotne = virsotne[1]/nakosais_gajiens[0][1]
+                    otra_virsotne = virsotne[1]/nakosais_gajiens[1][1]
+                    if pirma_virsotne > otra_virsotne:
+                        datora_izvele = nakosais_gajiens[0]
+                        datora_dalitajs = virsotne[1]/datora_izvele[1]
+                        print("Dators izvēlējās sadalit ar:", datora_dalitajs)
+                        return("cilvēks", nakosais_gajiens[0], generets)
+                    else:
+                        datora_izvele = nakosais_gajiens[1]
+                        datora_dalitajs = virsotne[1]/datora_izvele[1]
+                        print("Dators izvēlējās sadalit ar:", datora_dalitajs)
+                        return("cilvēks", nakosais_gajiens[1], generets)
+                elif nakosais_gajiens[0][5] == result and nakosais_gajiens[1][5] != result:
+                    datora_izvele = nakosais_gajiens[0]
+                    datora_dalitajs = virsotne[1]/datora_izvele[1]
+                    print("Dators izvēlējās sadalit ar:", datora_dalitajs)
+                    return("cilvēks", nakosais_gajiens[0], generets)
+                elif nakosais_gajiens[1][5] == result and nakosais_gajiens[0][5] != result:
+                    datora_izvele = nakosais_gajiens[1]
+                    datora_dalitajs = virsotne[1]/datora_izvele[1]
+                    print("Dators izvēlējās sadalit ar:", datora_dalitajs)
+                    return("cilvēks", nakosais_gajiens[1], generets)
+            elif len(nakosais_gajiens) == 1:
+                    datora_izvele = nakosais_gajiens
+                    datora_dalitajs = virsotne[1]/datora_izvele[0][1]
+                    print("Dators izvēlējās sadalit ar:", datora_dalitajs)
+                    return("cilvēks", nakosais_gajiens[0], generets)
+        elif kurs_sak == "cilvēks":
+            nakama_virsotne = 0
+            cilveka_gajiens = input("Ievadiet skaitli, ar kuru vēlaties dalīt pašreizējo skaitli: 2 vai 3\n")
+            if virsotne[1] % int(cilveka_gajiens) == 0:
+                result = virsotne[1] / int(cilveka_gajiens)
+                if sacejs == "1":
+                    if cilveka_gajiens == "2":
+                        for x in atk_virsotnes:
+                            if (x[1] == result) and ((virsotne[2]+2)==x[2]) and ((virsotne[3])==x[3]):
+                                nakama_virsotne = x
+                                break
+                    else:
+                        for x in atk_virsotnes:
+                            if (x[1] == result) and ((virsotne[2])==x[2]) and ((virsotne[3]+3)==x[3]):
+                                nakama_virsotne = x
+                                break
+                    if nakama_virsotne == 0:
+                        for x in sp.virsotnes:
+                            if x.limenis > dzilums:
+                                generets = True
+                                atk_virsotnes.append([x.id,x.skaitlis,x.speletajs1,x.speletajs2,x.limenis])
+                        if cilveka_gajiens == "2":
+                            for y in atk_virsotnes:
+                                if (y[1] == result) and ((virsotne[2]+2)==y[2]) and ((virsotne[3])==y[3]):
+                                    nakama_virsotne = y
+                                    break
+                        else:
+                            for y in atk_virsotnes:
+                                if (y[1] == result) and ((virsotne[2])==y[2]) and ((virsotne[3]+3)==y[3]):
+                                    nakama_virsotne = y
+                                    break
+                else:
+                    if cilveka_gajiens == "2":
+                        for x in atk_virsotnes:
+                            if (x[1] == result) and ((virsotne[2])==x[2]) and ((virsotne[3]+2)==x[3]):
+                                nakama_virsotne = x
+                                break
+                    else:
+                        for x in atk_virsotnes:
+                            if (x[1] == result) and ((virsotne[2]+3)==x[2]) and ((virsotne[3])==x[3]):
+                                nakama_virsotne = x
+                                break
+                if nakama_virsotne == 0:
+                        for x in sp.virsotnes:
+                            if x.limenis > dzilums:
+                                generets = True
+                                atk_virsotnes.append([x.id,x.skaitlis,x.speletajs1,x.speletajs2,x.limenis])
+                        if cilveka_gajiens == "2":
+                            for y in atk_virsotnes:
+                                if (y[1] == result) and ((virsotne[2])==y[2]) and ((virsotne[3]+2)==y[3]):
+                                    nakama_virsotne = y
+                                    break
+                        else:
+                            for y in atk_virsotnes:
+                                if (y[1] == result) and ((virsotne[2]+3)==y[2]) and ((virsotne[3])==y[3]):
+                                    nakama_virsotne = y
+                                    break
+                return("dators", nakama_virsotne, generets)
+            else:
+                print("Ar jusu skaitli:", cilveka_gajiens, "nevar iegut veselo rezulatatu")
+                spele_alphabeta("cilvēks", virsotne, generets)
