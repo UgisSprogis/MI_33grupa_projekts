@@ -138,34 +138,31 @@ class Izvelne(tk.Frame):
         poga_papildus.grid( row=5, padx=25, column=0, columnspan=5, sticky='se')
         
         # Funkcija maina krāsu izvēlētā spēlētāja pogai uz zaļu
-        def mainit_krasu_speletajs(speletajs):
-            global izveletais_sacejs
+        def mainit_krasu_speletajs(in_speletajs):
             self.speletajs_status = True
-            if speletajs == "Speletajs":
-                self.speletajs = "speletajs"
+            if in_speletajs == "Speletajs":
+                Izvelne.speletajs = "cilvēks"
                 poga_speletajs.configure(background='green')
                 poga_dators.configure(background='white')
                 izveletais_sacejs = "2"
                 print(izveletais_sacejs)
-            elif speletajs == "Dators":
-                self.speletajs = "dators"
+            elif in_speletajs == "Dators":
+                Izvelne.speletajs = "dators"
                 poga_speletajs.configure(background='white')
                 poga_dators.configure(background='green')
-                izveletais_sacejs = "1"
-                print(izveletais_sacejs)
         
         # Funkcija maina krāsu izvēlētā algoritma pogai uz zaļu
-        def mainit_krasu_algoritms(algoritms):
+        def mainit_krasu_algoritms(in_algoritms):
             global izveletais_algoritms
             self.algoritms_status = True
-            if algoritms == "Minimax":
-                self.algoritms = "minimax"
+            if in_algoritms == "Minimax":
+                Izvelne.algoritms = "minimax"
                 poga_minimax.configure(background='green')
                 poga_alfabeta.configure(background='white')
                 izveletais_algoritms = "minimax"
                 print(izveletais_algoritms)
-            elif algoritms == "Alfabeta":
-                self.algoritms = "alfabeta"
+            elif in_algoritms == "Alfabeta":
+                Izvelne.algoritms = "alfabeta"
                 poga_alfabeta.configure(background='green')
                 poga_minimax.configure(background='white')
                 izveletais_algoritms = "alfabeta"

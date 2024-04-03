@@ -148,15 +148,18 @@ def taisi_koku(speles_skaitlis, in_sacejs, algoritms):
     #Tiek izsaukta attiecīgā spēle ar iedotajiem spēlētāja un algoritma parametriem
     sacejs = in_sacejs
     if algoritms == "minimax":
-        sacejs = input("izvēlieties, kurš sāks pirmais. Ievadiet 1, lai spēli sāktu dators vai 2, lai spēli sāktu cilvēks\n1. dators\n2. cilvēks\n")
         if sacejs == "dators":
+            print("Izsaucu minimax dators")
             spele_minimax(sacejs, atk_virsotnes[0],False)
         elif sacejs == "cilvēks":
+            print("Izsaucu minimax cilveks")
             spele_minimax(sacejs, atk_virsotnes[0],False)
     elif algoritms == "alfabeta":
         if sacejs == "dators":
+            print("Izsaucu alfabeta dators")
             spele_alphabeta(sacejs, atk_virsotnes[0],False)
         elif sacejs == "cilvēks":
+            print("Izsaucu alfabeta cilveks")
             spele_alphabeta(sacejs, atk_virsotnes[0],False)
 
 
@@ -260,26 +263,7 @@ def rezultats(virsotne):
         print(f"Uzvar pirmais spēlētājs {virsotne[2]}:{virsotne[3]}")
     elif virsotne[2] < virsotne[3]:
         print(f"Uzvar otrais spēlētājs {virsotne[2]}:{virsotne[3]}")
-
-def speles_pirmais_gajiens(algoritms,kurs_sak):
-    global sacejs
-    sacejs = kurs_sak
-    if algoritms == "minimax":
-        if sacejs == "1":
-            nakamais_gajiens = spele_minimax("dators", atk_virsotnes[0],False)
-            return nakamais_gajiens
-        elif sacejs == "2":
-            nakamais_gajiens = spele_minimax("cilvēks", atk_virsotnes[0],False)
-            return nakamais_gajiens
-    elif algoritms == "alfabeta":
-        if sacejs == "1":
-            nakamais_gajiens = spele_alphabeta("dators", atk_virsotnes[0],False)
-            return nakamais_gajiens
-        elif sacejs == "2":
-            nakamais_gajiens = spele_alphabeta("cilvēks", atk_virsotnes[0],False)
-            return nakamais_gajiens
         
-
 def spele_minimax(kurs_sak, virsotne,gen):
     print(f"{kurs_sak} iet un spēles skaitlis ir {str(virsotne[1])}")
     if (virsotne[1] %2 != 0 and virsotne[1] %3 !=0) or virsotne[1] <= 10:
