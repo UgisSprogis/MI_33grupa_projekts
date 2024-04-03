@@ -108,41 +108,59 @@ def gajiens(gajiena_tips,gen_virsotnes,pasreizeja_virsotne):
             sp.pievienot_loku(pasreizeja_virsotne[0],sp.virsotnes[i].id)
 
 #Izveido spēles koka objektu
-sp=SpelesKoks()
-#Izveido sarakstu, kurā tiks glabātas virsotnes
-gen_virsotnes = []
-#Izvēlas skaitli no saraksta
-speles_skaitlis = skaitla_izvele()
-#Izvada izvēlēto skaitli
-print("Spēles skaitlis ir:", speles_skaitlis)
-#Pievieno pirmo virsotni
-sp.pievienot_virsotni(Virsotne("A1", speles_skaitlis, 0, 0, 1))
-#Pievieno pirmo virsotni sarakstam
-gen_virsotnes.append(["A1", speles_skaitlis, 0, 0, 1])
-#Šis mainīgais skaita virsotnes. Sākas ar 2, tāpēc ka pirmā virsotne jau ir pievienota
-j=2
-#Kamēr virsotņu saraksts nav tukšs, tad tiek veikti gājieni
-while len(gen_virsotnes)>0:
-    pasreizeja_virsotne=gen_virsotnes[0]
-    #Tiek veikti gājieni, pēc kārtas 2 un 3, ja tie ir iespējami
-    gajiens('2',gen_virsotnes,pasreizeja_virsotne)
-    gajiens('3',gen_virsotnes,pasreizeja_virsotne)
-    #Pēc gājiena tiek izdzēsta virsotne no saraksta
-    gen_virsotnes.pop(0)
+def taisi_koku(speles_skaitlis, in_sacejs, algoritms):
+    global sp, dzilums, atk_virsotnes, max_limenis, j, sacejs
+    sp=SpelesKoks()
+    #Izveido sarakstu, kurā tiks glabātas virsotnes
+    gen_virsotnes = []
+    #Izvada izvēlēto skaitli
+    print("Spēles skaitlis ir:", speles_skaitlis)
+    #Pievieno pirmo virsotni
+    sp.pievienot_virsotni(Virsotne("A1", speles_skaitlis, 0, 0, 1))
+    #Pievieno pirmo virsotni sarakstam
+    gen_virsotnes.append(["A1", speles_skaitlis, 0, 0, 1])
+    #Šis mainīgais skaita virsotnes. Sākas ar 2, tāpēc ka pirmā virsotne jau ir pievienota
+    j=2
+    #Kamēr virsotņu saraksts nav tukšs, tad tiek veikti gājieni
+    while len(gen_virsotnes)>0:
+        pasreizeja_virsotne=gen_virsotnes[0]
+        #Tiek veikti gājieni, pēc kārtas 2 un 3, ja tie ir iespējami
+        gajiens('2',gen_virsotnes,pasreizeja_virsotne)
+        gajiens('3',gen_virsotnes,pasreizeja_virsotne)
+        #Pēc gājiena tiek izdzēsta virsotne no saraksta
+        gen_virsotnes.pop(0)
+    print("Koks tika uzgenerets")
 
 #########################################################################
 
-#Tiek noteikts maksimālais līmenis
-max_limenis = sp.virsotnes[len(sp.virsotnes)-1].limenis
-if max_limenis % 2 == 0:
-    dzilums = max_limenis / 2
-else:
-    dzilums = int(max_limenis / 2 ) + 1
+    #Tiek noteikts maksimālais līmenis
+    max_limenis = sp.virsotnes[len(sp.virsotnes)-1].limenis
+    if max_limenis % 2 == 0:
+        dzilums = max_limenis / 2
+    else:
+        dzilums = int(max_limenis / 2 ) + 1
 
-#Tiek izveidots saraksts ar visām virsotnēm
-atk_virsotnes=[]
-for x in sp.virsotnes:
-    atk_virsotnes.append([x.id,x.skaitlis,x.speletajs1,x.speletajs2,x.limenis])
+    #Tiek izveidots saraksts ar visām virsotnēm
+    atk_virsotnes=[]
+    for x in sp.virsotnes:
+        atk_virsotnes.append([x.id,x.skaitlis,x.speletajs1,x.speletajs2,x.limenis])
+
+    #Tiek izsaukta attiecīgā spēle ar iedotajiem spēlētāja un algoritma parametriem
+    sacejs = in_sacejs
+    if algoritms == "minimax":
+        sacejs = input("izvēlieties, kurš sāks pirmais. Ievadiet 1, lai spēli sāktu dators vai 2, lai spēli sāktu cilvēks\n1. dators\n2. cilvēks\n")
+        if sacejs == "dators":
+            spele_minimax(sacejs, atk_virsotnes[0],False)
+        elif sacejs == "cilvēks":
+            spele_minimax(sacejs, atk_virsotnes[0],False)
+    elif algoritms == "alfabeta":
+        if sacejs == "dators":
+            spele_alphabeta(sacejs, atk_virsotnes[0],False)
+        elif sacejs == "cilvēks":
+            spele_alphabeta(sacejs, atk_virsotnes[0],False)
+
+
+
 #Tiek izveidota funkcija, kas atgriež visus bērnus no konkrētas virsotnes
 def berni(pasreizeja_virsotne):
     berni = []
@@ -260,32 +278,7 @@ def speles_pirmais_gajiens(algoritms,kurs_sak):
         elif sacejs == "2":
             nakamais_gajiens = spele_alphabeta("cilvēks", atk_virsotnes[0],False)
             return nakamais_gajiens
-            
-            
-
-
-def pirmais_gajiens_minimax():
-    global sacejs
-    sacejs = input("izvēlieties, kurš sāks pirmais. Ievadiet 1, lai spēli sāktu dators vai 2, lai spēli sāktu cilvēks\n1. dators\n2. cilvēks\n")
-    if sacejs == "1":
-        spele_minimax("dators", atk_virsotnes[0],False)
-    elif sacejs == "2":
-        spele_minimax("cilvēks", atk_virsotnes[0],False)
-
-def pirmais_gajiens_alphabeta():
-    global sacejs
-    sacejs = input("izvēlieties, kurš sāks pirmais. Ievadiet 1, lai spēli sāktu dators vai 2, lai spēli sāktu cilvēks\n1. dators\n2. cilvēks\n")
-    if sacejs == "1":
-        spele_alphabeta("dators", atk_virsotnes[0],False)
-    elif sacejs == "2":
-        spele_alphabeta("cilvēks", atk_virsotnes[0],False)
-
-def izvelies_algoritmu():
-    algoritms = input("Izvēlies algoritmu, ar kuru vēlies spēlēt: 1 - MiniMax, 2 - AlphaBeta\n")
-    if algoritms == "1":
-        pirmais_gajiens_minimax()
-    elif algoritms == "2":
-        pirmais_gajiens_alphabeta()
+        
 
 def spele_minimax(kurs_sak, virsotne,gen):
     print(f"{kurs_sak} iet un spēles skaitlis ir {str(virsotne[1])}")
@@ -527,10 +520,3 @@ def spele_alphabeta(kurs_sak, virsotne, generets):
             else:
                 print("Ar jusu skaitli:", cilveka_gajiens, "nevar iegut veselo rezulatatu")
                 spele_alphabeta("cilvēks", virsotne, generets)
-
-def sak_spele():
-    speles_sakums = input("Ievadiet 1, lai sāktu spēli un 2 lai beigtu spēli\n1. Sākt\n2. Beigt\n")
-    if speles_sakums == "1":
-        izvelies_algoritmu()
-
-sak_spele()

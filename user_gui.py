@@ -94,6 +94,8 @@ class Izvelne(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.speletajs_status = False
         self.algoritms_status = False
+        self.speletajs = ""
+        self.algoritms = ""
         Frame.columnconfigure(self, 0, weight=2)
         Frame.columnconfigure(self, 1, weight=2)
         Frame.columnconfigure(self, 2, weight=1)
@@ -140,11 +142,13 @@ class Izvelne(tk.Frame):
             global izveletais_sacejs
             self.speletajs_status = True
             if speletajs == "Speletajs":
+                self.speletajs = "speletajs"
                 poga_speletajs.configure(background='green')
                 poga_dators.configure(background='white')
                 izveletais_sacejs = "2"
                 print(izveletais_sacejs)
             elif speletajs == "Dators":
+                self.speletajs = "dators"
                 poga_speletajs.configure(background='white')
                 poga_dators.configure(background='green')
                 izveletais_sacejs = "1"
@@ -155,11 +159,13 @@ class Izvelne(tk.Frame):
             global izveletais_algoritms
             self.algoritms_status = True
             if algoritms == "Minimax":
+                self.algoritms = "minimax"
                 poga_minimax.configure(background='green')
                 poga_alfabeta.configure(background='white')
                 izveletais_algoritms = "minimax"
                 print(izveletais_algoritms)
             elif algoritms == "Alfabeta":
+                self.algoritms = "alfabeta"
                 poga_alfabeta.configure(background='green')
                 poga_minimax.configure(background='white')
                 izveletais_algoritms = "alfabeta"
@@ -198,38 +204,37 @@ class Skaitli(tk.Frame):
     def __init__(self, parent, controller): 
         tk.Frame.__init__(self, parent)
         self.skailtlis_status = False
+        self.izveletais_skaitlis = 0
         pieci_skaitli = speles_skaitli()
         Frame.columnconfigure(self, 0, weight=0)
         Frame.columnconfigure(self, 1, weight=2)
         Frame.columnconfigure(self, 2, weight=0)
-        
         Frame.rowconfigure(self, 0, weight=1)
         Frame.rowconfigure(self, 1, weight=1)
         Frame.rowconfigure(self, 2, weight=1)
         Frame.rowconfigure(self, 3, weight=1)
         Frame.rowconfigure(self, 4, weight=1)
-      
         Frame.configure(self, bg='gray')
         Label(self, text = 'IZVĒLIES SKAITLI', 
                     font=font.Font(family='Arial', size=26, weight="bold"), background='white').grid(row=0, columnspan=5)
         skaitlis1 = Button(self, text = pieci_skaitli[0], bd=0, borderwidth=0, width=10, background='white', command = 
-                lambda:mainit_krasu_skaitlis("skaitlis1"), font=font.Font(family='Arial', size=18, weight="bold"))
+                lambda:[mainit_krasu_skaitlis("skaitlis1"),set_skaitlis(pieci_skaitli[0])], font=font.Font(family='Arial', size=18, weight="bold"))
         skaitlis1.grid( row=1, column=1, padx=5, pady=5, sticky='n')
 
         skaitlis2 = Button(self, text = pieci_skaitli[1], bd=0, borderwidth=0, width=10, background='white', command = 
-                lambda:mainit_krasu_skaitlis("skaitlis2"), font=font.Font(family='Arial', size=18, weight="bold"))
+                lambda:[mainit_krasu_skaitlis("skaitlis2"),set_skaitlis(pieci_skaitli[1])], font=font.Font(family='Arial', size=18, weight="bold"))
         skaitlis2.grid(row=2, column=1, padx=5, pady=5, sticky='n')
 
         skaitlis3 = Button(self, text = pieci_skaitli[2], bd=0, borderwidth=0, width=10, background='white', command = 
-                lambda:mainit_krasu_skaitlis("skaitlis3"), font=font.Font(family='Arial', size=18, weight="bold"))
+                lambda:[mainit_krasu_skaitlis("skaitlis3"),set_skaitlis(pieci_skaitli[2])], font=font.Font(family='Arial', size=18, weight="bold"))
         skaitlis3.grid( row=3, column=1, padx=5, pady=5, sticky='n')
 
         skaitlis4 = Button(self, text = pieci_skaitli[3], bd=0, borderwidth=0, width=10, background='white', command = 
-                lambda:mainit_krasu_skaitlis("skaitlis4"), font=font.Font(family='Arial', size=18, weight="bold"))
+                lambda:[mainit_krasu_skaitlis("skaitlis4"),set_skaitlis(pieci_skaitli[3])], font=font.Font(family='Arial', size=18, weight="bold"))
         skaitlis4.grid( row=4, column=1, padx=5, pady=5, sticky='n')
 
         skaitlis5 = Button(self, text = pieci_skaitli[4], bd=0, borderwidth=0, width=10, background='white', command = 
-                lambda:mainit_krasu_skaitlis("skaitlis5"), font=font.Font(family='Arial', size=18, weight="bold"))
+                lambda:[mainit_krasu_skaitlis("skaitlis5"),set_skaitlis(pieci_skaitli[4])], font=font.Font(family='Arial', size=18, weight="bold"))
         skaitlis5.grid( row=5, column=1, padx=5, pady=5, sticky='n')
 
         poga_turpinat = Button(self, text = '>>>>>>>', bd=0, borderwidth=0, width=10, background='white', command = 
@@ -241,7 +246,9 @@ class Skaitli(tk.Frame):
         poga_turpinat.grid( row=5, column=0, padx=5, pady=5, sticky='sw')
 
 
-        
+        def set_skaitlis(skaitlis):
+            self.izveletais_skaitlis = skaitlis
+
         def mainit_krasu_skaitlis(skaitlis):
             self.skailtlis_status = True
             skaitlis_buttons = [skaitlis1, skaitlis2, skaitlis3, skaitlis4, skaitlis5]
@@ -253,6 +260,9 @@ class Skaitli(tk.Frame):
         def turpinat():
             if not self.skailtlis_status:
                 messagebox.showerror('Spēles kļūda', 'Izvēlieties spēles skaitli.')
+                taisi_koku(self.izveletais_skaitlis, self.speletajs.get())
+                print("Speletajs get")
+                print(self.speletajs.get())
                 reset()
             else:
                 controller.show_frame(Spele)
