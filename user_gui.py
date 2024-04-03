@@ -7,6 +7,9 @@ from tkinter import messagebox
 # Pamācība un koda struktūra ņemta no https://www.geeksforgeeks.org/python-gui-tkinter/
 # https://www.geeksforgeeks.org/tkinter-application-to-switch-between-different-page-frames/
 
+izveletais_algoritms = None
+izveletais_sacejs = None
+
 
 class tkinterApp(tk.Tk):
     # tkinterApp klases inicializēšana
@@ -30,7 +33,7 @@ class tkinterApp(tk.Tk):
 
         self.frames = {}
         # Katras lapas rāmja piešķiršana
-        for F in (Sakumlapa, Izvelne, Skaitli, Intervals, Beigas):
+        for F in (Sakumlapa, Izvelne, Skaitli, Intervals, Beigas, Spele):
             frame = F(container, self)
             self.frames[F] = frame 
             frame.grid(row = 0, column = 0, sticky ="nsew")
@@ -134,23 +137,33 @@ class Izvelne(tk.Frame):
         
         # Funkcija maina krāsu izvēlētā spēlētāja pogai uz zaļu
         def mainit_krasu_speletajs(speletajs):
+            global izveletais_sacejs
             self.speletajs_status = True
             if speletajs == "Speletajs":
                 poga_speletajs.configure(background='green')
                 poga_dators.configure(background='white')
+                izveletais_sacejs = "2"
+                print(izveletais_sacejs)
             elif speletajs == "Dators":
                 poga_speletajs.configure(background='white')
                 poga_dators.configure(background='green')
+                izveletais_sacejs = "1"
+                print(izveletais_sacejs)
         
         # Funkcija maina krāsu izvēlētā algoritma pogai uz zaļu
         def mainit_krasu_algoritms(algoritms):
+            global izveletais_algoritms
             self.algoritms_status = True
             if algoritms == "Minimax":
                 poga_minimax.configure(background='green')
                 poga_alfabeta.configure(background='white')
+                izveletais_algoritms = "minimax"
+                print(izveletais_algoritms)
             elif algoritms == "Alfabeta":
                 poga_alfabeta.configure(background='green')
                 poga_minimax.configure(background='white')
+                izveletais_algoritms = "alfabeta"
+                print(izveletais_algoritms)
         
         # Funkcija, kas pārbauda, vai viens no katra dotā parametra ir izvēlēts un ved uz nākošo lapu
         # Gadījumā, ja nav izvēlēts kāds no nepieciešamajiem parametriem, tiek izvadīta kļūda
@@ -242,7 +255,7 @@ class Skaitli(tk.Frame):
                 messagebox.showerror('Spēles kļūda', 'Izvēlieties spēles skaitli.')
                 reset()
             else:
-                controller.show_frame(Intervals)
+                controller.show_frame(Spele)
                 reset()
         def atpakal():
             controller.show_frame(Izvelne)
@@ -298,6 +311,91 @@ class Intervals(tk.Frame):
         def mainit():
             self.from_entry.delete(0, 'end')
             self.to_entry.delete(0, 'end')
+
+class Spele(tk.Frame):
+    # Klases inicializēšana
+    def __init__(self, parent, controller):
+        # Rāmja inicializācija un loga sadalījums režģos
+        tk.Frame.__init__(self, parent)
+        Frame.columnconfigure(self, 0, weight=2)
+        Frame.columnconfigure(self, 1, weight=2)
+        Frame.columnconfigure(self, 2, weight=1)
+        Frame.columnconfigure(self, 3, weight=2)
+        Frame.columnconfigure(self, 4, weight=2)
+        Frame.rowconfigure(self, 0, weight=1)
+        Frame.rowconfigure(self, 1, weight=1)
+        Frame.rowconfigure(self, 2, weight=1)
+        Frame.rowconfigure(self, 3, weight=1)
+        Frame.rowconfigure(self, 4, weight=1)
+        Frame.rowconfigure(self, 5, weight=1)
+        Frame.rowconfigure(self, 6, weight=1)
+        Frame.rowconfigure(self, 7, weight=1)
+        Frame.rowconfigure(self, 8, weight=1)
+        Frame.rowconfigure(self, 9, weight=1)
+        Frame.configure(self, bg='gray')
+
+        punkti = Label(self, text = '0:0', 
+                    font=font.Font(family='Arial', size=15), background='white')
+        punkti.grid_remove()
+
+        pasreizejais_speles_skaitlis = Label(self, text = 'Spele', 
+                    font=font.Font(family='Arial', size=26, weight="bold"), background='white')
+        pasreizejais_speles_skaitlis.grid(row=1, columnspan=5)
+
+        gajiena_status = Label(self, text = 'Šobrīd gājienu veic:', 
+                    font=font.Font(family='Arial', size=15), background='white')
+        gajiena_status.grid_remove()
+
+        def next_move(gajiens,virsotne,generets):
+            global next_virsotne
+            global jauns_gajiens
+            global punktu_skaits
+            if izveletais_sacejs == "1":
+                punktu_skaits = str(virsotne[2]) + ":" + str(virsotne[3])
+            elif izveletais_sacejs == "2":
+                 punktu_skaits = str(virsotne[3]) + ":" + str(virsotne[2])
+            punkti.config(text = punktu_skaits)
+            next_virsotne = virsotne[1]
+            pasreizejais_speles_skaitlis.config(text = next_virsotne)
+            jauns_gajiens = "Šobrīd gājienu veic:" + gajiens
+            gajiena_status.config(text = jauns_gajiens)
+            
+            if izveletais_algoritms == "minimax":
+                if gajiens == "dators":
+                    print
+
+                elif gajiens == "cilvēks":
+                    print
+            
+            elif izveletais_algoritms == "alfabeta":
+                if gajiens == "dators":
+                    nakamais_gajiens = spele_alphabeta(gajiens,virsotne,generets)
+                    next_move(nakamais_gajiens[0], nakamais_gajiens[1], nakamais_gajiens[2])
+
+
+                elif gajiens == "cilvēks":
+                    print
+
+
+        def pirmais_gajiens():
+            global my_text
+            my_text = izveletais_algoritms
+            pasreizejais_speles_skaitlis.config(text = my_text)
+            nakamais_gajiens = speles_pirmais_gajiens(izveletais_algoritms, izveletais_sacejs)
+            next_move(nakamais_gajiens[0], nakamais_gajiens[1], nakamais_gajiens[2])
+                    
+        def start():
+            gajiena_status.grid(row=2, columnspan=5)
+            punkti.grid(row=0, columnspan=5)
+            poga_start.destroy()
+            self.after(2000, lambda: pirmais_gajiens())
+        
+        poga_start = Button(self, text = "START", bd=0, borderwidth=0, width=10, background='white', command = start, 
+               font=font.Font(family='Arial', size=18, weight="bold"))
+        poga_start.grid(row=5, columnspan=5)
+
+
+        
 
 class Beigas(tk.Frame):
     # Beigas, kur tiek atspoguļota uzvara vai zaude

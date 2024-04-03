@@ -243,6 +243,27 @@ def rezultats(virsotne):
     elif virsotne[2] < virsotne[3]:
         print(f"Uzvar otrais spēlētājs {virsotne[2]}:{virsotne[3]}")
 
+def speles_pirmais_gajiens(algoritms,kurs_sak):
+    global sacejs
+    sacejs = kurs_sak
+    if algoritms == "minimax":
+        if sacejs == "1":
+            nakamais_gajiens = spele_minimax("dators", atk_virsotnes[0],False)
+            return nakamais_gajiens
+        elif sacejs == "2":
+            nakamais_gajiens = spele_minimax("cilvēks", atk_virsotnes[0],False)
+            return nakamais_gajiens
+    elif algoritms == "alfabeta":
+        if sacejs == "1":
+            nakamais_gajiens = spele_alphabeta("dators", atk_virsotnes[0],False)
+            return nakamais_gajiens
+        elif sacejs == "2":
+            nakamais_gajiens = spele_alphabeta("cilvēks", atk_virsotnes[0],False)
+            return nakamais_gajiens
+            
+            
+
+
 def pirmais_gajiens_minimax():
     global sacejs
     sacejs = input("izvēlieties, kurš sāks pirmais. Ievadiet 1, lai spēli sāktu dators vai 2, lai spēli sāktu cilvēks\n1. dators\n2. cilvēks\n")
@@ -424,27 +445,27 @@ def spele_alphabeta(kurs_sak, virsotne, generets):
                         datora_izvele = nakosais_gajiens[0]
                         datora_dalitajs = virsotne[1]/datora_izvele[1]
                         print("Dators izvēlējās sadalit ar:", datora_dalitajs)
-                        spele_alphabeta("cilvēks", nakosais_gajiens[0], generets)
+                        return("cilvēks", nakosais_gajiens[0], generets)
                     else:
                         datora_izvele = nakosais_gajiens[1]
                         datora_dalitajs = virsotne[1]/datora_izvele[1]
                         print("Dators izvēlējās sadalit ar:", datora_dalitajs)
-                        spele_alphabeta("cilvēks", nakosais_gajiens[1], generets)
+                        return("cilvēks", nakosais_gajiens[1], generets)
                 elif nakosais_gajiens[0][5] == result and nakosais_gajiens[1][5] != result:
                     datora_izvele = nakosais_gajiens[0]
                     datora_dalitajs = virsotne[1]/datora_izvele[1]
                     print("Dators izvēlējās sadalit ar:", datora_dalitajs)
-                    spele_alphabeta("cilvēks", nakosais_gajiens[0], generets)
+                    return("cilvēks", nakosais_gajiens[0], generets)
                 elif nakosais_gajiens[1][5] == result and nakosais_gajiens[0][5] != result:
                     datora_izvele = nakosais_gajiens[1]
                     datora_dalitajs = virsotne[1]/datora_izvele[1]
                     print("Dators izvēlējās sadalit ar:", datora_dalitajs)
-                    spele_alphabeta("cilvēks", nakosais_gajiens[1], generets)
+                    return("cilvēks", nakosais_gajiens[1], generets)
             elif len(nakosais_gajiens) == 1:
                     datora_izvele = nakosais_gajiens
                     datora_dalitajs = virsotne[1]/datora_izvele[0][1]
                     print("Dators izvēlējās sadalit ar:", datora_dalitajs)
-                    spele_alphabeta("cilvēks", nakosais_gajiens[0], generets)
+                    return("cilvēks", nakosais_gajiens[0], generets)
         elif kurs_sak == "cilvēks":
             nakama_virsotne = 0
             cilveka_gajiens = input("Ievadiet skaitli, ar kuru vēlaties dalīt pašreizējo skaitli: 2 vai 3\n")
@@ -502,7 +523,7 @@ def spele_alphabeta(kurs_sak, virsotne, generets):
                                 if (y[1] == result) and ((virsotne[2]+3)==y[2]) and ((virsotne[3])==y[3]):
                                     nakama_virsotne = y
                                     break
-                spele_alphabeta("dators", nakama_virsotne, generets)
+                return("dators", nakama_virsotne, generets)
             else:
                 print("Ar jusu skaitli:", cilveka_gajiens, "nevar iegut veselo rezulatatu")
                 spele_alphabeta("cilvēks", virsotne, generets)
