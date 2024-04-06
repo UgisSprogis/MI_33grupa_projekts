@@ -147,21 +147,14 @@ def taisi_koku(speles_skaitlis, in_sacejs, algoritms):
 
     #Tiek izsaukta attiecīgā spēle ar iedotajiem spēlētāja un algoritma parametriem
     sacejs = in_sacejs
-    if algoritms == "minimax":
-        if sacejs == "dators":
-            print("Izsaucu minimax dators")
-            spele_minimax(sacejs, atk_virsotnes[0],False)
-        elif sacejs == "cilvēks":
-            print("Izsaucu minimax cilveks")
-            spele_minimax(sacejs, atk_virsotnes[0],False)
-    elif algoritms == "alfabeta":
-        if sacejs == "dators":
-            print("Izsaucu alfabeta dators")
-            spele_alphabeta(sacejs, atk_virsotnes[0],False)
-        elif sacejs == "cilvēks":
-            print("Izsaucu alfabeta cilveks")
-            spele_alphabeta(sacejs, atk_virsotnes[0],False)
-
+    if sacejs == "dators":
+        if algoritms == "minimax":
+            datora_atbilde = spele_minimax(sacejs, atk_virsotnes[0],False,0)
+        elif algoritms == "alfabeta":
+            datora_atbilde = spele_alphabeta(sacejs, atk_virsotnes[0],False,0)
+        return datora_atbilde[1]
+    else:
+        return atk_virsotnes[0]
 
 
 #Tiek izveidota funkcija, kas atgriež visus bērnus no konkrētas virsotnes
@@ -264,7 +257,7 @@ def rezultats(virsotne):
     elif virsotne[2] < virsotne[3]:
         print(f"Uzvar otrais spēlētājs {virsotne[2]}:{virsotne[3]}")
         
-def spele_minimax(kurs_sak, virsotne,gen):
+def spele_minimax(kurs_sak, virsotne,gen, dalitajs):
     print(f"{kurs_sak} iet un spēles skaitlis ir {str(virsotne[1])}")
     if (virsotne[1] %2 != 0 and virsotne[1] %3 !=0) or virsotne[1] <= 10:
         rezultats(virsotne)
@@ -298,35 +291,31 @@ def spele_minimax(kurs_sak, virsotne,gen):
                         datora_izvele = nakosais_gajiens[1]
                         datora_dalitajs = virsotne[1]/datora_izvele[1]
                         print("Dators izvēlējās dalīt ar: ", datora_dalitajs)
-                        spele_minimax("cilvēks", nakosais_gajiens[0],gen)
                     else:
                         datora_izvele = nakosais_gajiens[0]
                         datora_dalitajs = virsotne[1]/datora_izvele[1]
                         print("Dators izvēlējās dalīt ar: ", datora_dalitajs)
-                        spele_minimax("cilvēks", nakosais_gajiens[0],gen)
                 elif (pirmais == result) and (otrais != result):
                     datora_izvele = nakosais_gajiens[0]
                     datora_dalitajs = virsotne[1]/datora_izvele[1]
                     print("Dators izvēlējās dalīt ar: ", datora_dalitajs)
-                    spele_minimax("cilvēks", nakosais_gajiens[0],gen)
                 elif (otrais == result) and (pirmais != result):
                     datora_izvele = nakosais_gajiens[1]
                     datora_dalitajs = virsotne[1]/datora_izvele[1]
                     print("Dators izvēlējās dalīt ar: ", datora_dalitajs)
-                    spele_minimax("cilvēks", nakosais_gajiens[1],gen)
             elif len(nakosais_gajiens) == 1:
                 datora_izvele = nakosais_gajiens
                 datora_dalitajs = virsotne[1]/datora_izvele[0][1]
                 print("Dators izvēlējās dalīt ar: ", datora_dalitajs)
-                spele_minimax("cilvēks", nakosais_gajiens[0],gen)
+            return ("cilvēks", nakosais_gajiens[0],gen)
         if kurs_sak == "cilvēks":
             print("Jūsu gājiens")
             nakama_virsotne = 0
-            cilveka_gajiens = input("Ievadiet skaitli, ar kuru vēlaties dalīt pašreizējo skaitli: 2 vai 3\n")
-            if ((virsotne[1] % int(cilveka_gajiens)) == 0) and ((cilveka_gajiens == "2") or (cilveka_gajiens == "3")):
+            cilveka_gajiens = dalitajs
+            if ((virsotne[1] % int(cilveka_gajiens)) == 0) and ((cilveka_gajiens == 2) or (cilveka_gajiens == 3)):
                 result = virsotne[1] / int(cilveka_gajiens)
                 if sacejs == "1":
-                    if cilveka_gajiens == "2":
+                    if cilveka_gajiens == 2:
                         for x in atk_virsotnes:
                             if (x[1] == result) and ((virsotne[2]+2)==x[2]) and ((virsotne[3])==x[3]):
                                 nakama_virsotne = x
@@ -341,7 +330,7 @@ def spele_minimax(kurs_sak, virsotne,gen):
                             if x.limenis > dzilums:
                                 gen = True
                                 atk_virsotnes.append([x.id,x.skaitlis,x.speletajs1,x.speletajs2,x.limenis])
-                        if cilveka_gajiens == "2":
+                        if cilveka_gajiens == 2:
                             for y in atk_virsotnes:
                                 if (y[1] == result) and ((virsotne[2]+2)==y[2]) and ((virsotne[3])==y[3]):
                                     nakama_virsotne = y
@@ -352,7 +341,7 @@ def spele_minimax(kurs_sak, virsotne,gen):
                                     nakama_virsotne = y
                                     break
                 else:
-                    if cilveka_gajiens == "2":
+                    if cilveka_gajiens == 2:
                         for x in atk_virsotnes:
                             if (x[1] == result) and ((virsotne[2])==x[2]) and ((virsotne[3]+2)==x[3]):
                                 nakama_virsotne = x
@@ -367,7 +356,7 @@ def spele_minimax(kurs_sak, virsotne,gen):
                             if x.limenis > dzilums:
                                 gen = True
                                 atk_virsotnes.append([x.id,x.skaitlis,x.speletajs1,x.speletajs2,x.limenis])
-                        if cilveka_gajiens == "2":
+                        if cilveka_gajiens == 2:
                             for y in atk_virsotnes:
                                 if (y[1] == result) and ((virsotne[2])==y[2]) and ((virsotne[3]+2)==y[3]):
                                     nakama_virsotne = y
@@ -377,12 +366,12 @@ def spele_minimax(kurs_sak, virsotne,gen):
                                 if (y[1] == result) and ((virsotne[2]+3)==y[2]) and ((virsotne[3])==y[3]):
                                     nakama_virsotne = y
                                     break
-                spele_minimax("dators", nakama_virsotne,gen)
+                spele_minimax("dators", nakama_virsotne,gen,0)
             else:
                 print("Nepareiza gājiena izvēle")
-                spele_minimax("cilvēks", virsotne,gen)
+                spele_minimax("cilvēks", virsotne,gen,0)
 
-def spele_alphabeta(kurs_sak, virsotne, generets):
+def spele_alphabeta(kurs_sak, virsotne, generets, dalitajs):
     print("Pašreizejais skaitlis:",virsotne[1])
     if virsotne[1] %2 != 0 and virsotne[1] %3 or virsotne[1] <= 10:
         rezultats(virsotne)
@@ -422,34 +411,30 @@ def spele_alphabeta(kurs_sak, virsotne, generets):
                         datora_izvele = nakosais_gajiens[0]
                         datora_dalitajs = virsotne[1]/datora_izvele[1]
                         print("Dators izvēlējās sadalit ar:", datora_dalitajs)
-                        return("cilvēks", nakosais_gajiens[0], generets)
                     else:
                         datora_izvele = nakosais_gajiens[1]
                         datora_dalitajs = virsotne[1]/datora_izvele[1]
                         print("Dators izvēlējās sadalit ar:", datora_dalitajs)
-                        return("cilvēks", nakosais_gajiens[1], generets)
                 elif nakosais_gajiens[0][5] == result and nakosais_gajiens[1][5] != result:
                     datora_izvele = nakosais_gajiens[0]
                     datora_dalitajs = virsotne[1]/datora_izvele[1]
                     print("Dators izvēlējās sadalit ar:", datora_dalitajs)
-                    return("cilvēks", nakosais_gajiens[0], generets)
                 elif nakosais_gajiens[1][5] == result and nakosais_gajiens[0][5] != result:
                     datora_izvele = nakosais_gajiens[1]
                     datora_dalitajs = virsotne[1]/datora_izvele[1]
                     print("Dators izvēlējās sadalit ar:", datora_dalitajs)
-                    return("cilvēks", nakosais_gajiens[1], generets)
             elif len(nakosais_gajiens) == 1:
                     datora_izvele = nakosais_gajiens
                     datora_dalitajs = virsotne[1]/datora_izvele[0][1]
                     print("Dators izvēlējās sadalit ar:", datora_dalitajs)
-                    return("cilvēks", nakosais_gajiens[0], generets)
+            return("cilvēks", nakosais_gajiens[0], generets)
         elif kurs_sak == "cilvēks":
             nakama_virsotne = 0
-            cilveka_gajiens = input("Ievadiet skaitli, ar kuru vēlaties dalīt pašreizējo skaitli: 2 vai 3\n")
+            cilveka_gajiens = dalitajs
             if virsotne[1] % int(cilveka_gajiens) == 0:
                 result = virsotne[1] / int(cilveka_gajiens)
                 if sacejs == "1":
-                    if cilveka_gajiens == "2":
+                    if cilveka_gajiens == 2:
                         for x in atk_virsotnes:
                             if (x[1] == result) and ((virsotne[2]+2)==x[2]) and ((virsotne[3])==x[3]):
                                 nakama_virsotne = x
@@ -464,7 +449,7 @@ def spele_alphabeta(kurs_sak, virsotne, generets):
                             if x.limenis > dzilums:
                                 generets = True
                                 atk_virsotnes.append([x.id,x.skaitlis,x.speletajs1,x.speletajs2,x.limenis])
-                        if cilveka_gajiens == "2":
+                        if cilveka_gajiens == 2:
                             for y in atk_virsotnes:
                                 if (y[1] == result) and ((virsotne[2]+2)==y[2]) and ((virsotne[3])==y[3]):
                                     nakama_virsotne = y
@@ -475,7 +460,7 @@ def spele_alphabeta(kurs_sak, virsotne, generets):
                                     nakama_virsotne = y
                                     break
                 else:
-                    if cilveka_gajiens == "2":
+                    if cilveka_gajiens == 2:
                         for x in atk_virsotnes:
                             if (x[1] == result) and ((virsotne[2])==x[2]) and ((virsotne[3]+2)==x[3]):
                                 nakama_virsotne = x
@@ -490,7 +475,7 @@ def spele_alphabeta(kurs_sak, virsotne, generets):
                             if x.limenis > dzilums:
                                 generets = True
                                 atk_virsotnes.append([x.id,x.skaitlis,x.speletajs1,x.speletajs2,x.limenis])
-                        if cilveka_gajiens == "2":
+                        if cilveka_gajiens == 2:
                             for y in atk_virsotnes:
                                 if (y[1] == result) and ((virsotne[2])==y[2]) and ((virsotne[3]+2)==y[3]):
                                     nakama_virsotne = y
@@ -500,7 +485,7 @@ def spele_alphabeta(kurs_sak, virsotne, generets):
                                 if (y[1] == result) and ((virsotne[2]+3)==y[2]) and ((virsotne[3])==y[3]):
                                     nakama_virsotne = y
                                     break
-                return("dators", nakama_virsotne, generets)
+                spele_alphabeta("dators", nakama_virsotne,generets,0)
             else:
                 print("Ar jusu skaitli:", cilveka_gajiens, "nevar iegut veselo rezulatatu")
-                spele_alphabeta("cilvēks", virsotne, generets)
+                spele_alphabeta("cilvēks", virsotne, generets, 0)
