@@ -265,7 +265,6 @@ class Skaitli(tk.Frame):
             else:
                 controller.show_frame(Spele)
                 Skaitli.koka_return = taisi_koku(self.izveletais_skaitlis, Izvelne.speletajs, Izvelne.algoritms)
-                print("Skaitli datora gajiens: " + str(Skaitli.koka_return))
                 reset()
 
         def atpakal():
@@ -382,12 +381,15 @@ class Spele(tk.Frame):
             if self.pirmais_gajiens:
                 if Izvelne.algoritms == 'minimax':
                     self.algoritms_atbilde = spele_minimax('cilvēks', Skaitli.koka_return, self.gen,dalitajs)
+                    self.algoritms_atbilde = spele_minimax('dators', self.algoritms_atbilde[1], self.gen,dalitajs)
                 else:
                     self.algoritms_atbilde = spele_alphabeta('cilvēks', Skaitli.koka_return, self.gen,dalitajs)
                 self.pirmais_gajiens = False
             else:
                 if Izvelne.algoritms == 'minimax':
                     self.algoritms_atbilde = spele_minimax('cilvēks', self.algoritms_atbilde[1], self.gen,dalitajs)
+                    self.algoritms_atbilde = spele_minimax('dators', self.algoritms_atbilde[1], self.gen,dalitajs)
+                    print(self.algoritms_atbilde)
                 else:
                     self.algoritms_atbilde = spele_alphabeta('cilvēks', self.algoritms_atbilde[1], self.gen,dalitajs)
         

@@ -253,14 +253,15 @@ def rezultats(virsotne):
     if virsotne[2] == virsotne[3]:
         print(f"Rezultāts ir neizšķirts {virsotne[2]}:{virsotne[3]}")
     elif virsotne[2] > virsotne[3]:
-        print(f"Uzvar pirmais spēlētājs {virsotne[2]}:{virsotne[3]}")
+        print(f"Uzvar dators {virsotne[2]}:{virsotne[3]}")
     elif virsotne[2] < virsotne[3]:
-        print(f"Uzvar otrais spēlētājs {virsotne[2]}:{virsotne[3]}")
+        print(f"Uzvar cilvēks {virsotne[2]}:{virsotne[3]}")
         
 def spele_minimax(kurs_sak, virsotne,gen, dalitajs):
     print(f"{kurs_sak} iet un spēles skaitlis ir {str(virsotne[1])}")
     if (virsotne[1] %2 != 0 and virsotne[1] %3 !=0) or virsotne[1] <= 10:
         rezultats(virsotne)
+        print("spele beidzas")
         return
     else:
         if kurs_sak == "dators":
@@ -291,30 +292,34 @@ def spele_minimax(kurs_sak, virsotne,gen, dalitajs):
                         datora_izvele = nakosais_gajiens[1]
                         datora_dalitajs = virsotne[1]/datora_izvele[1]
                         print("Dators izvēlējās dalīt ar: ", datora_dalitajs)
+                        return("cilvēks", nakosais_gajiens[0],gen)
                     else:
                         datora_izvele = nakosais_gajiens[0]
                         datora_dalitajs = virsotne[1]/datora_izvele[1]
                         print("Dators izvēlējās dalīt ar: ", datora_dalitajs)
+                        return("cilvēks", nakosais_gajiens[0],gen)
                 elif (pirmais == result) and (otrais != result):
                     datora_izvele = nakosais_gajiens[0]
                     datora_dalitajs = virsotne[1]/datora_izvele[1]
                     print("Dators izvēlējās dalīt ar: ", datora_dalitajs)
+                    return("cilvēks", nakosais_gajiens[0],gen)
                 elif (otrais == result) and (pirmais != result):
                     datora_izvele = nakosais_gajiens[1]
                     datora_dalitajs = virsotne[1]/datora_izvele[1]
                     print("Dators izvēlējās dalīt ar: ", datora_dalitajs)
+                    return("cilvēks", nakosais_gajiens[1],gen)
             elif len(nakosais_gajiens) == 1:
                 datora_izvele = nakosais_gajiens
                 datora_dalitajs = virsotne[1]/datora_izvele[0][1]
                 print("Dators izvēlējās dalīt ar: ", datora_dalitajs)
-            return ("cilvēks", nakosais_gajiens[0],gen)
+                return("cilvēks", nakosais_gajiens[0],gen)
         if kurs_sak == "cilvēks":
             print("Jūsu gājiens")
             nakama_virsotne = 0
             cilveka_gajiens = dalitajs
             if ((virsotne[1] % int(cilveka_gajiens)) == 0) and ((cilveka_gajiens == 2) or (cilveka_gajiens == 3)):
                 result = virsotne[1] / int(cilveka_gajiens)
-                if sacejs == "1":
+                if sacejs == "dators":
                     if cilveka_gajiens == 2:
                         for x in atk_virsotnes:
                             if (x[1] == result) and ((virsotne[2]+2)==x[2]) and ((virsotne[3])==x[3]):
@@ -366,11 +371,12 @@ def spele_minimax(kurs_sak, virsotne,gen, dalitajs):
                                 if (y[1] == result) and ((virsotne[2]+3)==y[2]) and ((virsotne[3])==y[3]):
                                     nakama_virsotne = y
                                     break
-                spele_minimax("dators", nakama_virsotne,gen,0)
+                return("dators", nakama_virsotne,gen)
             else:
                 print("Nepareiza gājiena izvēle")
-                spele_minimax("cilvēks", virsotne,gen,0)
+                spele_minimax("cilvēks", virsotne,gen)
 
+    
 def spele_alphabeta(kurs_sak, virsotne, generets, dalitajs):
     print("Pašreizejais skaitlis:",virsotne[1])
     if virsotne[1] %2 != 0 and virsotne[1] %3 or virsotne[1] <= 10:
@@ -433,7 +439,7 @@ def spele_alphabeta(kurs_sak, virsotne, generets, dalitajs):
             cilveka_gajiens = dalitajs
             if virsotne[1] % int(cilveka_gajiens) == 0:
                 result = virsotne[1] / int(cilveka_gajiens)
-                if sacejs == "1":
+                if sacejs == "dators":
                     if cilveka_gajiens == 2:
                         for x in atk_virsotnes:
                             if (x[1] == result) and ((virsotne[2]+2)==x[2]) and ((virsotne[3])==x[3]):
