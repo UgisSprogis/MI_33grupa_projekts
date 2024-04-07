@@ -46,8 +46,40 @@ class tkinterApp(tk.Tk):
         # How do I update "pasreizejais_speles_skaitlis" when switching to a new frame in tkinter?
         # <klases "Spele" kods
         if Skaitli.izveletais_skaitlis != 0:
+            datora_gajiens = Skaitli.izveletais_skaitlis/Skaitli.koka_return[1]
+            if datora_gajiens > 1:
+                frame.datora_gajiens.config(text=str('Dators izvēlējās: '+str(int(datora_gajiens))))
             frame.pasreizejais_speles_skaitlis.config(text=Skaitli.izveletais_skaitlis)
-            frame.gajiena_status.config(text='Šobrīd gājienu veic: ' + Izvelne.speletajs)
+            frame.gajiena_status.config(text='Šobrīd gājienu veic: CILVĒKS')
+            if datora_gajiens > 1:
+                frame.punkti.config(text=str(Skaitli.koka_return[3])+':'+str(Skaitli.koka_return[2]))
+
+        if Skaitli.koka_return:
+            frame.pasreizejais_speles_skaitlis.config(text=int(Skaitli.koka_return[1]))
+
+        if Skaitli.generet_skaitli and hasattr(frame, 'skaitlis1'):
+            if Intervals.num_from and Intervals.num_to:
+                Skaitli.pieci_skaitli = speles_skaitli(Intervals.num_from,Intervals.num_to)
+            else:
+                Skaitli.pieci_skaitli = speles_skaitli()
+            frame.pieci_skaitli = Skaitli.pieci_skaitli
+            frame.skaitlis1.config(text=Skaitli.pieci_skaitli[0])
+            frame.skaitlis2.config(text=Skaitli.pieci_skaitli[1])
+            frame.skaitlis3.config(text=Skaitli.pieci_skaitli[2])
+            frame.skaitlis4.config(text=Skaitli.pieci_skaitli[3])
+            frame.skaitlis5.config(text=Skaitli.pieci_skaitli[4])
+            Skaitli.generet_skaitli = None
+        
+        if Spele.uzvaretajs:
+            if Spele.uzvaretajs[1][2] < Spele.uzvaretajs[1][3]:
+                frame.teksts_small.config(text='DIEMŽĒL')
+                frame.teksts_big.config(text='TU ZAUDĒJI')
+            if Spele.uzvaretajs[1][2] == Spele.uzvaretajs[1][3]:
+                frame.teksts_small.config(text='REZULTĀTS')
+                frame.teksts_big.config(text='IR NEIZŠĶIRTS!')
+            frame.rezultats.config(text='Rezultāts: '+str(Spele.uzvaretajs[1][2])+':'+str(Spele.uzvaretajs[1][3]))
+            Spele.uzvaretajs = None
+            
 
 class Sakumlapa(tk.Frame):
     # Sākumlapa, kas satur vienu pogu un pamata informāciju par autoriem
@@ -82,10 +114,6 @@ class Sakumlapa(tk.Frame):
                         font=font.Font(family='Arial', size=18), background='white').grid(column=2, row=2, sticky='s', padx=7)
         Label(self, borderwidth=2, text = 'Sproģis', 
                         font=font.Font(family='Arial', size=18), background='white').grid(column=2, row=3, sticky='n', padx=7)
-        Label(self, borderwidth=2, text = 'Bernhards', 
-                        font=font.Font(family='Arial', size=18), background='white').grid(column=3, row=2, sticky='s', padx=7)
-        Label(self, text = 'Arnītis', 
-                        font=font.Font(family='Arial', size=18), background='white').grid(column=3, row=3, sticky='n', padx=7)
         Label(self, text = 'Sandijs', 
                         font=font.Font(family='Arial', size=18), background='white').grid(column=4, row=2, sticky='se', padx=7)
         Label(self, text = 'Sīlis', 
@@ -183,6 +211,7 @@ class Izvelne(tk.Frame):
                 elif not self.speletajs_status:
                     messagebox.showerror('Spēles kļūda', 'Izvēlieties, kurš uzsāks spēli.')
                 else:
+                    Skaitli.generet_skaitli = True
                     controller.show_frame(Skaitli)
                 reset()
             elif parametrs == "Papildus":
@@ -202,7 +231,7 @@ class Izvelne(tk.Frame):
 class Skaitli(tk.Frame):
     izveletais_skaitlis = 0
     koka_return = None
-
+    generet_skaitli = False
     def __init__(self, parent, controller): 
         tk.Frame.__init__(self, parent)
         self.skailtlis_status = False
@@ -263,8 +292,8 @@ class Skaitli(tk.Frame):
                 messagebox.showerror('Spēles kļūda', 'Izvēlieties spēles skaitli.')
                 reset()
             else:
-                controller.show_frame(Spele)
                 Skaitli.koka_return = taisi_koku(self.izveletais_skaitlis, Izvelne.speletajs, Izvelne.algoritms)
+                controller.show_frame(Spele)
                 reset()
 
         def atpakal():
@@ -281,7 +310,9 @@ class Skaitli(tk.Frame):
 
 
 
-class Intervals(tk.Frame):   
+class Intervals(tk.Frame):
+    num_from = None
+    num_to = None
     def __init__(self, parent, controller): 
         tk.Frame.__init__(self, parent)
         self.skailtlis_status = False
@@ -300,11 +331,11 @@ class Intervals(tk.Frame):
         
 
         tk.Label(self, text='No:', font=font.Font(family='Arial', size=18), background='gray').grid(row=1, column=0, sticky='e')
-        self.from_entry = tk.Entry(self, font=font.Font(family='Arial', size=18))
+        self.from_entry = Entry(self, font=font.Font(family='Arial', size=18))
         self.from_entry.grid(row=1, column=1, sticky='w')
 
         tk.Label(self, text='Līdz:', font=font.Font(family='Arial', size=18), background='gray').grid(row=2, column=0, sticky='e')
-        self.to_entry = tk.Entry(self, font=font.Font(family='Arial', size=18))
+        self.to_entry = Entry(self, font=font.Font(family='Arial', size=18))
         self.to_entry.grid(row=2, column=1, sticky='w')
 
 
@@ -318,11 +349,32 @@ class Intervals(tk.Frame):
 
 
         def mainit():
+            text_from = self.from_entry.get()
+            text_to = self.to_entry.get()
+            if text_from is None or text_to is None:
+                messagebox.showwarning(title='Tukšs', message='Ievadiet abas vērtības')
+            elif text_from.isnumeric() and text_to.isnumeric():
+                text_from = int(text_from)
+                text_to = int(text_to)
+                if text_from >= 10000 and text_to>text_from and text_to <= 50000 and text_to-text_from>=10000:
+                    Intervals.num_from = text_from
+                    Intervals.num_to = text_to
+                    Skaitli.generet_skaitli = True
+                    messagebox.showinfo(title='Intervāls', 
+                                           message='Intervāls ir veiksmīgi samainīts')
+                    controller.show_frame(Izvelne)
+                    
+                else:
+                    messagebox.showwarning(title='Nepareizs intervāls', 
+                                           message='Intervālam jābūt no 10000 līdz 50000 ar intervālu vienam no otra 10000')
+            else:
+                messagebox.showwarning(title='Nepareiza ievade', message='Ievadiet skaitliskas vērtības')
             self.from_entry.delete(0, 'end')
             self.to_entry.delete(0, 'end')
 
 
 class Spele(tk.Frame):
+    uzvaretajs = None
     # Klases inicializēšana
     def __init__(self, parent, controller):
         # Rāmja inicializācija un loga sadalījums režģos
@@ -346,6 +398,7 @@ class Spele(tk.Frame):
         self.algoritms_atbilde = None
         self.gen = False
         self.pirmais_gajiens = True
+        self.uzvarosa_virsotne = None
 
         self.punkti = Label(self, text = '0:0', 
                     font=font.Font(family='Arial', size=15), background='white')
@@ -353,6 +406,10 @@ class Spele(tk.Frame):
 
         self.text_speletajs = Label(self, text = 'SPĒLĒTĀJS', 
                     font=font.Font(family='Arial', size=15), background='white').grid(row=0, column=0)
+        
+        self.datora_gajiens = Label(self, text = 'Dators izvēlējās:', 
+                    font=font.Font(family='Arial', size=15), background='white')
+        self.datora_gajiens.grid(row=6, columnspan=5)
         
         self.text_speletajs = Label(self, text = 'DATORS', 
                     font=font.Font(family='Arial', size=15), background='white').grid(row=0, column=4)
@@ -366,36 +423,125 @@ class Spele(tk.Frame):
         self.gajiena_status.grid(row=4, columnspan=5, sticky='n')
         
         self.dali_2 = Button(self, text = ":2", bd=0, borderwidth=0, width=7, background='white', command = 
-                lambda:dali(2), font=font.Font(family='Arial', size=18, weight="bold")).grid( row=5, column=1)
+                lambda:dali(2), font=font.Font(family='Arial', size=18, weight="bold"))
+        self.dali_2.grid( row=5, column=1)
         
         self.dali_3 = Button(self, text = ":3", bd=0, borderwidth=0, width=7, background='white', command = 
-                lambda:dali(3), font=font.Font(family='Arial', size=18, weight="bold")).grid( row=5, column=3)
+                lambda:dali(3), font=font.Font(family='Arial', size=18, weight="bold"))
+        self.dali_3.grid( row=5, column=3)
         
         self.poga_atpakal = Button(self, text = "<<<<<<", bd=0, borderwidth=0, width=10, background='white', command = 
-                lambda:"", font=font.Font(family='Arial', size=18, weight="bold")).grid( row=9, column=0)
+                lambda:atpakal(), font=font.Font(family='Arial', size=18, weight="bold")).grid( row=9, column=0)
         
         self.poga_beigt = Button(self, text = 'BEIGT', bd=0, borderwidth=0, width=10, background='white', command = 
-                lambda:"", font=font.Font(family='Arial', size=18, weight="bold")).grid( row=9, column=4)
+                lambda:beigt(), font=font.Font(family='Arial', size=18, weight="bold")).grid( row=9, column=4)
         
+        def beigt():
+            atbilde = messagebox.askquestion("Iziet", "Vai jūs esat pārliecināts, ka vēlaties iziet?")
+            if atbilde == 'yes':
+                self.quit()
+
+        def atpakal():
+            atbilde = messagebox.askquestion("Atpakaļ", 
+                                "Vai jūs esat pārliecināts, ka vēlaties atgriezties uz sākumu? Tas beigs šobrīdējo spēli")
+            if atbilde == 'yes':
+                Skaitli.izveletais_skaitlis = 0
+                ieslegt_2(True)
+                ieslegt_3(True)
+                self.punkti.configure(text='0:0')
+                self.pirmais_gajiens = True
+                self.uzvarosa_virsotne = None
+                Skaitli.koka_return = None
+                self.datora_gajiens.config(text=str('Dators izvēlējās:'))
+                controller.show_frame(Izvelne)
+
         def dali(dalitajs):
             if self.pirmais_gajiens:
                 if Izvelne.algoritms == 'minimax':
                     self.algoritms_atbilde = spele_minimax('cilvēks', Skaitli.koka_return, self.gen,dalitajs)
-                    self.algoritms_atbilde = spele_minimax('dators', self.algoritms_atbilde[1], self.gen,dalitajs)
                 else:
                     self.algoritms_atbilde = spele_alphabeta('cilvēks', Skaitli.koka_return, self.gen,dalitajs)
+                self.punkti.configure(text=str(self.algoritms_atbilde[1][2])+':'+str(self.algoritms_atbilde[1][3]))
                 self.pirmais_gajiens = False
             else:
                 if Izvelne.algoritms == 'minimax':
                     self.algoritms_atbilde = spele_minimax('cilvēks', self.algoritms_atbilde[1], self.gen,dalitajs)
-                    self.algoritms_atbilde = spele_minimax('dators', self.algoritms_atbilde[1], self.gen,dalitajs)
-                    print(self.algoritms_atbilde)
                 else:
                     self.algoritms_atbilde = spele_alphabeta('cilvēks', self.algoritms_atbilde[1], self.gen,dalitajs)
-        
+                self.punkti.configure(text=str(self.algoritms_atbilde[1][2])+':'+str(self.algoritms_atbilde[1][3]))
+            if self.algoritms_atbilde is not None:
+                self.pasreizejais_speles_skaitlis.configure(text=int(self.algoritms_atbilde[1][1]))
+            else:
+                speles_beigas(self.algoritms_atbilde)
+                return
+            mainit_speletaju('dators')
+            ieslegt_2(False)
+            ieslegt_3(False)
+            if self.algoritms_atbilde is not None:
+                self.uzvarosa_virsotne = self.algoritms_atbilde
+                if Izvelne.algoritms == 'minimax':
+                    algoritms_atbilde_temp = self.algoritms_atbilde[1]
+                    self.algoritms_atbilde = spele_minimax('dators', self.algoritms_atbilde[1], self.gen,dalitajs)
+                    if self.algoritms_atbilde is not None:
+                        datora_gajiens_temp = algoritms_atbilde_temp[1]/self.algoritms_atbilde[1][1]
+                        self.datora_gajiens.config(text=str('Dators izvēlējās: '+str(int(datora_gajiens_temp))))
+                else:
+                    algoritms_atbilde_temp = self.algoritms_atbilde[1]
+                    self.algoritms_atbilde = spele_alphabeta('dators', self.algoritms_atbilde[1], self.gen,dalitajs)
+                    if self.algoritms_atbilde is not None:
+                        datora_gajiens_temp = algoritms_atbilde_temp[1]/self.algoritms_atbilde[1][1]
+                        self.datora_gajiens.config(text=str('Dators izvēlējās: '+str(int(datora_gajiens_temp))))
+                datora_gajiens()
+            if self.algoritms_atbilde is not None:
+                self.uzvarosa_virsotne = self.algoritms_atbilde
+            if self.algoritms_atbilde is None or (self.algoritms_atbilde[1][1] %2 != 0 and self.algoritms_atbilde[1][1] %3 !=0) or self.algoritms_atbilde[1][1] <= 10:
+                speles_beigas(self.uzvarosa_virsotne)
+                return
+            print(self.algoritms_atbilde)
 
+        def mainit_speletaju(teksts):
+            if teksts == 'dators':
+                self.gajiena_status.configure(text="Šobrīd gājienu veic: DATORS")
+            else:
+                self.gajiena_status.configure(text="Šobrīd gājienu veic: CILVĒKS")
 
-        
+        def ieslegt_2(kondicija):
+            if kondicija:
+                self.dali_2.configure(text = ":2", command=lambda:dali(2), bg='white')
+            else:
+                self.dali_2.configure(text = "", command='', bg='gray')
+
+        def ieslegt_3(kondicija):
+            if kondicija:
+                self.dali_3.configure(text = ":3", command=lambda:dali(3), bg='white')
+            else:
+                self.dali_3.configure(text = "", command='', bg='gray')
+                
+        def datora_gajiens():
+            mainit_speletaju('cilvēks')
+            if self.algoritms_atbilde is not None:
+                self.pasreizejais_speles_skaitlis.config(text=int(self.algoritms_atbilde[1][1]))
+                self.punkti.configure(text=str(self.algoritms_atbilde[1][2])+':'+str(self.algoritms_atbilde[1][3]))
+                ieslegt_2(True)
+                ieslegt_3(True)
+                if self.algoritms_atbilde[1][1] % 2 != 0:
+                    ieslegt_2(False)
+                if self.algoritms_atbilde[1][1] % 3 != 0:
+                    ieslegt_3(False)
+
+        def speles_beigas(ievade):
+            Spele.uzvaretajs = ievade
+            Skaitli.izveletais_skaitlis = 0
+            print(ievade)
+            ieslegt_2(True)
+            ieslegt_3(True)
+            self.punkti.configure(text='0:0')
+            self.pirmais_gajiens = True
+            self.uzvarosa_virsotne = None
+            print("Uzvarosa virsotne: " + str(ievade))
+            Skaitli.koka_return = None
+            controller.show_frame(Beigas)
+
 
 class Beigas(tk.Frame):
     # Beigas, kur tiek atspoguļota uzvara vai zaude
@@ -404,12 +550,6 @@ class Beigas(tk.Frame):
         # Rāmja inicializācija un loga sadalījums režģos
         tk.Frame.__init__(self, parent)
         Sakumlapa.configure(self, bg='gray')
-
-        ############################
-        self.teksts_small = "APSVEICAM!"# Šo parametrus ir jāiegūst no main.py atkarībā
-        self.teksts_big = "TU UZVARĒJI!"# vai spēlētājs pēc spēles ir zaudējis, vai uzvarējis
-        ############################
-
         Frame.columnconfigure(self, 0, weight=1)
         Frame.columnconfigure(self, 1, weight=1)
         Frame.columnconfigure(self, 2, weight=1)
@@ -419,20 +559,33 @@ class Beigas(tk.Frame):
         Frame.rowconfigure(self, 1, weight=3)
         Frame.rowconfigure(self, 2, weight=1)
         Frame.rowconfigure(self, 3, weight=1)
-        Label(self, text = self.teksts_small, 
-                        font=font.Font(family='Arial', size=18), background='white', width=26).grid( row=0, columnspan=5, sticky='s', )
-        Label(self, text = self.teksts_big, 
-                        font=font.Font(family='Arial', size=36), background='white', width=13).grid( row=1, columnspan=5, sticky='n')
+        self.teksts_small = Label(self, text = 'APSVEICAM!', 
+                        font=font.Font(family='Arial', size=18), background='white', width=26)
+        self.teksts_small.grid( row=0, columnspan=5, sticky='s', )
+
+        self.teksts_big = Label(self, text = 'TU UZVARĒJI!', 
+                        font=font.Font(family='Arial', size=36), background='white', width=13)
+        self.teksts_big.grid( row=1, columnspan=5, sticky='n')
+
+        self.rezultats = Label(self, text = 'Rezultāts: 0:0', 
+                        font=font.Font(family='Arial', size=18), background='white', width=13)
+        self.rezultats.grid( row=1, columnspan=5, sticky='')
+
         self.poga_iziet = Button(self, text = "IZIET", bd=0, borderwidth=0, width=10, background='white', command = 
-                lambda:app.destroy(), font=font.Font(family='Arial', size=18, weight="bold"))
+                lambda:self.quit(), font=font.Font(family='Arial', size=18, weight="bold"))
         self.poga_iziet.grid( row=3, column=1, padx=5, pady=5, sticky='n')
 
         self.poga_jaunaspele = Button(self, text = "JAUNA SPĒLE", bd=0, borderwidth=0, width=13, background='white', command = 
-                lambda:controller.show_frame(Izvelne), font=font.Font(family='Arial', size=18, weight="bold"))
+                lambda:jauna_spele(), font=font.Font(family='Arial', size=18, weight="bold"))
         self.poga_jaunaspele.grid(row=3, column=3, padx=5, pady=5, sticky='n')
+
+        def jauna_spele():
+            Skaitli.generet_skaitli = True
+            self.teksts_small.config(text='APSVEICAM!')
+            self.teksts_big.config(text='TU UZVARĒJI!')
+            controller.show_frame(Izvelne)
 
 
 
 # Palaišanas kods
 app = tkinterApp()
-app.mainloop()

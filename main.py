@@ -1,13 +1,13 @@
 #Tiek importēts random, lai varētu izvēlēties nejaušus skaitļus
 import random
 #Spēles skaitļu ģenerators
-def speles_skaitli():
+def speles_skaitli(num_from = 20000, num_to = 50000):
     #Izveido sarakstus skaitlu_saraksts un pieci_skaitli
     skaitlu_saraksts = set()
     pieci_skaitli = set()
     #Izvēlas skaitļus no 20000 līdz 50000
     #Ja skaitlis dalās ar 6 (dalās ar 2 un 3), tad to pievieno sarakstam
-    for i in range(20000,50000):
+    for i in range(num_from,num_to):
         if i%36==0:
             skaitlu_saraksts.add(i)
             #Izvēlas 5 nejaušus skaitļus no saraksta
@@ -294,10 +294,10 @@ def spele_minimax(kurs_sak, virsotne,gen, dalitajs):
                         print("Dators izvēlējās dalīt ar: ", datora_dalitajs)
                         return("cilvēks", nakosais_gajiens[0],gen)
                     else:
-                        datora_izvele = nakosais_gajiens[0]
+                        datora_izvele = nakosais_gajiens[1]
                         datora_dalitajs = virsotne[1]/datora_izvele[1]
                         print("Dators izvēlējās dalīt ar: ", datora_dalitajs)
-                        return("cilvēks", nakosais_gajiens[0],gen)
+                        return("cilvēks", nakosais_gajiens[1],gen)
                 elif (pirmais == result) and (otrais != result):
                     datora_izvele = nakosais_gajiens[0]
                     datora_dalitajs = virsotne[1]/datora_izvele[1]
@@ -421,6 +421,7 @@ def spele_alphabeta(kurs_sak, virsotne, generets, dalitajs):
                         datora_izvele = nakosais_gajiens[1]
                         datora_dalitajs = virsotne[1]/datora_izvele[1]
                         print("Dators izvēlējās sadalit ar:", datora_dalitajs)
+                        return("cilvēks", nakosais_gajiens[1], generets)
                 elif nakosais_gajiens[0][5] == result and nakosais_gajiens[1][5] != result:
                     datora_izvele = nakosais_gajiens[0]
                     datora_dalitajs = virsotne[1]/datora_izvele[1]
@@ -429,6 +430,7 @@ def spele_alphabeta(kurs_sak, virsotne, generets, dalitajs):
                     datora_izvele = nakosais_gajiens[1]
                     datora_dalitajs = virsotne[1]/datora_izvele[1]
                     print("Dators izvēlējās sadalit ar:", datora_dalitajs)
+                    return("cilvēks", nakosais_gajiens[1], generets)
             elif len(nakosais_gajiens) == 1:
                     datora_izvele = nakosais_gajiens
                     datora_dalitajs = virsotne[1]/datora_izvele[0][1]
@@ -491,7 +493,7 @@ def spele_alphabeta(kurs_sak, virsotne, generets, dalitajs):
                                 if (y[1] == result) and ((virsotne[2]+3)==y[2]) and ((virsotne[3])==y[3]):
                                     nakama_virsotne = y
                                     break
-                spele_alphabeta("dators", nakama_virsotne,generets,0)
+                return("dators", nakama_virsotne,generets,0)
             else:
                 print("Ar jusu skaitli:", cilveka_gajiens, "nevar iegut veselo rezulatatu")
-                spele_alphabeta("cilvēks", virsotne, generets, 0)
+                return("cilvēks", virsotne, generets, 0)
