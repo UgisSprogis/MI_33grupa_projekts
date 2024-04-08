@@ -80,13 +80,28 @@ class tkinterApp(tk.Tk):
         
         # Ja definēts atribūts "Spele.uzvaretajs", tad izvadīt rezultātu lapā "Beigas"
         if Spele.uzvaretajs:
-            if Spele.uzvaretajs[1][2] < Spele.uzvaretajs[1][3]:
-                frame.teksts_small.config(text='DIEMŽĒL')
-                frame.teksts_big.config(text='TU ZAUDĒJI')
-            if Spele.uzvaretajs[1][2] == Spele.uzvaretajs[1][3]:
-                frame.teksts_small.config(text='REZULTĀTS')
-                frame.teksts_big.config(text='IR NEIZŠĶIRTS!')
-            frame.rezultats.config(text='Rezultāts: '+str(Spele.uzvaretajs[1][2])+':'+str(Spele.uzvaretajs[1][3]))
+            if Izvelne.speletajs == "cilvēks":
+                if Spele.uzvaretajs[1][2] > Spele.uzvaretajs[1][3]:
+                    frame.teksts_small.config(text='APSVEICU')
+                    frame.teksts_big.config(text='TU UZVARĒJI')
+                if Spele.uzvaretajs[1][2] < Spele.uzvaretajs[1][3]:
+                    frame.teksts_small.config(text='DIEMŽĒL')
+                    frame.teksts_big.config(text='TU ZAUDĒJI')
+                if Spele.uzvaretajs[1][2] == Spele.uzvaretajs[1][3]:
+                    frame.teksts_small.config(text='REZULTĀTS')
+                    frame.teksts_big.config(text='IR NEIZŠĶIRTS!')
+                frame.rezultats.config(text='Rezultāts: '+str(Spele.uzvaretajs[1][2])+':'+str(Spele.uzvaretajs[1][3]))
+            else:
+                if Spele.uzvaretajs[1][3] > Spele.uzvaretajs[1][2]:
+                    frame.teksts_small.config(text='APSVEICU')
+                    frame.teksts_big.config(text='TU UZVARĒJI')
+                if Spele.uzvaretajs[1][3] < Spele.uzvaretajs[1][2]:
+                    frame.teksts_small.config(text='DIEMŽĒL')
+                    frame.teksts_big.config(text='TU ZAUDĒJI')
+                if Spele.uzvaretajs[1][2] == Spele.uzvaretajs[1][3]:
+                    frame.teksts_small.config(text='REZULTĀTS')
+                    frame.teksts_big.config(text='IR NEIZŠĶIRTS!')
+                frame.rezultats.config(text='Rezultāts: '+str(Spele.uzvaretajs[1][3])+':'+str(Spele.uzvaretajs[1][2]))
             Spele.uzvaretajs = None
             
 
@@ -482,7 +497,10 @@ class Spele(tk.Frame):
                     self.algoritms_atbilde = spele_minimax('cilvēks', Skaitli.koka_return, self.gen,dalitajs)
                 else:
                     self.algoritms_atbilde = spele_alphabeta('cilvēks', Skaitli.koka_return, self.gen,dalitajs)
-                self.punkti.configure(text=str(self.algoritms_atbilde[1][2])+':'+str(self.algoritms_atbilde[1][3]))
+                if Izvelne.speletajs == 'dators':
+                    self.punkti.configure(text=str(self.algoritms_atbilde[1][3])+':'+str(self.algoritms_atbilde[1][2]))
+                else:
+                    self.punkti.configure(text=str(self.algoritms_atbilde[1][2])+':'+str(self.algoritms_atbilde[1][3]))
                 self.pirmais_gajiens = False
 
             # Ja nav pirmais gājiens, tad tiek izvēlēti skaitļi jau pēc atgrieztajām funkciju vērtībām
@@ -491,7 +509,10 @@ class Spele(tk.Frame):
                     self.algoritms_atbilde = spele_minimax('cilvēks', self.algoritms_atbilde[1], self.gen,dalitajs)
                 else:
                     self.algoritms_atbilde = spele_alphabeta('cilvēks', self.algoritms_atbilde[1], self.gen,dalitajs)
-                self.punkti.configure(text=str(self.algoritms_atbilde[1][2])+':'+str(self.algoritms_atbilde[1][3]))
+                if Izvelne.speletajs == 'dators':
+                    self.punkti.configure(text=str(self.algoritms_atbilde[1][3])+':'+str(self.algoritms_atbilde[1][2]))
+                else:
+                    self.punkti.configure(text=str(self.algoritms_atbilde[1][2])+':'+str(self.algoritms_atbilde[1][3]))
 
             # Gadījumā ja spēle beigusies, nemēģinātu piekļūt neeksistējošiem parametriem
             if self.algoritms_atbilde is not None:
@@ -560,7 +581,10 @@ class Spele(tk.Frame):
             mainit_speletaju('cilvēks')
             if self.algoritms_atbilde is not None:
                 self.pasreizejais_speles_skaitlis.config(text=int(self.algoritms_atbilde[1][1]))
-                self.punkti.configure(text=str(self.algoritms_atbilde[1][2])+':'+str(self.algoritms_atbilde[1][3]))
+                if Izvelne.speletajs == 'dators':
+                    self.punkti.configure(text=str(self.algoritms_atbilde[1][3])+':'+str(self.algoritms_atbilde[1][2]))
+                else:
+                    self.punkti.configure(text=str(self.algoritms_atbilde[1][2])+':'+str(self.algoritms_atbilde[1][3]))
                 ieslegt_2(True)
                 ieslegt_3(True)
                 if self.algoritms_atbilde[1][1] % 2 != 0:
