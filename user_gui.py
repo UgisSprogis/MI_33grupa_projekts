@@ -37,7 +37,8 @@ class tkinterApp(tk.Tk):
         self.show_frame(Sakumlapa)
         self.mainloop()
 
-    # Funkcija, kas grafiski izvala lapu
+    # Funkcija, kas grafiski izvada lapu
+    # Katru reizi uz lapas maiņu tiek izsaukta
     def show_frame(self, cont):
         frame = self.frames[cont]
         frame.tkraise()
@@ -45,6 +46,10 @@ class tkinterApp(tk.Tk):
         # ChatGPT query:
         # How do I update "pasreizejais_speles_skaitlis" when switching to a new frame in tkinter?
         # <klases "Spele" kods
+
+        # Pārbauda vai ir izvēlēts skaitlis
+        # Ja dators sācis, nomaina uz datora izvēlēto skaitli
+        # Norāda kurš veic gājienu
         if Skaitli.izveletais_skaitlis != 0:
             datora_gajiens = Skaitli.izveletais_skaitlis/Skaitli.koka_return[1]
             if datora_gajiens > 1:
@@ -54,9 +59,12 @@ class tkinterApp(tk.Tk):
             if datora_gajiens > 1:
                 frame.punkti.config(text=str(Skaitli.koka_return[3])+':'+str(Skaitli.koka_return[2]))
 
+        # Atjauno izvēlēto spēles skaitli lapā "Skaitli"
         if Skaitli.koka_return:
             frame.pasreizejais_speles_skaitlis.config(text=int(Skaitli.koka_return[1]))
 
+        # Ja atrodas lapā "Skaitli", tad piešķirt ģenerētos skaitļus
+        # Ja ir "num_from" un "num_to" parametri, tad pēc tā intervāla ģenerēt skaitļus
         if Skaitli.generet_skaitli and hasattr(frame, 'skaitlis1'):
             if Intervals.num_from and Intervals.num_to:
                 Skaitli.pieci_skaitli = speles_skaitli(Intervals.num_from,Intervals.num_to)
@@ -70,6 +78,7 @@ class tkinterApp(tk.Tk):
             frame.skaitlis5.config(text=Skaitli.pieci_skaitli[4])
             Skaitli.generet_skaitli = None
         
+        # Ja definēts atribūts "Spele.uzvaretajs", tad izvadīt rezultātu lapā "Beigas"
         if Spele.uzvaretajs:
             if Spele.uzvaretajs[1][2] < Spele.uzvaretajs[1][3]:
                 frame.teksts_small.config(text='DIEMŽĒL')
@@ -120,6 +129,7 @@ class Sakumlapa(tk.Frame):
                         font=font.Font(family='Arial', size=18), background='white').grid(column=4, row=3, sticky='ne', padx=7)
 
 class Izvelne(tk.Frame):
+    # Klases brīvi pieejamie mainīgie, sākumā nav definēti
     speletajs = ""
     algoritms = ""
     # Klases inicializēšana
@@ -228,6 +238,7 @@ class Izvelne(tk.Frame):
             self.poga_speletajs.configure(background='white')
 
 
+# Klase, kas ļauj izvēlēties kādu no ģenerētajiem skaitļiem
 class Skaitli(tk.Frame):
     izveletais_skaitlis = 0
     koka_return = None
@@ -276,9 +287,11 @@ class Skaitli(tk.Frame):
         self.poga_turpinat.grid( row=5, column=0, padx=5, pady=5, sticky='sw')
 
 
+        # Brīvi pieejamam atribūtam piešķir izvēlēto skaitli
         def set_skaitlis(skaitlis):
             Skaitli.izveletais_skaitlis = skaitlis
 
+        # Maina krāsu no balta uz zaļu, pārējiem dod baltu krāsu
         def mainit_krasu_skaitlis(skaitlis):
             self.skailtlis_status = True
             self.skaitlis_buttons = [self.skaitlis1, self.skaitlis2, self.skaitlis3, self.skaitlis4, self.skaitlis5]
@@ -287,6 +300,7 @@ class Skaitli(tk.Frame):
             for index, button in enumerate(self.skaitlis_buttons):
                 button.configure(background='green' if index + 1 == int(skaitlis[-1]) else 'white')
         
+        # Ģenerē koku un pāriet uz lapu "Spele", kļūdas gadījumā izvada paziņojumu
         def turpinat():
             if not self.skailtlis_status:
                 messagebox.showerror('Spēles kļūda', 'Izvēlieties spēles skaitli.')
@@ -296,6 +310,7 @@ class Skaitli(tk.Frame):
                 controller.show_frame(Spele)
                 reset()
 
+        # Iet atpakaļ uz lapu "Izvelne" un atjaunina noklusējuma parametrus
         def atpakal():
             controller.show_frame(Izvelne)
             reset()
@@ -309,7 +324,7 @@ class Skaitli(tk.Frame):
                 button.configure(background='white')
 
 
-
+# Klase "Intervals", kurā tiek mainīts ģenerēto skaitļu intervāls
 class Intervals(tk.Frame):
     num_from = None
     num_to = None
@@ -347,7 +362,7 @@ class Intervals(tk.Frame):
                 lambda: controller.show_frame(Izvelne), font=font.Font(family='Arial', size=18, weight="bold"))
         self.poga_manit.grid( row=5, column=0, padx=5, pady=5, sticky='sw')
 
-
+        # Validācija, ievades pārbaude, paziņojumu izvade kļūdas gadījumos
         def mainit():
             text_from = self.from_entry.get()
             text_to = self.to_entry.get()
@@ -373,6 +388,7 @@ class Intervals(tk.Frame):
             self.to_entry.delete(0, 'end')
 
 
+# Klase "Spele", kurā notiek abu algoritmu pārbaude un tiek spēlēta spēle
 class Spele(tk.Frame):
     uzvaretajs = None
     # Klases inicializēšana
@@ -436,11 +452,13 @@ class Spele(tk.Frame):
         self.poga_beigt = Button(self, text = 'BEIGT', bd=0, borderwidth=0, width=10, background='white', command = 
                 lambda:beigt(), font=font.Font(family='Arial', size=18, weight="bold")).grid( row=9, column=4)
         
+        # Beigt spēli, ļauj spēlētājam pārliecināties, vai tiešām grib beigt spēli
         def beigt():
             atbilde = messagebox.askquestion("Iziet", "Vai jūs esat pārliecināts, ka vēlaties iziet?")
             if atbilde == 'yes':
                 self.quit()
 
+        # Poga "atpakaļ", pārjautā vai tiešām to vēlās. Tiek atstatīti noklusējuma parametri
         def atpakal():
             atbilde = messagebox.askquestion("Atpakaļ", 
                                 "Vai jūs esat pārliecināts, ka vēlaties atgriezties uz sākumu? Tas beigs šobrīdējo spēli")
@@ -455,7 +473,10 @@ class Spele(tk.Frame):
                 self.datora_gajiens.config(text=str('Dators izvēlējās:'))
                 controller.show_frame(Izvelne)
 
+        # Funkcija "dali", smadzenes šīs lapas funkcionalitātei
         def dali(dalitajs):
+            # Ja notiek pirmais gājiens, tiek atlasīts izvēlētais algoritms un spēle tiek ģenerēta pēc "taisi_koku()"
+            # iegūtajām vērtībām
             if self.pirmais_gajiens:
                 if Izvelne.algoritms == 'minimax':
                     self.algoritms_atbilde = spele_minimax('cilvēks', Skaitli.koka_return, self.gen,dalitajs)
@@ -463,22 +484,33 @@ class Spele(tk.Frame):
                     self.algoritms_atbilde = spele_alphabeta('cilvēks', Skaitli.koka_return, self.gen,dalitajs)
                 self.punkti.configure(text=str(self.algoritms_atbilde[1][2])+':'+str(self.algoritms_atbilde[1][3]))
                 self.pirmais_gajiens = False
+
+            # Ja nav pirmais gājiens, tad tiek izvēlēti skaitļi jau pēc atgrieztajām funkciju vērtībām
             else:
                 if Izvelne.algoritms == 'minimax':
                     self.algoritms_atbilde = spele_minimax('cilvēks', self.algoritms_atbilde[1], self.gen,dalitajs)
                 else:
                     self.algoritms_atbilde = spele_alphabeta('cilvēks', self.algoritms_atbilde[1], self.gen,dalitajs)
                 self.punkti.configure(text=str(self.algoritms_atbilde[1][2])+':'+str(self.algoritms_atbilde[1][3]))
+
+            # Gadījumā ja spēle beigusies, nemēģinātu piekļūt neeksistējošiem parametriem
             if self.algoritms_atbilde is not None:
                 self.pasreizejais_speles_skaitlis.configure(text=int(self.algoritms_atbilde[1][1]))
+
+            # Bet ja spēle ir beigusies, izsaukt funkciju "speles_beigas"
             else:
                 speles_beigas(self.algoritms_atbilde)
                 return
+            
+            # Mēģinājums ieviest laika atkāpi, lai dotu laiku datoram "padomāt" un to vizualizēt
             mainit_speletaju('dators')
+            # Dalīšanas pogu nomainīšana uz to, ka tās neko nedara
             ieslegt_2(False)
             ieslegt_3(False)
             if self.algoritms_atbilde is not None:
                 self.uzvarosa_virsotne = self.algoritms_atbilde
+
+                # Datora izvēles skaitļu nomaiņa pēc datora gājiena
                 if Izvelne.algoritms == 'minimax':
                     algoritms_atbilde_temp = self.algoritms_atbilde[1]
                     self.algoritms_atbilde = spele_minimax('dators', self.algoritms_atbilde[1], self.gen,dalitajs)
@@ -494,29 +526,36 @@ class Spele(tk.Frame):
                 datora_gajiens()
             if self.algoritms_atbilde is not None:
                 self.uzvarosa_virsotne = self.algoritms_atbilde
+            
+            # Ja kāds no spēles beigšanās kritērijiem paspējis izpildīties pirms tas ir paspējis notikt main.py, spēle beidzās
+            # Savādāk var nonākt pie NoneType kļūdas
             if self.algoritms_atbilde is None or (self.algoritms_atbilde[1][1] %2 != 0 and self.algoritms_atbilde[1][1] %3 !=0) or self.algoritms_atbilde[1][1] <= 10:
                 speles_beigas(self.uzvarosa_virsotne)
                 return
             print(self.algoritms_atbilde)
 
+        # Funkcija priekš spēles ar laika atkāpi
         def mainit_speletaju(teksts):
             if teksts == 'dators':
                 self.gajiena_status.configure(text="Šobrīd gājienu veic: DATORS")
             else:
                 self.gajiena_status.configure(text="Šobrīd gājienu veic: CILVĒKS")
 
+        # Izslēgt/ieslēgt pogu, kas dala ar 2
         def ieslegt_2(kondicija):
             if kondicija:
                 self.dali_2.configure(text = ":2", command=lambda:dali(2), bg='white')
             else:
                 self.dali_2.configure(text = "", command='', bg='gray')
 
+        # Izslēgt/ieslēgt pogu, kas dala ar 3
         def ieslegt_3(kondicija):
             if kondicija:
                 self.dali_3.configure(text = ":3", command=lambda:dali(3), bg='white')
             else:
                 self.dali_3.configure(text = "", command='', bg='gray')
-                
+        
+        # Funkcija, kurai būtu jāpiesaista .after, lai dotu datora "domāšanas" ilūziju (bet .after nestrādā pareizi)
         def datora_gajiens():
             mainit_speletaju('cilvēks')
             if self.algoritms_atbilde is not None:
@@ -529,6 +568,9 @@ class Spele(tk.Frame):
                 if self.algoritms_atbilde[1][1] % 3 != 0:
                     ieslegt_3(False)
 
+        # Kad spēle beidzās, tiek atiestatīti noklusējuma parametri un iedots
+        # Klases "Spele.uzvaretajs" mainīgajam uzvaras virsotne ar visiem rezultātiem
+        # Spēlētājs tiek pārsvirzīts uz lapu "Beigas"
         def speles_beigas(ievade):
             Spele.uzvaretajs = ievade
             Skaitli.izveletais_skaitlis = 0
@@ -579,6 +621,7 @@ class Beigas(tk.Frame):
                 lambda:jauna_spele(), font=font.Font(family='Arial', size=18, weight="bold"))
         self.poga_jaunaspele.grid(row=3, column=3, padx=5, pady=5, sticky='n')
 
+        # Ja spēlētājs grib uzsākt jaunu spēli, tiek atiestatīti noklusējuma parametri un tas tiek pārvirzīts uz lapu "Izvelne"
         def jauna_spele():
             Skaitli.generet_skaitli = True
             self.teksts_small.config(text='APSVEICAM!')
