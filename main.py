@@ -250,6 +250,9 @@ def alphabeta(virs, alpha, beta, generets):
 #                           Spēles loģika                               #
 
 def rezultats(virsotne):
+    # Spēles rezultāts būs neizšķirts, ja spēlētāju punkti būs vienādi
+    # Ja pirmajam spēlētājam ir vairāk punktu nekā otrajam, uzvarēs pirmais spēlētājs
+    # Ja otrajam spēlētājam ir vairāk punktu nekā pirmajam, uzvarēs otrais spēlētājs
     if virsotne[2] == virsotne[3]:
         print(f"Rezultāts ir neizšķirts {virsotne[2]}:{virsotne[3]}")
     elif virsotne[2] > virsotne[3]:
@@ -258,15 +261,19 @@ def rezultats(virsotne):
         print(f"Uzvar cilvēks {virsotne[2]}:{virsotne[3]}")
         
 def spele_minimax(kurs_sak, virsotne,gen, dalitajs):
+    # Pārbaude: ja skaitlis vairs nevar dalīt ar 2 vai 3 bez atlikuma vai arī skaitlis ir mazāks vai vienāds ar 10, tad iegūstam spēles rezultātu
     print(f"{kurs_sak} iet un spēles skaitlis ir {str(virsotne[1])}")
     if (virsotne[1] %2 != 0 and virsotne[1] %3 !=0) or virsotne[1] <= 10:
         rezultats(virsotne)
         print("spele beidzas")
         return
     else:
+        # Pārbaude: ​​vai dators veic pašreizējo gājienu 
         if kurs_sak == "dators":
             print("Dators domā...")
+            #Tiek izsaukta funkcija, kas atgriež visus bērnus no konkrētas virsotnes
             nakosais_gajiens = berni(virsotne)
+            # Pārbaude: ja tiek sasniegts meklēšanas dziļums, koks tiek ģenerēts tālāk
             if virsotne[4] == dzilums:
                 gen = True
                 result = minimax(virsotne,gen)
@@ -282,9 +289,12 @@ def spele_minimax(kurs_sak, virsotne,gen, dalitajs):
                     if y[4] > dzilums:
                         minimax(y,gen)
                 nakosais_gajiens = berni(virsotne)
+            # Ja ir divi iespējamie gājieni, salīdzina minimax vērtības
+            # Prioritāte tiek dota virsotnei, kuras minimax vērtība ir vienāda ar pašreizējās virsotnes minimax vērtību
             if len(nakosais_gajiens) == 2:
                 pirmais = minimax(nakosais_gajiens[0],gen)
                 otrais = minimax(nakosais_gajiens[1],gen)
+                # Ja abu virsotņu minimax vērtības ir vienādas, tad prioritāte tiek dota virsotnei, ar kuru sadalot pašreizējo virsotni, tiks iegūts mazākais skaitlis
                 if pirmais == otrais == result:
                     izv1 = nakosais_gajiens[0]
                     izv2 = nakosais_gajiens[1]
@@ -308,17 +318,20 @@ def spele_minimax(kurs_sak, virsotne,gen, dalitajs):
                     datora_dalitajs = virsotne[1]/datora_izvele[1]
                     print("Dators izvēlējās dalīt ar: ", datora_dalitajs)
                     return("cilvēks", nakosais_gajiens[1],gen)
+            # Ja ir viens iespējamais gājiens
             elif len(nakosais_gajiens) == 1:
                 datora_izvele = nakosais_gajiens
                 datora_dalitajs = virsotne[1]/datora_izvele[0][1]
                 print("Dators izvēlējās dalīt ar: ", datora_dalitajs)
                 return("cilvēks", nakosais_gajiens[0],gen)
+        # Pārbaude: ​​vai cilvēks veic pašreizējo gājienu 
         if kurs_sak == "cilvēks":
             print("Jūsu gājiens")
             nakama_virsotne = 0
             cilveka_gajiens = dalitajs
             if ((virsotne[1] % int(cilveka_gajiens)) == 0) and ((cilveka_gajiens == 2) or (cilveka_gajiens == 3)):
                 result = virsotne[1] / int(cilveka_gajiens)
+                # Ja pirmo gājienu veicis dators, tiek meklēta virsotne ar pareizi piešķirtiem punktiem
                 if sacejs == "dators":
                     if cilveka_gajiens == 2:
                         for x in atk_virsotnes:
@@ -330,6 +343,7 @@ def spele_minimax(kurs_sak, virsotne,gen, dalitajs):
                             if (x[1] == result) and ((virsotne[2])==x[2]) and ((virsotne[3]+3)==x[3]):
                                 nakama_virsotne = x
                                 break
+                    # Ja virsotne netika atrasta, koks tiek ģenerēts tālāk un meklēšana tiek atkārtota
                     if nakama_virsotne == 0:
                         for x in sp.virsotnes:
                             if x.limenis > dzilums:
@@ -345,6 +359,7 @@ def spele_minimax(kurs_sak, virsotne,gen, dalitajs):
                                 if (y[1] == result) and ((virsotne[2])==y[2]) and ((virsotne[3]+3)==y[3]):
                                     nakama_virsotne = y
                                     break
+                # Ja pirmo gājienu veicis cilvēks, tiek meklēta virsotne ar pareizi piešķirtiem punktiem
                 else:
                     if cilveka_gajiens == 2:
                         for x in atk_virsotnes:
@@ -356,6 +371,7 @@ def spele_minimax(kurs_sak, virsotne,gen, dalitajs):
                             if (x[1] == result) and ((virsotne[2]+3)==x[2]) and ((virsotne[3])==x[3]):
                                 nakama_virsotne = x
                                 break
+                    # Ja virsotne netika atrasta, koks tiek ģenerēts tālāk un meklēšana tiek atkārtota
                     if nakama_virsotne == 0:
                         for x in sp.virsotnes:
                             if x.limenis > dzilums:
@@ -379,14 +395,18 @@ def spele_minimax(kurs_sak, virsotne,gen, dalitajs):
     
 def spele_alphabeta(kurs_sak, virsotne, generets, dalitajs):
     print("Pašreizejais skaitlis:",virsotne[1])
+    # Pārbaude: ja skaitlis vairs nevar dalīt ar 2 vai 3 bez atlikuma vai arī skaitlis ir mazāks vai vienāds ar 10, tad iegūstam spēles rezultātu
     if virsotne[1] %2 != 0 and virsotne[1] %3 or virsotne[1] <= 10:
         rezultats(virsotne)
         return
     else:
+        # Pārbaude: ​​vai dators veic pašreizējo gājienu 
         if kurs_sak == "dators":
             print("Datora gajiens:")
             result = alphabeta(virsotne,float('-inf'), float('inf'), generets)
+            #Tiek izsaukta funkcija, kas atgriež visus bērnus no konkrētas virsotnes
             nakosais_gajiens = berni(virsotne)
+            # Pārbaude: ja tiek sasniegts meklēšanas dziļums, koks tiek ģenerēts tālāk
             if virsotne[4] == dzilums:
                 generets = True
                 result = alphabeta(virsotne,float('-inf'), float('inf'), generets)
@@ -409,7 +429,10 @@ def spele_alphabeta(kurs_sak, virsotne, generets, dalitajs):
                         alphabeta(y,float('-inf'), float('inf'), generets)
                 nakosais_gajiens = berni(virsotne)
                 result = alphabeta(virsotne,float('-inf'), float('inf'), generets)
+            # Ja ir divi iespējamie gājieni, salīdzina virsotnēm piešķirtais svars
+            # Prioritāte tiek dota virsotnei, kuras svars ir vienāds ar pašreizējās virsotnes svaru
             if len(nakosais_gajiens) == 2:
+                # Ja abām virsotnēm ir vienāds svars, prioritāte tiek piešķirta virsotnei, kas dod lielāko dalītāju, dalot pašreizējo skaitli ar nākamās virsotnes skaitli
                 if nakosais_gajiens[0][5] == nakosais_gajiens[1][5] == result:
                     pirma_virsotne = virsotne[1]/nakosais_gajiens[0][1]
                     otra_virsotne = virsotne[1]/nakosais_gajiens[1][1]
@@ -431,16 +454,19 @@ def spele_alphabeta(kurs_sak, virsotne, generets, dalitajs):
                     datora_dalitajs = virsotne[1]/datora_izvele[1]
                     print("Dators izvēlējās sadalit ar:", datora_dalitajs)
                     return("cilvēks", nakosais_gajiens[1], generets)
+            # Ja ir viens iespējamais gājiens
             elif len(nakosais_gajiens) == 1:
                     datora_izvele = nakosais_gajiens
                     datora_dalitajs = virsotne[1]/datora_izvele[0][1]
                     print("Dators izvēlējās sadalit ar:", datora_dalitajs)
             return("cilvēks", nakosais_gajiens[0], generets)
+        # Pārbaude: ​​vai cilvēks veic pašreizējo gājienu 
         elif kurs_sak == "cilvēks":
             nakama_virsotne = 0
             cilveka_gajiens = dalitajs
             if virsotne[1] % int(cilveka_gajiens) == 0:
                 result = virsotne[1] / int(cilveka_gajiens)
+                # Ja pirmo gājienu veicis dators, tiek meklēta virsotne ar pareizi piešķirtiem punktiem
                 if sacejs == "dators":
                     if cilveka_gajiens == 2:
                         for x in atk_virsotnes:
@@ -452,6 +478,7 @@ def spele_alphabeta(kurs_sak, virsotne, generets, dalitajs):
                             if (x[1] == result) and ((virsotne[2])==x[2]) and ((virsotne[3]+3)==x[3]):
                                 nakama_virsotne = x
                                 break
+                    # Ja virsotne netika atrasta, koks tiek ģenerēts tālāk un meklēšana tiek atkārtota
                     if nakama_virsotne == 0:
                         for x in sp.virsotnes:
                             if x.limenis > dzilums:
@@ -467,6 +494,7 @@ def spele_alphabeta(kurs_sak, virsotne, generets, dalitajs):
                                 if (y[1] == result) and ((virsotne[2])==y[2]) and ((virsotne[3]+3)==y[3]):
                                     nakama_virsotne = y
                                     break
+                # Ja pirmo gājienu veicis cilvēks, tiek meklēta virsotne ar pareizi piešķirtiem punktiem
                 else:
                     if cilveka_gajiens == 2:
                         for x in atk_virsotnes:
@@ -478,6 +506,7 @@ def spele_alphabeta(kurs_sak, virsotne, generets, dalitajs):
                             if (x[1] == result) and ((virsotne[2]+3)==x[2]) and ((virsotne[3])==x[3]):
                                 nakama_virsotne = x
                                 break
+                # Ja virsotne netika atrasta, koks tiek ģenerēts tālāk un meklēšana tiek atkārtota
                 if nakama_virsotne == 0:
                         for x in sp.virsotnes:
                             if x.limenis > dzilums:
