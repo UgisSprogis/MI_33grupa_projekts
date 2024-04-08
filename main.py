@@ -294,7 +294,7 @@ def spele_minimax(kurs_sak, virsotne,gen, dalitajs):
             if len(nakosais_gajiens) == 2:
                 pirmais = minimax(nakosais_gajiens[0],gen)
                 otrais = minimax(nakosais_gajiens[1],gen)
-                # Ja abu virsotņu minimax vērtības ir vienādas, tad prioritāte tiek dota virsotnei, ar kuru sadalot pašreizējo virsotni, tiks iegūts mazākais skaitlis
+                # Ja abu virsotņu minimax vērtības ir vienādas, tad prioritāte tiek dota virsotnei, kas dod lielāko dalītāju, dalot pašreizējo skaitli ar nākamās virsotnes skaitli
                 if pirmais == otrais == result:
                     izv1 = nakosais_gajiens[0]
                     izv2 = nakosais_gajiens[1]
