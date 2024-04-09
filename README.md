@@ -1,4 +1,7 @@
 ﻿## ***MI_33grupa_projekts***
+ 
+#Lai sāktu spēli, tā ir jāpalaiž no user_gui.py faila
+
 ### Definētās prasības spēles programmatūrai.
 - Spēles sākumā spēles programmatūra gadījuma ceļā saģenerē 5 skaitļus diapazonā no 10000 līdz 20000
 - Skaitļiem obligāti jādalās gan ar 3, gan ar 2. (Tātad dalās ar 6)
@@ -15,7 +18,6 @@ Spēles sākumā ir dots cilvēka-spēlētāja izvēlētais skaitlis. Abiem spē
 5. Tiek izveidota HNF balstoties uz spēles nosacījumiem.
 6. Mini-Max un Alpha-Beta algoritmu izveide, lai dators atrastu optimālākos ceļus uz uzvaru.
 7. Grafiskās saskarnes izveide.
-
 
 #### Papildus ieviestie nosacījumi
 1. Tiek ģenerēti 5 skaitļi, kas dalās ar 36, nevis gan ar 2, gan 3. Noteikumi mainīti, lai spēle būtu garāka un skaitļi varētu dalīties vairāk kā 2-3 reizes.
