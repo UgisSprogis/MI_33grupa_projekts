@@ -156,6 +156,12 @@ def taisi_koku(speles_skaitlis, in_sacejs, algoritms):
     else:
         return atk_virsotnes[0]
 
+#Tiek izveidota HNF funkcija
+def hnf(virsotne):
+    #Tiek aprēķināta heiristiski novērtēta virsotnes vērtība, kurā ir iekļauti spēlētāju punkti un virsotnes līmenis
+    rez = virsotne[4] + virsotne[2] - virsotne[3]
+    return rez
+
 
 #Tiek izveidota funkcija, kas atgriež visus bērnus no konkrētas virsotnes
 def berni(pasreizeja_virsotne):
@@ -183,11 +189,11 @@ def minimax(virs,gen):
         gen = True
     if gen:
         if virs[4] == max_limenis or (virs[1] <= 10) or (virs[1] %2 != 0 and virs[1] %3 != 0):
-            return virs[4] + virs[2] - virs[3]
+            return hnf(virs)
     #Ja virsotne nav gala līmenī, tad tiek izveidots saraksts ar visiem bērniem
     if not gen:
         if (virs[4]) == dzilums:
-            return virs[4] + virs[2] - virs[3]
+            return hnf(virs)
     nakosais_stavoklis = berni(virs)
     #if not isinstance(nakosais_stavoklis, list): pārbauda vai ir saraksts
     #Ja nav saraksts, tad tiek izveidots saraksts
@@ -211,10 +217,10 @@ def alphabeta(virs, alpha, beta, generets):
         generets = True
     if not generets:
         if virs[4] == dzilums or (virs[1] <= 10) or (virs[1] %2 != 0 and virs[1] %3 != 0):
-            return virs[4] + virs[2] - virs[3]
+            return hnf(virs)
     if generets:
         if virs[4] == max_limenis or (virs[1] <= 10) or (virs[1] %2 != 0 and virs[1] %3 != 0):
-            return virs[4] + virs[2] - virs[3]
+            return hnf(virs)
     #Ja virsotne nav gala līmenī, tad tiek izveidots saraksts ar visiem bērniem
     nakosais_stavoklis = berni(virs)
     #if not isinstance(nakosais_stavoklis, list): pārbauda vai ir saraksts
