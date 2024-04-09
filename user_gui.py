@@ -360,12 +360,12 @@ class Intervals(tk.Frame):
                     font=font.Font(family='Arial', size=26, weight="bold"), background='white').grid(row=0, columnspan=5)
         
 
-        tk.Label(self, text='No:', font=font.Font(family='Arial', size=18), background='gray').grid(row=1, column=0, sticky='e')
-        self.from_entry = Entry(self, font=font.Font(family='Arial', size=18))
+        tk.Label(self, text='No:', font=font.Font(family='Arial', size=18, weight='bold'), background='gray').grid(row=1, column=0, sticky='e')
+        self.from_entry = Entry(self, font=font.Font(family='Arial', size=18, weight='bold'))
         self.from_entry.grid(row=1, column=1, sticky='w')
 
-        tk.Label(self, text='Līdz:', font=font.Font(family='Arial', size=18), background='gray').grid(row=2, column=0, sticky='e')
-        self.to_entry = Entry(self, font=font.Font(family='Arial', size=18))
+        tk.Label(self, text='Līdz:', font=font.Font(family='Arial', size=18, weight='bold'), background='gray').grid(row=2, column=0, sticky='e')
+        self.to_entry = Entry(self, font=font.Font(family='Arial', size=18, weight='bold'))
         self.to_entry.grid(row=2, column=1, sticky='w')
 
 
