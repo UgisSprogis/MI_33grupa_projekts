@@ -390,13 +390,11 @@ class Intervals(tk.Frame):
                     Intervals.num_from = text_from
                     Intervals.num_to = text_to
                     Skaitli.generet_skaitli = True
-                    messagebox.showinfo(title='Intervāls', 
-                                           message='Intervāls ir veiksmīgi samainīts')
+                    messagebox.showinfo(title='Intervāls', message='Intervāls ir veiksmīgi samainīts')
                     controller.show_frame(Izvelne)
                     
                 else:
-                    messagebox.showwarning(title='Nepareizs intervāls', 
-                                           message='Intervālam jābūt no 10000 līdz 50000 ar intervālu vienam no otra 10000')
+                    messagebox.showwarning(title='Nepareizs intervāls', message='Intervālam jābūt no 10000 līdz 50000 ar intervālu vienam no otra 10000')
             else:
                 messagebox.showwarning(title='Nepareiza ievade', message='Ievadiet skaitliskas vērtības')
             self.from_entry.delete(0, 'end')
