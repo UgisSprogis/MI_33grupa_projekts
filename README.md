@@ -1,6 +1,6 @@
 ﻿## ***MI_33grupa_projekts***
  
-#Lai sāktu spēli, tā ir jāpalaiž no user_gui.py faila
+Lai sāktu spēli, tā ir jāpalaiž no user_gui.py faila
 
 ### Definētās prasības spēles programmatūrai.
 - Spēles sākumā spēles programmatūra gadījuma ceļā saģenerē 5 skaitļus diapazonā no 10000 līdz 20000
